@@ -1,0 +1,1 @@
+# nextjs-maturitni-prace
