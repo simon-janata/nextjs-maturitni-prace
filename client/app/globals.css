@@ -1,4 +1,14 @@
-* {
-  position: relative;
+body {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100dvh;
+}
+
+main {
   box-sizing: border-box;
+  margin-top: rem(70px);
+  padding: rem(40px) 0;
+  background-color: inherit;
 }

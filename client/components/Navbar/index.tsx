@@ -5,6 +5,8 @@ import { HoverCard, Group, Button, UnstyledButton, Text, SimpleGrid, ThemeIcon, 
 import { MantineLogo } from "@mantinex/mantine-logo";
 import { useDisclosure } from "@mantine/hooks";
 import { IconNotification, IconCode, IconBook, IconChartPie3, IconFingerprint, IconCoin, IconChevronDown } from "@tabler/icons-react";
+import LanguagePicker from "../LanguagePicker";
+import ColorSchemeToggle from "../ColorSchemeToggle";
 import classes from "./Navbar.module.css";
 
 const mockdata = [
@@ -40,7 +42,7 @@ const mockdata = [
   },
 ];
 
-const Navbar = () => {
+const Navbar = ({ refNavbar }: { refNavbar: React.RefObject<HTMLElement> }) => {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
   const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
   const theme = useMantineTheme();
@@ -67,8 +69,8 @@ const Navbar = () => {
   ));
 
   return (
-    <Box pb={90}> {/* pb={120} was the original value */}
-      <header className={classes.header}>
+    <Box>
+      <header ref={refNavbar} className={classes.header}>
         <Group justify="space-between" h="100%">
           <MantineLogo size={30} />
 
@@ -126,17 +128,19 @@ const Navbar = () => {
                 </div>
               </HoverCard.Dropdown>
             </HoverCard>
-            <Link href="#" className={classes.link}>
-              Learn
+            <Link href="/add" className={classes.link}>
+              Add
             </Link>
-            <Link href="#" className={classes.link}>
-              Academy
+            <Link href="/about" className={classes.link}>
+              About
             </Link>
           </Group>
 
           <Group visibleFrom="sm">
-            <Button variant="default">Log in</Button>
-            <Button>Sign up</Button>
+            {/* <Button variant="default">Log in</Button>
+            <Button>Sign up</Button> */}
+            <LanguagePicker />
+            <ColorSchemeToggle />
           </Group>
 
           <Burger
@@ -154,12 +158,12 @@ const Navbar = () => {
         padding="md"
         title="Navigation"
         hiddenFrom="sm"
-        zIndex={1000000}
+        zIndex={10000}
       >
         <ScrollArea h={`calc(100vh - ${rem(80)})`} mx="-md">
           <Divider my="sm" />
 
-          <Link href="/" className={classes.link}>
+          <Link href="/" className={classes.link} onClick={closeDrawer}>
             Home
           </Link>
           <UnstyledButton className={classes.link} onClick={toggleLinks}>
@@ -174,23 +178,23 @@ const Navbar = () => {
             </Center>
           </UnstyledButton>
           <Collapse in={linksOpened}>{links}</Collapse>
-          <Link href="#" className={classes.link}>
-            Learn
+          <Link href="/add" className={classes.link} onClick={closeDrawer}>
+            Add
           </Link>
-          <Link href="#" className={classes.link}>
-            Academy
+          <Link href="/about" className={classes.link} onClick={closeDrawer}>
+            About
           </Link>
 
           <Divider my="sm" />
 
-          <Group justify="center" grow pb="xl" px="md">
-            <Button variant="default">Log in</Button>
-            <Button>Sign up</Button>
+          <Group justify="center" pb="xl" px="md">
+            <LanguagePicker />
+            <ColorSchemeToggle />
           </Group>
         </ScrollArea>
       </Drawer>
     </Box>
-  )
+  );
 }
 
 export default Navbar;

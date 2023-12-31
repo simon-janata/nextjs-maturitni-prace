@@ -1,8 +1,8 @@
 "use client";
 
-import React from "react";
-// import "./globals.css";
+import React, { useEffect, useRef } from "react";
 import "@mantine/core/styles.css";
+import "./globals.css";
 import { MantineProvider, ColorSchemeScript, Container } from "@mantine/core";
 import { theme } from "../theme";
 
@@ -10,23 +10,51 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const refNavbar: React.RefObject<HTMLElement> = useRef(null);
+  const refFooter: React.RefObject<HTMLElement> = useRef(null);
+  const refMain: React.RefObject<HTMLElement> = useRef(null);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const windowHeight = window.innerHeight;
+      const navbarHeight = refNavbar.current ? refNavbar.current.offsetHeight : 0;
+      const footerHeight = refFooter.current ? refFooter.current.offsetHeight : 0;
+
+      const mainHeight = windowHeight - navbarHeight - footerHeight;
+
+      if (refMain.current) {
+        refMain.current.style.minHeight = `${mainHeight}px`;
+      }
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    // Cleanup
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   return (
     <html lang="en">
       <head>
-        <ColorSchemeScript />
+        <ColorSchemeScript defaultColorScheme="auto" />
         <link rel="shortcut icon" href="/favicon.svg" type="image/x-icon" />
         <meta name="description" content="I am using Mantine with Next.js!" />
         <title>Mantine Next.js template</title>
       </head>
       <body>
         <MantineProvider theme={theme} defaultColorScheme="auto">
-          <Navbar />
-          <Container>
-            {children}
-          </Container>
-          <Footer />
+          <Navbar refNavbar={refNavbar} />
+          <main ref={refMain}>
+            <Container>
+              {children}
+            </Container>
+          </main>
+          <Footer refFooter={refFooter} />
         </MantineProvider>
       </body>
     </html>
-  )
+  );
 }
