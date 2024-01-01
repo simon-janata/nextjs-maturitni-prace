@@ -2,10 +2,13 @@
 
 import Link from "next/link";
 import { Anchor } from "@mantine/core";
+import { useDocumentTitle } from "@mantine/hooks";
 import Welcome from "@/components/Welcome";
 import Breadcrumbs from "@/components/Breadcrumbs";
 
 export default function MainPage() {
+  useDocumentTitle("Main");
+  
   // const breadcrumbsItems = [
   //   { title: "Home", href: "/" },
   //   { title: "Classes", href: "/" },

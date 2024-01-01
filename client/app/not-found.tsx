@@ -1,8 +1,11 @@
 "use client";
 
+import { useDocumentTitle } from "@mantine/hooks";
 import NotFound from "@/components/NotFound";
 
 export default function NotFoundPage() {
+  useDocumentTitle("Not found");
+  
   return (
     <NotFound
       title="Nothing to see here"

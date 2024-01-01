@@ -1,8 +1,11 @@
 "use client";
 
+import { useDocumentTitle } from "@mantine/hooks";
 import UnderConstruction from "@/components/UnderConstruction";
 
 export default function AboutPage() {
+  useDocumentTitle("About");
+  
   return (
     <UnderConstruction
       pageName="About page"

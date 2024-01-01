@@ -3,8 +3,11 @@
 import { useState } from "react";
 import { IconCircleCheck, IconFolder, IconFileSpreadsheet, IconPhoto } from "@tabler/icons-react";
 import { Stepper, rem, Image, Button, Group } from "@mantine/core";
+import { useDocumentTitle } from "@mantine/hooks";
 
 export default function AddPage() {
+  useDocumentTitle("Add");
+
   const [active, setActive] = useState(0);
   const nextStep = () => setActive((current) => (current < 3 ? current + 1 : current));
   const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
