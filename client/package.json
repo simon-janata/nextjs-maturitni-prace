@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@mantine/carousel": "^7.3.2",
@@ -20,6 +21,7 @@
     "@mantine/notifications": "^7.3.2",
     "@mantine/spotlight": "^7.3.2",
     "@mantinex/mantine-logo": "^1.0.1",
+    "@prisma/client": "^5.7.1",
     "@tabler/icons-react": "^2.44.0",
     "dayjs": "^1.11.10",
     "embla-carousel-react": "^7.1.0",
@@ -36,6 +38,7 @@
     "postcss": "^8.4.32",
     "postcss-preset-mantine": "^1.12.2",
     "postcss-simple-vars": "^7.0.1",
+    "prisma": "^5.7.1",
     "typescript": "^5"
   }
 }

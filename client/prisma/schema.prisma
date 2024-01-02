@@ -1,0 +1,28 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRES_PRISMA_URL")
+  // directUrl = env("POSTGRES_URL_NON_POOLING")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Year {
+  id      Int     @id @default(autoincrement())
+  classes Class[]
+}
+
+model Class {
+  id       Int       @id @default(autoincrement())
+  year     Year      @relation(fields: [yearId], references: [id])
+  yearId   Int
+  students Student[]
+}
+
+model Student {
+  id      Int    @id @default(autoincrement())
+  class   Class  @relation(fields: [classId], references: [id])
+  classId Int
+  name    String
+}
