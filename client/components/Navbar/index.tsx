@@ -72,7 +72,9 @@ const Navbar = ({ refNavbar }: { refNavbar: React.RefObject<HTMLElement> }) => {
     <Box>
       <header ref={refNavbar} className={classes.header}>
         <Group justify="space-between" h="100%">
-          <MantineLogo size={30} />
+          <Link href="/" className={classes.linkLogo}>
+            <MantineLogo size={30} />
+          </Link>
 
           <Group h="100%" gap={0} visibleFrom="sm">
             <Link href="/" className={classes.link}>

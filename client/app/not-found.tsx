@@ -10,7 +10,7 @@ export default function NotFoundPage() {
     <NotFound
       title="Nothing to see here"
       text="Page you are trying to open does not exist. You may have mistyped the address, or the page has been moved to another URL. If you think this is an error contact support."
-      buttonAddress="/about"
+      buttonAddress="/"
       buttonText="Take me back to home page"
     />
   );

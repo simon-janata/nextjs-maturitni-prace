@@ -1,10 +1,10 @@
 "use client";
 
-import { Breadcrumbs as BC } from "@mantine/core";
+import { Breadcrumbs as BreadcrumbsMantine } from "@mantine/core";
 
 const Breadcrumbs = ({ items }: { items: JSX.Element[] }) => {
   return (
-    <BC aria-disabled>{items}</BC>
+    <BreadcrumbsMantine aria-disabled>{items}</BreadcrumbsMantine>
   );
 }
 

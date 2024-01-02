@@ -13,6 +13,7 @@ const ColorSchemeToggle = () => {
   return (
     <Group justify="center">
       <ActionIcon
+        className={classes.button}
         onClick={() => setColorScheme(computedColorScheme === "light" ? "dark" : "light")}
         variant="default"
         size="xl"

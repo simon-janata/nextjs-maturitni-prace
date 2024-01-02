@@ -11,6 +11,14 @@
   background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-7));
 }
 
+.linkLogo {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  text-decoration: none;
+  color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
+}
+
 .link {
   display: flex;
   align-items: center;
