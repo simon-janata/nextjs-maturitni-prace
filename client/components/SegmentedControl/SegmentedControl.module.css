@@ -1,0 +1,21 @@
+.root {
+  width: 100%;
+  background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6));
+  border: rem(1px) solid light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-4));
+  margin-bottom: rem(32);
+}
+
+.control {
+  &::before {
+    display: none;
+  }
+}
+
+.label {
+  &,
+  &:hover {
+    &[data-active] {
+      color: var(--mantine-color-white);
+    }
+  }
+}
