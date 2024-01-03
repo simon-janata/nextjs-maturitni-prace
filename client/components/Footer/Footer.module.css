@@ -15,6 +15,10 @@
   }
 }
 
+.imgLogo {
+  height: calc(1.75rem * var(--mantine-scale));
+}
+
 .links {
   @media (max-width: $mantine-breakpoint-xs) {
     margin-top: var(--mantine-spacing-md);

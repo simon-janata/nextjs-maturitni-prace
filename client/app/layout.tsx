@@ -42,8 +42,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <head>
         <ColorSchemeScript defaultColorScheme="auto" />
-        <link rel="shortcut icon" href="/favicon.svg" type="image/x-icon" />
-        <meta name="description" content="I am using Mantine with Next.js!" />
+        <link rel="shortcut icon" href="/pslib-logo-icon.svg" type="image/x-icon" />
+        <meta name="description" content="Next.js app" />
       </head>
       <body>
         <MantineProvider theme={theme} defaultColorScheme="auto">

@@ -11,9 +11,8 @@ const Welcome = () => {
         Welcome to{" "}
         <Text
           inherit
-          variant="gradient"
           component="span"
-          gradient={{ from: "pink", to: "yellow" }}
+          c="#4154fa"
         >
           Mantine
         </Text>

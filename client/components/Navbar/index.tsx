@@ -1,8 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { HoverCard, Group, Button, UnstyledButton, Text, SimpleGrid, ThemeIcon, Anchor, Divider, Center, Box, Burger, Drawer, Collapse, ScrollArea, rem, useMantineTheme } from "@mantine/core";
-import { MantineLogo } from "@mantinex/mantine-logo";
+import { HoverCard, Group, Button, UnstyledButton, Text, SimpleGrid, ThemeIcon, Anchor, Divider, Center, Box, Burger, Drawer, Collapse, ScrollArea, rem, Image, useMantineTheme } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconNotification, IconCode, IconBook, IconChartPie3, IconFingerprint, IconCoin, IconChevronDown } from "@tabler/icons-react";
 import LanguagePicker from "../LanguagePicker";
@@ -73,7 +72,8 @@ const Navbar = ({ refNavbar }: { refNavbar: React.RefObject<HTMLElement> }) => {
       <header ref={refNavbar} className={classes.header}>
         <Group justify="space-between" h="100%">
           <Link href="/" className={classes.linkLogo}>
-            <MantineLogo size={30} />
+            <Image src="/pslib-logo-dark.svg" className={classes.imgLogo} darkHidden />
+            <Image src="/pslib-logo-light.svg" className={classes.imgLogo} lightHidden />
           </Link>
 
           <Group h="100%" gap={0} visibleFrom="sm">

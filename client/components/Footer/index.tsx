@@ -1,16 +1,19 @@
 "use client";
 
 import Link from "next/link";
-import { Container, Group, ActionIcon, rem } from "@mantine/core";
+import { Container, Group, ActionIcon, rem, Image } from "@mantine/core";
 import { IconBrandFacebook, IconBrandYoutube, IconBrandInstagram } from "@tabler/icons-react";
-import { MantineLogo } from "@mantinex/mantine-logo";
 import classes from "./Footer.module.css";
 
 const Footer = ({ refFooter }: { refFooter: React.RefObject<HTMLElement> }) => {
   return (
     <footer ref={refFooter} className={classes.footer}>
       <Container className={classes.inner}>
-        <MantineLogo size={28} />
+        <Link href="/" className={classes.linkLogo}>
+          <Image src="/pslib-logo-dark.svg" className={classes.imgLogo} darkHidden />
+          <Image src="/pslib-logo-light.svg" className={classes.imgLogo} lightHidden />
+        </Link>
+
         <Group gap={0} className={classes.links} justify="flex-end" wrap="nowrap">
           <ActionIcon component={Link} href="https://www.facebook.com/pslibofficial/" rel="noopener noreferrer" target="_blank" size="lg" color="gray" variant="subtle">
             <IconBrandFacebook style={{ width: rem(20), height: rem(20) }} stroke={1.5} />

@@ -19,6 +19,10 @@
   color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
 }
 
+.imgLogo {
+  height: calc(1.875rem * var(--mantine-scale));
+}
+
 .link {
   display: flex;
   align-items: center;

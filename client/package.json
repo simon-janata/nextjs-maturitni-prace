@@ -20,7 +20,6 @@
     "@mantine/modals": "^7.3.2",
     "@mantine/notifications": "^7.3.2",
     "@mantine/spotlight": "^7.3.2",
-    "@mantinex/mantine-logo": "^1.0.1",
     "@prisma/client": "^5.7.1",
     "@tabler/icons-react": "^2.44.0",
     "dayjs": "^1.11.10",
