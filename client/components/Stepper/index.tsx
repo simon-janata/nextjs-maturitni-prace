@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { IconCircleCheck, IconFolder, IconFileSpreadsheet, IconPhoto } from "@tabler/icons-react";
-import { Stepper as StepperMantine, rem, Button, Group, Title, Text, Select, TextInput } from "@mantine/core";
+import { Stepper as StepperMantine, rem, Button, Group, Title, Text, Select, TextInput, ColorInput } from "@mantine/core";
 import { YearPickerInput } from "@mantine/dates";
 import { MIME_TYPES } from "@mantine/dropzone";
 import SegmentedControl from "../SegmentedControl";
@@ -33,7 +33,7 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
   const { setActive, setSchoolYearSelection, setClassSelection, setSchoolYear, setClassName } = stateAndHandlers;
   const { nextStep, prevStep } = stateAndHandlers;
 
-  const mimeTypesExcel = [MIME_TYPES.xlsx, MIME_TYPES.xls];
+  const mimeTypesExcel = [MIME_TYPES.xlsx, MIME_TYPES.xls, MIME_TYPES.csv];
   const mimeTypesPhotos = [MIME_TYPES.png, MIME_TYPES.jpeg, MIME_TYPES.webp];
 
   return (
@@ -102,13 +102,24 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
                 required
               />
             ) : (
-              <TextInput
-                label="Pick class name"
-                placeholder="Enter class name"
-                value={className}
-                onChange={(event) => setClassName(event.currentTarget.value)}
-                required
-              />
+              <>
+                <TextInput
+                  mb={rem(16)}
+                  label="Pick class name"
+                  placeholder="Enter class name"
+                  value={className}
+                  onChange={(event) => setClassName(event.currentTarget.value)}
+                  required
+                />
+                <ColorInput
+                  label="Pick folder colour"
+                  format="hex"
+                  swatches={["#4154fa", "#429fe3", "#e34242", "#3cab68", "#e3a342", "#9c42e3", "#436a68"]}
+                  defaultValue="#f8d775"
+                  disallowInput
+                  required
+                />
+              </>
             )
           }
         </StepperMantine.Step>
@@ -121,7 +132,9 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
           <Dropzone
             acceptedMimeTypes={mimeTypesExcel}
             maxSize={30}
-            idle="Upload Excel file of students" typesString={[".xlsx", ".xls"]}
+            multiple={false}
+            idle="Upload Excel file of students"
+            typesString={[".xlsx", ".xls"]}
           />
         </StepperMantine.Step>
 
@@ -133,6 +146,7 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
           <Dropzone
             acceptedMimeTypes={mimeTypesPhotos}
             maxSize={30}
+            multiple={true}
             idle="Upload photos of students"
             typesString={[".png", ".jpeg", ".webp"]}
           />

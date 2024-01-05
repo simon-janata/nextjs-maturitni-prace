@@ -21,7 +21,7 @@ const ColorSchemeToggle = () => {
         aria-label="Toggle color scheme"
       >
         <IconSun className={cx(classes.icon, classes.light)} stroke={1.5} color={theme.colors.yellow[4]} />
-        <IconMoon className={cx(classes.icon, classes.dark)} stroke={1.5} color={theme.colors.blue[6]} />
+        <IconMoon className={cx(classes.icon, classes.dark)} stroke={1.5} color={theme.colors.pslib[6]} />
       </ActionIcon>
     </Group>
   );

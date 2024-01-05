@@ -1,18 +1,20 @@
 "use client";
 
 import Link from "next/link";
-import { Title, Text, Anchor } from "@mantine/core";
+import { Title, Text, Anchor, useMantineTheme } from "@mantine/core";
 import classes from "./Welcome.module.css";
 
 const Welcome = () => {
+  const theme = useMantineTheme();
+
   return (
     <>
-      <Title className={classes.title} ta="center" mt={100}>
+      <Title className={classes.title} ta="center" mt={60}>
         Welcome to{" "}
         <Text
           inherit
           component="span"
-          c="#4154fa"
+          c={theme.colors.pslib[6]}
         >
           Mantine
         </Text>

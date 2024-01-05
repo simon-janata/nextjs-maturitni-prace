@@ -52,7 +52,7 @@ const Navbar = ({ refNavbar }: { refNavbar: React.RefObject<HTMLElement> }) => {
         <ThemeIcon size={34} variant="default" radius="md">
           <item.icon
             style={{ width: rem(22), height: rem(22) }}
-            color={theme.colors.blue[6]}
+            color={theme.colors.pslib[6]}
           />
         </ThemeIcon>
         <div>
@@ -95,7 +95,7 @@ const Navbar = ({ refNavbar }: { refNavbar: React.RefObject<HTMLElement> }) => {
                     </Box>
                     <IconChevronDown
                       style={{ width: rem(16), height: rem(16) }}
-                      color={theme.colors.blue[6]}
+                      color={theme.colors.pslib[6]}
                     />
                   </Center>
                 </Link>
@@ -104,7 +104,7 @@ const Navbar = ({ refNavbar }: { refNavbar: React.RefObject<HTMLElement> }) => {
               <HoverCard.Dropdown style={{ overflow: "hidden" }}>
                 <Group justify="space-between" px="md">
                   <Text fw={500}>Features</Text>
-                  <Anchor component={Link} href="#" fz="xs">
+                  <Anchor component={Link} href="#" fz="xs" c="inherit">
                     View all
                   </Anchor>
                 </Group>
@@ -139,8 +139,6 @@ const Navbar = ({ refNavbar }: { refNavbar: React.RefObject<HTMLElement> }) => {
           </Group>
 
           <Group visibleFrom="sm">
-            {/* <Button variant="default">Log in</Button>
-            <Button>Sign up</Button> */}
             <LanguagePicker />
             <ColorSchemeToggle />
           </Group>
@@ -175,7 +173,7 @@ const Navbar = ({ refNavbar }: { refNavbar: React.RefObject<HTMLElement> }) => {
               </Box>
               <IconChevronDown
                 style={{ width: rem(16), height: rem(16) }}
-                color={theme.colors.blue[6]}
+                color={theme.colors.pslib[6]}
               />
             </Center>
           </UnstyledButton>

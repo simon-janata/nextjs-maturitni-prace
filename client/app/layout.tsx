@@ -10,6 +10,7 @@ import { theme } from "../theme";
 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import ScrollToTopButton from "@/components/ScrollToTopButton";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const refNavbar: React.RefObject<HTMLElement> = useRef(null);
@@ -51,6 +52,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <main ref={refMain}>
             <Container>
               {children}
+              <ScrollToTopButton />
             </Container>
           </main>
           <Footer refFooter={refFooter} />

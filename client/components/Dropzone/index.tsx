@@ -6,7 +6,7 @@ import { Dropzone as DropzoneMantine } from "@mantine/dropzone";
 import { IconCloudUpload, IconX, IconDownload } from "@tabler/icons-react";
 import classes from "./Dropzone.module.css";
 
-const Dropzone = (props: { acceptedMimeTypes: string[], maxSize: number, idle: string, typesString: string[] }) => {
+const Dropzone = (props: { acceptedMimeTypes: string[], maxSize: number, multiple: boolean, idle: string, typesString: string[] }) => {
   const theme = useMantineTheme();
   const openRef = useRef<() => void>(null);
 
@@ -19,6 +19,7 @@ const Dropzone = (props: { acceptedMimeTypes: string[], maxSize: number, idle: s
         radius="md"
         accept={props.acceptedMimeTypes}
         maxSize={props.maxSize * 1024 ** 2}
+        multiple={props.multiple}
       >
         <div style={{ pointerEvents: "none" }}>
           <Group justify="center">
