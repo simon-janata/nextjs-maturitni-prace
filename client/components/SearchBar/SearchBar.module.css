@@ -1,0 +1,18 @@
+.searchButton {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(2.75rem * var(--mantine-scale));
+  width: calc(2.75rem * var(--mantine-scale));
+  background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6));
+  border: rem(1px) solid light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-5));
+  border-radius: calc(0.5rem * var(--mantine-scale));
+
+  @mixin hover {
+    background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-5));
+  }
+}
+
+.searchButton:focus-visible {
+  outline: none;
+}

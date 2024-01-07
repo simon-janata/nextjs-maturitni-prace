@@ -4,6 +4,7 @@ import Link from "next/link";
 import { HoverCard, Group, Button, UnstyledButton, Text, SimpleGrid, ThemeIcon, Anchor, Divider, Center, Box, Burger, Drawer, Collapse, ScrollArea, rem, Image, useMantineTheme } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconNotification, IconCode, IconBook, IconChartPie3, IconFingerprint, IconCoin, IconChevronDown } from "@tabler/icons-react";
+import SearchBar from "../SearchBar";
 import LanguagePicker from "../LanguagePicker";
 import ColorSchemeToggle from "../ColorSchemeToggle";
 import classes from "./Navbar.module.css";
@@ -138,7 +139,8 @@ const Navbar = ({ refNavbar }: { refNavbar: React.RefObject<HTMLElement> }) => {
             </Link>
           </Group>
 
-          <Group visibleFrom="sm">
+          <Group visibleFrom="sm" gap="sm">
+            <SearchBar />
             <LanguagePicker />
             <ColorSchemeToggle />
           </Group>

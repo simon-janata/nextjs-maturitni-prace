@@ -5,6 +5,7 @@ import { Anchor } from "@mantine/core";
 import { useDocumentTitle } from "@mantine/hooks";
 import Welcome from "@/components/Welcome";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import MainBanner from "@/components/MainBanner";
 
 export default function MainPage() {
   useDocumentTitle("Main");
@@ -22,7 +23,8 @@ export default function MainPage() {
   return (
     <>
       {/* <Breadcrumbs items={breadcrumbsItems} /> */}
-      <Welcome />
+      <MainBanner />
+      {/* <Welcome /> */}
     </>
   );
 }

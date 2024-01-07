@@ -4,6 +4,7 @@ import React, { useEffect, useRef } from "react";
 import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
 import "@mantine/dropzone/styles.css";
+import "@mantine/spotlight/styles.css";
 import "./globals.css";
 import { MantineProvider, ColorSchemeScript, Container } from "@mantine/core";
 import { theme } from "../theme";

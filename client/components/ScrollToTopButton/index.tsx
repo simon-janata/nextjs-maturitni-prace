@@ -1,18 +1,19 @@
 "use client";
 
 import { IconArrowUp } from "@tabler/icons-react";
-import { useWindowScroll } from "@mantine/hooks";
+import { useWindowScroll, useViewportSize } from "@mantine/hooks";
 import { Affix, Button, Text, Transition, rem } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import classes from "./ScrollToTopButton.module.css";
 
 const ScrollToTopButton = () => {
   const [scroll, scrollTo] = useWindowScroll();
+  const { height } = useViewportSize();
   const isMobile = useMediaQuery("(max-width: 48em)");
 
   return (
     <Affix position={{ bottom: 20, right: 20 }}>
-      <Transition transition="slide-up" mounted={scroll.y > (window.innerHeight / 2)}>
+      <Transition transition="slide-up" mounted={scroll.y > (height / 2)}>
         {(transitionStyles) => (
             isMobile === false ? (
               <Button
