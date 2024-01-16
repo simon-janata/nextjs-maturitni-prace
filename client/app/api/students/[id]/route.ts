@@ -9,6 +9,7 @@ export async function GET(req: Request, res: Response) {
       where: { id: id },
       include: { class: true}
     });
+
     return new Response(JSON.stringify(year), {
       status: 200,
       headers: {
@@ -57,7 +58,6 @@ export async function PATCH(req: Request, res: Response) {
         firstname: body.firstname,
         middlename: body.middlename,
         lastname: body.lastname,
-        // classId: body.classId,
         class: {
           connect: {
             id: body.classId

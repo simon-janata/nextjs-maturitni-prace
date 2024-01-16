@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { Title, Text, Button, Container } from "@mantine/core";
+
+import { Button, Container, Text, Title } from "@mantine/core";
+
 import Dots from "./Dots";
 import classes from "./MainBanner.module.css";
 

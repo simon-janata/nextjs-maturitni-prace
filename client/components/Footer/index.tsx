@@ -1,8 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { Container, Group, ActionIcon, rem, Image } from "@mantine/core";
-import { IconBrandFacebook, IconBrandYoutube, IconBrandInstagram } from "@tabler/icons-react";
+
+import { ActionIcon, Container, Group, Image, rem } from "@mantine/core";
+import { IconBrandFacebook, IconBrandInstagram, IconBrandYoutube } from "@tabler/icons-react";
+
 import classes from "./Footer.module.css";
 
 const Footer = ({ refFooter }: { refFooter: React.RefObject<HTMLElement> }) => {

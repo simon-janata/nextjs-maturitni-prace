@@ -1,9 +1,9 @@
 "use client";
 
+import { Affix, Button, rem, Transition } from "@mantine/core";
+import { useMediaQuery, useViewportSize, useWindowScroll } from "@mantine/hooks";
 import { IconArrowUp } from "@tabler/icons-react";
-import { useWindowScroll, useViewportSize } from "@mantine/hooks";
-import { Affix, Button, Text, Transition, rem } from "@mantine/core";
-import { useMediaQuery } from "@mantine/hooks";
+
 import classes from "./ScrollToTopButton.module.css";
 
 const ScrollToTopButton = () => {

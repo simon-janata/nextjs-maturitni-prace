@@ -1,11 +1,8 @@
 "use client";
 
-import Link from "next/link";
-import { Anchor } from "@mantine/core";
-import { useDocumentTitle } from "@mantine/hooks";
-import Welcome from "@/components/Welcome";
-import Breadcrumbs from "@/components/Breadcrumbs";
+
 import MainBanner from "@/components/MainBanner";
+import { useDocumentTitle } from "@mantine/hooks";
 
 export default function MainPage() {
   useDocumentTitle("Main");
@@ -24,7 +21,6 @@ export default function MainPage() {
     <>
       {/* <Breadcrumbs items={breadcrumbsItems} /> */}
       <MainBanner />
-      {/* <Welcome /> */}
     </>
   );
 }

@@ -1,8 +1,10 @@
 "use client";
 
+import Papa from "papaparse";
 import { useState } from "react";
-import { useDocumentTitle } from "@mantine/hooks";
+
 import Stepper from "@/components/Stepper";
+import { useDocumentTitle } from "@mantine/hooks";
 
 export default function AddPage() {
   useDocumentTitle("Add");
@@ -17,6 +19,15 @@ export default function AddPage() {
   const [schoolYear, setSchoolYear] = useState<Date | null>(new Date());
   const [className, setClassName] = useState<string>("");
 
+  const handleCSVUpload = (file: File) => {
+    Papa.parse(file, {
+      delimiter: ";",
+      complete: (results) => {
+        console.log(results.data[0]);
+      },
+    });
+  }
+
   const stateAndHandlers = {
     active: active,
     setActive: setActive,
@@ -30,6 +41,7 @@ export default function AddPage() {
     setClassName: setClassName,
     nextStep: nextStep,
     prevStep: prevStep,
+    handleCSVUpload: handleCSVUpload,
   };
 
   return (

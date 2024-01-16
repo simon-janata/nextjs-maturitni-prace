@@ -1,8 +1,12 @@
 "use client";
 
 import cx from "clsx";
-import { ActionIcon, useMantineTheme, useMantineColorScheme, useComputedColorScheme, Group } from "@mantine/core";
-import { IconSun, IconMoon } from "@tabler/icons-react";
+
+import {
+  ActionIcon, Group, useComputedColorScheme, useMantineColorScheme, useMantineTheme
+} from "@mantine/core";
+import { IconMoon, IconSun } from "@tabler/icons-react";
+
 import classes from "./ColorSchemeToggle.module.css";
 
 const ColorSchemeToggle = () => {

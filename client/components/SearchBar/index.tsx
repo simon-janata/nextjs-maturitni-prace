@@ -1,56 +1,44 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { UnstyledButton, Group, rem } from "@mantine/core";
-import { Spotlight, SpotlightActionData, spotlight } from "@mantine/spotlight";
-import { IconSearch, IconHome, IconDashboard, IconFileText } from "@tabler/icons-react";
-import classes from "./SearchBar.module.css";
+import { useRef } from "react";
 
-const SearchBar = () => {
-  const router = useRouter();
+import { ActionIcon, rem, TextInput, useMantineTheme } from "@mantine/core";
+import { IconSearch, IconX } from "@tabler/icons-react";
 
-  const actions: SpotlightActionData[] = [
-    {
-      id: "home",
-      label: "Home",
-      description: "Get to home page",
-      onClick: () => router.push("/"),
-      leftSection: <IconHome style={{ width: rem(24), height: rem(24) }} stroke={1.5} />,
-    },
-    {
-      id: "dashboard",
-      label: "Dashboard",
-      description: "Get full information about current system status",
-      onClick: () => console.log("Dashboard"),
-      leftSection: <IconDashboard style={{ width: rem(24), height: rem(24) }} stroke={1.5} />,
-    },
-    {
-      id: "documentation",
-      label: "Documentation",
-      description: "Visit documentation to lean more about all features",
-      onClick: () => console.log("Documentation"),
-      leftSection: <IconFileText style={{ width: rem(24), height: rem(24) }} stroke={1.5} />,
-    },
-  ];
+const SearchBar = ({ placeholder, handleSearch }: { placeholder: string, handleSearch: (query: string) => void }) => {
+  const theme = useMantineTheme();
+  const refInput = useRef<HTMLInputElement>(null);
 
   return (
-    <>
-      <UnstyledButton className={classes.searchButton} onClick={spotlight.open}>
-        <Group>
-          <IconSearch style={{ width: rem(22), height: rem(22) }} stroke={1.5} />
-        </Group>
-      </UnstyledButton>
-      <Spotlight
-        radius="md"
-        actions={actions}
-        nothingFound="Nothing found..."
-        highlightQuery
-        searchProps={{
-          leftSection: <IconSearch style={{ width: rem(20), height: rem(20) }} stroke={1.5} />,
-          placeholder: "Search...",
-        }}
-      />
-    </>
+    <TextInput
+      ref={refInput}
+      radius="xl"
+      size="md"
+      mt="xl"
+      mb="xl"
+      placeholder={placeholder}
+      rightSectionWidth={42}
+      leftSection={<IconSearch style={{ width: rem(18), height: rem(18) }} stroke={1.5} />}
+      onChange={(e) => {
+        handleSearch(e.currentTarget.value);
+      }}
+      rightSection={
+        <ActionIcon
+          size={32}
+          radius="xl"
+          color={theme.primaryColor}
+          variant="filled"
+          onClick={() => {
+            if (refInput.current) {
+              refInput.current.value = "";
+              handleSearch(refInput.current?.value);
+            }
+          }}
+        >
+          <IconX style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
+        </ActionIcon>
+      }
+    />
   );
 }
 

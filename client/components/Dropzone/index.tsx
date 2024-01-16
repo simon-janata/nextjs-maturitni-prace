@@ -1,12 +1,23 @@
 "use client";
 
 import { useRef } from "react";
-import { Center, Text, Group, Button, rem, useMantineTheme } from "@mantine/core";
+
+import { Button, Center, Group, rem, Text, useMantineTheme } from "@mantine/core";
 import { Dropzone as DropzoneMantine } from "@mantine/dropzone";
-import { IconCloudUpload, IconX, IconDownload } from "@tabler/icons-react";
+import { IconCloudUpload, IconDownload, IconX } from "@tabler/icons-react";
+
 import classes from "./Dropzone.module.css";
 
-const Dropzone = (props: { acceptedMimeTypes: string[], maxSize: number, multiple: boolean, idle: string, typesString: string[] }) => {
+interface DropzoneProps {
+  acceptedMimeTypes: string[];
+  maxSize: number;
+  multiple: boolean;
+  idle: string;
+  typesString: string[];
+  handleUpload: (file: File) => void;
+}
+
+const Dropzone: React.FC<DropzoneProps> = ({ acceptedMimeTypes, maxSize, multiple, idle, typesString, handleUpload }) => {
   const theme = useMantineTheme();
   const openRef = useRef<() => void>(null);
 
@@ -14,12 +25,12 @@ const Dropzone = (props: { acceptedMimeTypes: string[], maxSize: number, multipl
     <Center className={classes.wrapper}>
       <DropzoneMantine
         openRef={openRef}
-        onDrop={() => {}}
+        onDrop={(e) => handleUpload(e[0])}
         className={classes.dropzone}
         radius="md"
-        accept={props.acceptedMimeTypes}
-        maxSize={props.maxSize * 1024 ** 2}
-        multiple={props.multiple}
+        accept={acceptedMimeTypes}
+        maxSize={maxSize * 1024 ** 2}
+        multiple={multiple}
       >
         <div style={{ pointerEvents: "none" }}>
           <Group justify="center">
@@ -47,31 +58,31 @@ const Dropzone = (props: { acceptedMimeTypes: string[], maxSize: number, multipl
             <DropzoneMantine.Reject>
               only{" "}
               {
-                props.typesString.map((type, i) => (
+                typesString.map((type, i) => (
                   <span key={type}>
-                    {i > 0 && i < props.typesString.length - 1 && ", "}
-                    {i === props.typesString.length - 1 && " or "}
+                    {i > 0 && i < typesString.length - 1 && ", "}
+                    {i === typesString.length - 1 && " or "}
                     {type}
                   </span>
                 ))
               }
               {" "}file less than 30mb
             </DropzoneMantine.Reject>
-            <DropzoneMantine.Idle>{props.idle}</DropzoneMantine.Idle>
+            <DropzoneMantine.Idle>{idle}</DropzoneMantine.Idle>
           </Text>
           <Text ta="center" fz="sm" mt="xs" c="dimmed">
             Drag&apos;n&apos;drop files here to upload. We can accept only{" "}
             {
-              props.typesString.map((type, i) => (
+              typesString.map((type, i) => (
                 <span key={type}>
-                  {i > 0 && i < props.typesString.length - 1 && ", "}
-                  {i === props.typesString.length - 1 && " or "}
+                  {i > 0 && i < typesString.length - 1 && ", "}
+                  {i === typesString.length - 1 && " or "}
                   <>{type}</>
                 </span>
               ))
             }
             {" "}files that
-            are less than {props.maxSize}mb in size.
+            are less than {maxSize}mb in size.
           </Text>
         </div>
       </DropzoneMantine>

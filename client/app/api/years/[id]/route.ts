@@ -9,6 +9,7 @@ export async function GET(req: Request, res: Response) {
       where: { id: id },
       include: { classes: true }
     });
+    
     return new Response(JSON.stringify(year), {
       status: 200,
       headers: {

@@ -1,12 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { IconCircleCheck, IconFolder, IconFileSpreadsheet, IconPhoto } from "@tabler/icons-react";
-import { Stepper as StepperMantine, rem, Button, Group, Title, Text, Select, TextInput, ColorInput } from "@mantine/core";
+
+import {
+  Button, ColorInput, Group, rem, Select, Stepper as StepperMantine, Text, TextInput, Title
+} from "@mantine/core";
 import { YearPickerInput } from "@mantine/dates";
 import { MIME_TYPES } from "@mantine/dropzone";
-import SegmentedControl from "../SegmentedControl";
+import { IconCircleCheck, IconFileSpreadsheet, IconFolder, IconPhoto } from "@tabler/icons-react";
+
 import Dropzone from "../Dropzone";
+import SegmentedControl from "../SegmentedControl";
 import classes from "./Stepper.module.css";
 
 interface StateAndHandlers {
@@ -22,6 +26,7 @@ interface StateAndHandlers {
   setClassName: React.Dispatch<React.SetStateAction<string>>;
   nextStep: () => void;
   prevStep: () => void;
+  handleCSVUpload: (file: File) => void;
 }
 
 interface StepperProps {
@@ -33,7 +38,7 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
   const { setActive, setSchoolYearSelection, setClassSelection, setSchoolYear, setClassName } = stateAndHandlers;
   const { nextStep, prevStep } = stateAndHandlers;
 
-  const mimeTypesExcel = [MIME_TYPES.xlsx, MIME_TYPES.xls, MIME_TYPES.csv];
+  const mimeTypesCSV = [MIME_TYPES.csv];
   const mimeTypesPhotos = [MIME_TYPES.png, MIME_TYPES.jpeg, MIME_TYPES.webp];
 
   return (
@@ -84,7 +89,71 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
           label="Second step"
           description="Select a class"
         >
-          <SegmentedControl
+          {
+            schoolYearSelection === "existing" ? (
+              <>
+                <SegmentedControl
+                  data={[
+                    { value: "existing", label: "Select from an existing list" },
+                    { value: "new", label: "Create a new class" }
+                  ]}
+                  value={classSelection}
+                  onChange={setClassSelection}
+                />
+          
+                {
+                  classSelection === "existing" ? (
+                    <Select
+                      label="Pick class"
+                      placeholder="e.g. P4"
+                      data={["E1B", "E4C", "L4", "S2A", "S3B", "P4"]}
+                      clearable
+                      required
+                    />
+                  ) : (
+                    <>
+                      <TextInput
+                        mb={rem(16)}
+                        label="Enter class name"
+                        placeholder="Enter class name"
+                        value={className}
+                        onChange={(event) => setClassName(event.currentTarget.value)}
+                        required
+                      />
+                      <ColorInput
+                        label="Pick folder colour"
+                        format="hex"
+                        swatches={["#4154fa", "#429fe3", "#e34242", "#3cab68", "#e3a342", "#9c42e3", "#436a68"]}
+                        defaultValue="#f8d775"
+                        disallowInput
+                        required
+                      />
+                    </>
+                  )
+                }
+              </>
+            ) : (
+              <>
+                <TextInput
+                  mb={rem(16)}
+                  label="Enter class name"
+                  placeholder="Enter class name"
+                  value={className}
+                  onChange={(event) => setClassName(event.currentTarget.value)}
+                  required
+                />
+                <ColorInput
+                  label="Pick folder colour"
+                  format="hex"
+                  swatches={["#4154fa", "#429fe3", "#e34242", "#3cab68", "#e3a342", "#9c42e3", "#436a68"]}
+                  defaultValue="#f8d775"
+                  disallowInput
+                  required
+                />
+              </>
+            )
+          }
+          {/* <SegmentedControl
             data={[
               { value: "existing", label: "Select from an existing list" },
               { value: "new", label: "Create a new class" }
@@ -105,7 +174,7 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
               <>
                 <TextInput
                   mb={rem(16)}
-                  label="Pick class name"
+                  label="Enter class name"
                   placeholder="Enter class name"
                   value={className}
                   onChange={(event) => setClassName(event.currentTarget.value)}
@@ -121,20 +190,21 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
                 />
               </>
             )
-          }
+          } */}
         </StepperMantine.Step>
 
         <StepperMantine.Step
           icon={<IconFileSpreadsheet style={{ width: rem(18), height: rem(18) }} />}
           label="Third step"
-          description="Upload an Excel file"
+          description="Upload an CSV file"
         >
           <Dropzone
-            acceptedMimeTypes={mimeTypesExcel}
+            acceptedMimeTypes={mimeTypesCSV}
             maxSize={30}
             multiple={false}
-            idle="Upload Excel file of students"
-            typesString={[".xlsx", ".xls"]}
+            idle="Upload CSV file of students"
+            typesString={[".csv"]}
+            handleUpload={stateAndHandlers.handleCSVUpload}
           />
         </StepperMantine.Step>
 
@@ -149,6 +219,7 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
             multiple={true}
             idle="Upload photos of students"
             typesString={[".png", ".jpeg", ".webp"]}
+            handleUpload={stateAndHandlers.handleCSVUpload} // TODO: handle photo upload
           />
         </StepperMantine.Step>
 

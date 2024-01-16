@@ -55,7 +55,7 @@ export async function POST(req: Request, res: Response) {
     const newStudent = await prisma.student.create({
       data: {
         firstname: body.firstname,
-        middlename: body.middlename,
+        middlename: body.middlename === undefined ? "" : body.middlename,
         lastname: body.lastname,
         class: {
           connect: {

@@ -1,16 +1,18 @@
 "use client";
 
 import { useState } from "react";
-import { UnstyledButton, Menu, Image, Group } from "@mantine/core";
-import { IconChevronDown } from "@tabler/icons-react";
+
 import CzechFlag from "@/assets/cz-circle.png";
-import EnglishFlag from "@/assets/uk-circle.png";
 import GermanFlag from "@/assets/de-circle.png";
+import EnglishFlag from "@/assets/uk-circle.png";
+import { Group, Image, Menu, UnstyledButton } from "@mantine/core";
+import { IconChevronDown } from "@tabler/icons-react";
+
 import classes from "./LanguagePicker.module.css";
 
 const data = [
   { value: "cs", label: "Čeština", image: CzechFlag.src },
-  { value: "en-GB", label: "English", image: EnglishFlag.src },
+  { value: "en", label: "English", image: EnglishFlag.src },
   { value: "de", label: "Deutsch", image: GermanFlag.src },
 ];
 

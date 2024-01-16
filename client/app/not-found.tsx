@@ -1,7 +1,7 @@
 "use client";
 
-import { useDocumentTitle } from "@mantine/hooks";
 import NotFound from "@/components/NotFound";
+import { useDocumentTitle } from "@mantine/hooks";
 
 export default function NotFoundPage() {
   useDocumentTitle("Not found");

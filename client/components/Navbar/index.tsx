@@ -1,44 +1,42 @@
 "use client";
 
 import Link from "next/link";
-import { HoverCard, Group, Button, UnstyledButton, Text, SimpleGrid, ThemeIcon, Anchor, Divider, Center, Box, Burger, Drawer, Collapse, ScrollArea, rem, Image, useMantineTheme } from "@mantine/core";
+
+import {
+  Box, Burger, Button, Center, Collapse, Divider, Drawer, Group, HoverCard, Image, rem,
+  ScrollArea, SimpleGrid, Text, ThemeIcon, UnstyledButton, useMantineTheme
+} from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { IconNotification, IconCode, IconBook, IconChartPie3, IconFingerprint, IconCoin, IconChevronDown } from "@tabler/icons-react";
-import SearchBar from "../SearchBar";
-import LanguagePicker from "../LanguagePicker";
+import {
+  IconBackpack,
+  IconCalendar,
+  IconChevronDown,
+  IconUsers
+} from "@tabler/icons-react";
+
 import ColorSchemeToggle from "../ColorSchemeToggle";
+import LanguagePicker from "../LanguagePicker";
+import NavbarSearch from "../NavbarSearch";
 import classes from "./Navbar.module.css";
 
 const mockdata = [
   {
-    icon: IconCode,
-    title: "Open source",
-    description: "This Pokémon’s cry is very loud and distracting",
+    icon: IconCalendar,
+    link: "/years",
+    title: "School Years",
+    description: "Navigate through the high school academic timeline, view all academic years and their associated classes.",
   },
   {
-    icon: IconCoin,
-    title: "Free for everyone",
-    description: "The fluid of Smeargle’s tail secretions changes",
+    icon: IconBackpack,
+    link: "/classes",
+    title: "Classes",
+    description: "Browse through all the classes, view students, and access class-specific resources.",
   },
   {
-    icon: IconBook,
-    title: "Documentation",
-    description: "Yanma is capable of seeing 360 degrees without",
-  },
-  {
-    icon: IconFingerprint,
-    title: "Security",
-    description: "The shell’s rounded shape and the grooves on its.",
-  },
-  {
-    icon: IconChartPie3,
-    title: "Analytics",
-    description: "This Pokémon uses its flying ability to quickly chase",
-  },
-  {
-    icon: IconNotification,
-    title: "Notifications",
-    description: "Combusken battles with the intensely hot flames it spews",
+    icon: IconUsers,
+    link: "/students",
+    title: "Students",
+    description: "Explore the student directory, view profiles, and find information about them.",
   },
 ];
 
@@ -48,7 +46,7 @@ const Navbar = ({ refNavbar }: { refNavbar: React.RefObject<HTMLElement> }) => {
   const theme = useMantineTheme();
 
   const links = mockdata.map((item) => (
-    <UnstyledButton className={classes.subLink} key={item.title}>
+    <UnstyledButton component={Link} href={`${item.link}`} className={classes.subLink} key={item.title}>
       <Group wrap="nowrap" align="flex-start">
         <ThemeIcon size={34} variant="default" radius="md">
           <item.icon
@@ -81,6 +79,9 @@ const Navbar = ({ refNavbar }: { refNavbar: React.RefObject<HTMLElement> }) => {
             <Link href="/" className={classes.link}>
               Home
             </Link>
+            <Link href="/add" className={classes.link}>
+              Add
+            </Link>
             <HoverCard
               width={600}
               position="bottom"
@@ -89,10 +90,10 @@ const Navbar = ({ refNavbar }: { refNavbar: React.RefObject<HTMLElement> }) => {
               withinPortal
             >
               <HoverCard.Target>
-                <Link href="#" className={classes.link}>
+                <Link href="/years" className={classes.link}>
                   <Center inline>
                     <Box component="span" mr={5}>
-                      Features
+                      Explore
                     </Box>
                     <IconChevronDown
                       style={{ width: rem(16), height: rem(16) }}
@@ -103,15 +104,6 @@ const Navbar = ({ refNavbar }: { refNavbar: React.RefObject<HTMLElement> }) => {
               </HoverCard.Target>
 
               <HoverCard.Dropdown style={{ overflow: "hidden" }}>
-                <Group justify="space-between" px="md">
-                  <Text fw={500}>Features</Text>
-                  <Anchor component={Link} href="#" fz="xs" c="inherit">
-                    View all
-                  </Anchor>
-                </Group>
-
-                <Divider my="sm" />
-
                 <SimpleGrid cols={2} spacing={0}>
                   {links}
                 </SimpleGrid>
@@ -120,27 +112,25 @@ const Navbar = ({ refNavbar }: { refNavbar: React.RefObject<HTMLElement> }) => {
                   <Group justify="space-between">
                     <div>
                       <Text fw={500} fz="sm">
-                        Get started
+                        Explore Data
                       </Text>
                       <Text size="xs" c="dimmed">
-                        Their food sources have decreased, and their numbers
+                        Browse through academic years, classes, and student profiles.
                       </Text>
                     </div>
-                    <Button variant="default">Get started</Button>
+                    <Button variant="default">Start Exploring</Button>
                   </Group>
                 </div>
               </HoverCard.Dropdown>
             </HoverCard>
-            <Link href="/add" className={classes.link}>
-              Add
-            </Link>
+            
             <Link href="/about" className={classes.link}>
               About
             </Link>
           </Group>
 
           <Group visibleFrom="sm" gap="sm">
-            <SearchBar />
+            <NavbarSearch />
             <LanguagePicker />
             <ColorSchemeToggle />
           </Group>

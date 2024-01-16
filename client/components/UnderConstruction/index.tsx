@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { Flex, Image, Title, Text, Button } from "@mantine/core";
+
 import underConstruction from "@/assets/under-construction.png";
+import { Button, Flex, Image, Text, Title } from "@mantine/core";
 
 const UnderConstruction = (props: { pageName: string, description: string }) => {
   return (

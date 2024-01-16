@@ -1,9 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { Container, Title, Text, Button, Group } from "@mantine/core";
-import classes from "./NotFound.module.css";
+
 import NotFoundSvg from "@/assets/404.svg";
+import { Button, Container, Group, Text, Title } from "@mantine/core";
+
+import classes from "./NotFound.module.css";
 
 const NotFound = (props: { title: string, text: string, buttonAddress: string, buttonText: string }) => {
   return (

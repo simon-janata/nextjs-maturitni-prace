@@ -5,11 +5,21 @@ export async function GET(req: Request, res: Response) {
   try {
     const url = new URL(req.url);
     const id = url.pathname.split("/").pop();
-    const schoolClass = await prisma.class.findUnique({
+    const classData = await prisma.class.findUnique({
       where: { id: id },
-      include: { year: true, students: true}
+      include: {
+        year: true,
+        students: {
+          orderBy: [
+            { lastname: "asc" },
+            { middlename: "asc" },
+            { firstname: "asc" },
+          ],
+        }
+      },
     });
-    return new Response(JSON.stringify(schoolClass), {
+    
+    return new Response(JSON.stringify(classData), {
       status: 200,
       headers: {
         "content-type": "application/json;charset=UTF-8",

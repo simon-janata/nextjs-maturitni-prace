@@ -12,6 +12,7 @@ export async function GET(req: Request, res: Response) {
         { name: "asc" },
       ],
     });
+    
     return new Response(
       JSON.stringify(classes), {
         status: 200,

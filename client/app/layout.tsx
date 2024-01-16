@@ -1,17 +1,19 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
 import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
 import "@mantine/dropzone/styles.css";
 import "@mantine/spotlight/styles.css";
 import "./globals.css";
-import { MantineProvider, ColorSchemeScript, Container } from "@mantine/core";
-import { theme } from "../theme";
 
-import Navbar from "@/components/Navbar";
+import React, { useEffect, useRef } from "react";
+
 import Footer from "@/components/Footer";
+import Navbar from "@/components/Navbar";
 import ScrollToTopButton from "@/components/ScrollToTopButton";
+import { ColorSchemeScript, Container, MantineProvider } from "@mantine/core";
+
+import { theme } from "../theme";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const refNavbar: React.RefObject<HTMLElement> = useRef(null);

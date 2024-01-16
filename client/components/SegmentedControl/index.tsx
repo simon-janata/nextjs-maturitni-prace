@@ -1,7 +1,13 @@
 "use client";
 
 import { Dispatch, SetStateAction } from "react";
-import { SegmentedControl as SegmentedControlMantine, SegmentedControlItem, useMantineTheme } from "@mantine/core";
+
+import {
+  SegmentedControlItem,
+  SegmentedControl as SegmentedControlMantine,
+  useMantineTheme
+} from "@mantine/core";
+
 import classes from "./SegmentedControl.module.css";
 
 const SegmentedControl = (props: { data: SegmentedControlItem[], value: string, onChange: Dispatch<SetStateAction<string>> }) => {

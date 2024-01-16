@@ -3,7 +3,10 @@ import prisma from "@/lib/prismaHelper";
 // GET all years
 export async function GET(req: Request, res: Response) {
   try {
-    const years = await prisma.year.findMany({ orderBy: { year: "desc" } });
+    const years = await prisma.year.findMany({
+      orderBy: { year: "desc" }
+    });
+    
     return new Response(
       JSON.stringify(years), {
         status: 200,
