@@ -3,68 +3,20 @@
 import Link from "next/link";
 
 import {
-  Box, Burger, Button, Center, Collapse, Divider, Drawer, Group, HoverCard, Image, rem,
-  ScrollArea, SimpleGrid, Text, ThemeIcon, UnstyledButton, useMantineTheme
+  Box, Burger,
+  Divider, Drawer, Group,
+  Image, rem,
+  ScrollArea
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import {
-  IconBackpack,
-  IconCalendar,
-  IconChevronDown,
-  IconUsers
-} from "@tabler/icons-react";
 
 import ColorSchemeToggle from "../ColorSchemeToggle";
 import LanguagePicker from "../LanguagePicker";
 import NavbarSearch from "../NavbarSearch";
 import classes from "./Navbar.module.css";
 
-const mockdata = [
-  {
-    icon: IconCalendar,
-    link: "/years",
-    title: "School Years",
-    description: "Navigate through the high school academic timeline, view all academic years and their associated classes.",
-  },
-  {
-    icon: IconBackpack,
-    link: "/classes",
-    title: "Classes",
-    description: "Browse through all the classes, view students, and access class-specific resources.",
-  },
-  {
-    icon: IconUsers,
-    link: "/students",
-    title: "Students",
-    description: "Explore the student directory, view profiles, and find information about them.",
-  },
-];
-
 const Navbar = ({ refNavbar }: { refNavbar: React.RefObject<HTMLElement> }) => {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
-  const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
-  const theme = useMantineTheme();
-
-  const links = mockdata.map((item) => (
-    <UnstyledButton component={Link} href={`${item.link}`} className={classes.subLink} key={item.title}>
-      <Group wrap="nowrap" align="flex-start">
-        <ThemeIcon size={34} variant="default" radius="md">
-          <item.icon
-            style={{ width: rem(22), height: rem(22) }}
-            color={theme.colors.pslib[6]}
-          />
-        </ThemeIcon>
-        <div>
-          <Text size="sm" fw={500}>
-            {item.title}
-          </Text>
-          <Text size="xs" c="dimmed">
-            {item.description}
-          </Text>
-        </div>
-      </Group>
-    </UnstyledButton>
-  ));
 
   return (
     <Box>
@@ -82,48 +34,9 @@ const Navbar = ({ refNavbar }: { refNavbar: React.RefObject<HTMLElement> }) => {
             <Link href="/add" className={classes.link}>
               Add
             </Link>
-            <HoverCard
-              width={600}
-              position="bottom"
-              radius="md"
-              shadow="md"
-              withinPortal
-            >
-              <HoverCard.Target>
-                <Link href="/years" className={classes.link}>
-                  <Center inline>
-                    <Box component="span" mr={5}>
-                      Explore
-                    </Box>
-                    <IconChevronDown
-                      style={{ width: rem(16), height: rem(16) }}
-                      color={theme.colors.pslib[6]}
-                    />
-                  </Center>
-                </Link>
-              </HoverCard.Target>
-
-              <HoverCard.Dropdown style={{ overflow: "hidden" }}>
-                <SimpleGrid cols={2} spacing={0}>
-                  {links}
-                </SimpleGrid>
-
-                <div className={classes.dropdownFooter}>
-                  <Group justify="space-between">
-                    <div>
-                      <Text fw={500} fz="sm">
-                        Explore Data
-                      </Text>
-                      <Text size="xs" c="dimmed">
-                        Browse through academic years, classes, and student profiles.
-                      </Text>
-                    </div>
-                    <Button variant="default">Start Exploring</Button>
-                  </Group>
-                </div>
-              </HoverCard.Dropdown>
-            </HoverCard>
-            
+            <Link href="/years" className={classes.link}>
+              School years
+            </Link>
             <Link href="/about" className={classes.link}>
               About
             </Link>
@@ -158,20 +71,11 @@ const Navbar = ({ refNavbar }: { refNavbar: React.RefObject<HTMLElement> }) => {
           <Link href="/" className={classes.link} onClick={closeDrawer}>
             Home
           </Link>
-          <UnstyledButton className={classes.link} onClick={toggleLinks}>
-            <Center inline>
-              <Box component="span" mr={5}>
-                Features
-              </Box>
-              <IconChevronDown
-                style={{ width: rem(16), height: rem(16) }}
-                color={theme.colors.pslib[6]}
-              />
-            </Center>
-          </UnstyledButton>
-          <Collapse in={linksOpened}>{links}</Collapse>
           <Link href="/add" className={classes.link} onClick={closeDrawer}>
             Add
+          </Link>
+          <Link href="/years" className={classes.link} onClick={closeDrawer}>
+            School years
           </Link>
           <Link href="/about" className={classes.link} onClick={closeDrawer}>
             About

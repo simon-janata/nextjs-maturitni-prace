@@ -124,7 +124,7 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
                         label="Pick folder colour"
                         format="hex"
                         swatches={["#4154fa", "#429fe3", "#e34242", "#3cab68", "#e3a342", "#9c42e3", "#436a68"]}
-                        defaultValue="#f8d775"
+                        defaultValue="#fcbc19"
                         disallowInput
                         required
                       />

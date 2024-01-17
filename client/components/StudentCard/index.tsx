@@ -2,11 +2,19 @@
 
 import Link from "next/link";
 
-import { Avatar, Paper, Text } from "@mantine/core";
+import { Avatar, Paper, Text, UnstyledButton } from "@mantine/core";
+import { IconDownload } from "@tabler/icons-react";
+
+import classes from "./StudentCard.module.css";
 
 const StudentCard = ({ student }: { student: Student }) => {
   return (
-    <Paper radius="md" withBorder p="lg" bg="var(--mantine-color-body)">
+    <Paper radius="md" withBorder p="lg" className={classes.studentCard}>
+      <UnstyledButton
+        style={{ position: "absolute", top: 10, right: 10 }}
+      >
+        <IconDownload stroke={1.5} />
+      </UnstyledButton>
       <Link
         href="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-10.png"
         data-fancybox="gallery"

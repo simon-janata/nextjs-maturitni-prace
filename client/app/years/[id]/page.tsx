@@ -4,10 +4,13 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 import Breadcrumbs from "@/components/Breadcrumbs";
+import DirectoryCard from "@/components/DirectoryCard";
 import SearchBar from "@/components/SearchBar";
 import {
   Anchor,
-  Flex,
+  Center,
+  Grid,
+  Loader,
   useMantineTheme
 } from "@mantine/core";
 import { useDocumentTitle } from "@mantine/hooks";
@@ -23,7 +26,7 @@ export default function YearPage({ params }: { params: { id: string } }) {
   const breadcrumbsItems = [
     { title: "Home", href: "/" },
     { title: "Years", href: "/years" },
-    { title: "Details", href: `/years/${params.id}` },
+    { title: "2021", href: `/years/${params.id}` },
   ].map((item, index) => (
     <Anchor component={Link} href={item.href} key={index} c={theme.colors.pslib[6]}>
       {item.title}
@@ -31,13 +34,21 @@ export default function YearPage({ params }: { params: { id: string } }) {
   ));
 
   useEffect(() => {
+    let dataLoaded = false;
+
+    setTimeout(() => {
+      if (dataLoaded) {
+        setLoading(false);
+      }
+    }, 1500);
+
     fetch(`/api/years/${params.id}`, { method: "GET" })
       .then((res) => res.json())
       .then((data) => {
         setYear(data);
         setClasses(data.classes);
         setFilteredClasses(data.classes);
-        setLoading(false);
+        dataLoaded = true;
       });
   }, []);
 
@@ -57,22 +68,23 @@ export default function YearPage({ params }: { params: { id: string } }) {
         handleSearch={handleSearch}
       />
 
-      <h1>Year {params.id}</h1>
-      <h2>{year?.year}</h2>
-
-      <Flex
-        gap="md"
-        justify="flex-start"
-        align="flex-start"
-        direction="column"
-        wrap="wrap"
-      >
-        {
-          filteredClasses.map((c) => (
-            <Anchor component={Link} href={`/classes/${c.id}`} key={c.id} c={theme.colors.pslib[6]}>{c.name}</Anchor>
-          ))
-        }
-      </Flex>
+      {
+        loading === true ? (
+          <Center>
+            <Loader color={theme.colors.pslib[6]} type="bars" />
+          </Center>
+        ) : (
+          <Grid>
+            {
+              filteredClasses.map((c) => (
+                <Grid.Col span={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
+                  <DirectoryCard entity={c} type="class" />
+                </Grid.Col>
+              ))
+            }
+          </Grid>
+        )
+      }
     </>
   );
 }

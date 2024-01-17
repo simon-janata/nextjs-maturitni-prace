@@ -4,12 +4,9 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 import Breadcrumbs from "@/components/Breadcrumbs";
+import DirectoryCard from "@/components/DirectoryCard";
 import SearchBar from "@/components/SearchBar";
-import {
-  Anchor,
-  Flex,
-  useMantineTheme
-} from "@mantine/core";
+import { Anchor, Center, Grid, Loader, useMantineTheme } from "@mantine/core";
 import { useDocumentTitle } from "@mantine/hooks";
 
 export default function YearsPage() {
@@ -29,12 +26,20 @@ export default function YearsPage() {
   ));
 
   useEffect(() => {
+    let dataLoaded = false;
+
+    setTimeout(() => {
+      if (dataLoaded) {
+        setLoading(false);
+      }
+    }, 1500);
+
     fetch("/api/years", { method: "GET" })
       .then((res) => res.json())
       .then((data) => {
         setYears(data);
         setFilteredYears(data);
-        setLoading(false);
+        dataLoaded = true;
       });
   }, []);
 
@@ -54,34 +59,23 @@ export default function YearsPage() {
         handleSearch={handleSearch}
       />
 
-      {/* <SimpleGrid cols={4}>
-        {
-          filteredYears.map((y) => (
-            <Card component={Link} href={`/years/${y.id}`} padding="lg" radius="md" withBorder key={y.year}>
-              <Card.Section>
-                <Center>
-                  <IconFolderFilled style={{ width: 100, height: 100, color: "orange" }} stroke={1} />
-                </Center>
-              </Card.Section>
-
-              <Text size="xl" fw={500} ta="center">{y.year}</Text>
-            </Card>
-          ))
-        }
-      </SimpleGrid> */}
-      <Flex
-        gap="md"
-        justify="flex-start"
-        align="flex-start"
-        direction="column"
-        wrap="wrap"
-      >
-        {
-          filteredYears.map((y) => (
-            <Anchor component={Link} href={`/years/${y.id}`} key={y.id} c={theme.colors.pslib[6]}>{y.year}</Anchor>
-          ))
-        }
-      </Flex>
+      {
+        loading === true ? (
+          <Center>
+            <Loader color={theme.colors.pslib[6]} type="bars" />
+          </Center>
+        ) : (
+          <Grid>
+            {
+              filteredYears.map((y) => (
+                <Grid.Col span={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
+                  <DirectoryCard entity={y} type="year" />
+                </Grid.Col>
+              ))
+            }
+          </Grid>
+        )
+      }
     </>
   );
 }

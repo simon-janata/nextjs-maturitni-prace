@@ -10,6 +10,7 @@ import StudentCard from "@/components/StudentCard";
 import {
   Anchor,
   Grid,
+  Loader, Center,
   Title, useMantineTheme
 } from "@mantine/core";
 import { useDocumentTitle } from "@mantine/hooks";
@@ -25,7 +26,7 @@ export default function YearPage({ params }: { params: { id: string } }) {
   const breadcrumbsItems: JSX.Element[] = [
     { title: "Home", href: "/" },
     { title: "Classes", href: "/classes" },
-    { title: "Details", href: `/classes/${params.id}` },
+    { title: "P1", href: `/classes/${params.id}` },
   ].map((item, index) => (
     <Anchor component={Link} href={item.href} key={index} c={theme.colors.pslib[6]}>
       {item.title}
@@ -33,13 +34,21 @@ export default function YearPage({ params }: { params: { id: string } }) {
   ));
 
   useEffect(() => {
+    let dataLoaded = false;
+
+    setTimeout(() => {
+      if (dataLoaded) {
+        setLoading(false);
+      }
+    }, 1500);
+
     fetch(`/api/classes/${params.id}`, { method: "GET" })
       .then((res) => res.json())
       .then((data) => {
         setClassData(data);
         setStudents(data.students);
         setFilteredStudents(data.students);
-        setLoading(false);
+        dataLoaded = true;
       });
   }, []);
 
@@ -60,13 +69,13 @@ export default function YearPage({ params }: { params: { id: string } }) {
     <>
       <Breadcrumbs items={breadcrumbsItems} />
 
-      {
+      {/* {
         loading === true ? (
           <div>Loading...</div>
         ) : (
           <Title order={1}>{classData?.name}</Title>
         )
-      }
+      } */}
 
       <SearchBar
         placeholder="Search by student name..."
@@ -75,7 +84,9 @@ export default function YearPage({ params }: { params: { id: string } }) {
 
       {
         loading === true ? (
-          <div>Loading...</div>
+          <Center>
+            <Loader color={theme.colors.pslib[6]} type="bars" />
+          </Center>
         ) : (
           <Fancybox
             options={{
