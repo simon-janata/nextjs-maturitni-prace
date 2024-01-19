@@ -11,22 +11,24 @@ import {
   Center,
   Grid,
   Loader,
+  Title,
   useMantineTheme
 } from "@mantine/core";
 import { useDocumentTitle } from "@mantine/hooks";
 
-export default function YearPage({ params }: { params: { id: string } }) {
-  useDocumentTitle("Year");
+export default function ClassesPage({ params }: { params: { year: number } }) {
+  useDocumentTitle(`School year ${params.year}`);
   const theme = useMantineTheme();
   const [year, setYear] = useState<Year>();
   const [classes, setClasses] = useState<Class[]>([]);
   const [filteredClasses, setFilteredClasses] = useState<Class[]>([]);
+  const [query, setQuery] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
 
   const breadcrumbsItems = [
     { title: "Home", href: "/" },
-    { title: "Years", href: "/years" },
-    { title: "2021", href: `/years/${params.id}` },
+    { title: "School years", href: "/years" },
+    { title: "2021", href: `/years/${params.year}` },
   ].map((item, index) => (
     <Anchor component={Link} href={item.href} key={index} c={theme.colors.pslib[6]}>
       {item.title}
@@ -42,7 +44,7 @@ export default function YearPage({ params }: { params: { id: string } }) {
       }
     }, 1500);
 
-    fetch(`/api/years/${params.id}`, { method: "GET" })
+    fetch(`/api/years/${params.year}`, { method: "GET" })
       .then((res) => res.json())
       .then((data) => {
         setYear(data);
@@ -52,9 +54,10 @@ export default function YearPage({ params }: { params: { id: string } }) {
       });
   }, []);
 
-  const handleSearch = (query: string) => {
+  const handleSearch = (searchQuery: string) => {
+    setQuery(searchQuery);
     const filteredResults = classes.filter((c) =>
-      c.name.toLowerCase().includes(query) || c.name.toUpperCase().includes(query)
+      c.name.toLowerCase().includes(searchQuery) || c.name.toUpperCase().includes(searchQuery)
     );
 
     setFilteredClasses(filteredResults);
@@ -74,15 +77,21 @@ export default function YearPage({ params }: { params: { id: string } }) {
             <Loader color={theme.colors.pslib[6]} type="bars" />
           </Center>
         ) : (
-          <Grid>
-            {
-              filteredClasses.map((c) => (
-                <Grid.Col span={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-                  <DirectoryCard entity={c} type="class" />
-                </Grid.Col>
-              ))
-            }
-          </Grid>
+          filteredClasses.length === 0 ? (
+            <Center>
+              <Title order={1}>No classes found</Title>
+            </Center>
+          ) : (
+            <Grid>
+              {
+                filteredClasses.map((c) => (
+                  <Grid.Col span={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
+                    <DirectoryCard entity={c} type="class" pathParameter={params.year} textToHighlight={query} />
+                  </Grid.Col>
+                ))
+              }
+            </Grid>
+          )
         )
       }
     </>

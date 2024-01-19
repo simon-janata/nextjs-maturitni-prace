@@ -9,30 +9,34 @@ import SearchBar from "@/components/SearchBar";
 import StudentCard from "@/components/StudentCard";
 import {
   Anchor,
+  Center,
   Grid,
-  Loader, Center,
-  Title, useMantineTheme
+  Loader,
+  Title,
+  useMantineTheme
 } from "@mantine/core";
 import { useDocumentTitle } from "@mantine/hooks";
 
-export default function YearPage({ params }: { params: { id: string } }) {
+export default function StudentsPage({ params }: { params: { year: number, class: string } }) {
   useDocumentTitle("Year");
   const theme = useMantineTheme();
   const [classData, setClassData] = useState<Class>();
   const [students, setStudents] = useState<Student[]>([]);
   const [filteredStudents, setFilteredStudents] = useState<Student[]>([]);
+  const [query, setQuery] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
 
   const breadcrumbsItems: JSX.Element[] = [
     { title: "Home", href: "/" },
-    { title: "Classes", href: "/classes" },
-    { title: "P1", href: `/classes/${params.id}` },
+    { title: "School years", href: "/years" },
+    { title: `${params.year}`, href: `/years/${params.year}` },
+    { title: `${params.class.toUpperCase()}`, href: `/years/${params.year}/classes/${params.class}` },
   ].map((item, index) => (
     <Anchor component={Link} href={item.href} key={index} c={theme.colors.pslib[6]}>
       {item.title}
     </Anchor>
   ));
-
+  
   useEffect(() => {
     let dataLoaded = false;
 
@@ -42,7 +46,7 @@ export default function YearPage({ params }: { params: { id: string } }) {
       }
     }, 1500);
 
-    fetch(`/api/classes/${params.id}`, { method: "GET" })
+    fetch(`/api/years/${params.year}/classes/${params.class.toUpperCase()}`, { method: "GET" })
       .then((res) => res.json())
       .then((data) => {
         setClassData(data);
@@ -52,14 +56,15 @@ export default function YearPage({ params }: { params: { id: string } }) {
       });
   }, []);
 
-  const handleSearch = (query: string) => {
+  const handleSearch = (searchQuery: string) => {
+    setQuery(searchQuery);
     const filteredResults = students.filter((s) =>
-      s.firstname.toLowerCase().includes(query) ||
-      s.firstname.toUpperCase().includes(query) ||
-      s.middlename.toLowerCase().includes(query) ||
-      s.middlename.toUpperCase().includes(query) ||
-      s.lastname.toLowerCase().includes(query) ||
-      s.lastname.toUpperCase().includes(query)
+      s.firstname.toLowerCase().includes(searchQuery) ||
+      s.firstname.toUpperCase().includes(searchQuery) ||
+      s.middlename.toLowerCase().includes(searchQuery) ||
+      s.middlename.toUpperCase().includes(searchQuery) ||
+      s.lastname.toLowerCase().includes(searchQuery) ||
+      s.lastname.toUpperCase().includes(searchQuery)
     );
 
     setFilteredStudents(filteredResults);
@@ -68,14 +73,6 @@ export default function YearPage({ params }: { params: { id: string } }) {
   return (
     <>
       <Breadcrumbs items={breadcrumbsItems} />
-
-      {/* {
-        loading === true ? (
-          <div>Loading...</div>
-        ) : (
-          <Title order={1}>{classData?.name}</Title>
-        )
-      } */}
 
       <SearchBar
         placeholder="Search by student name..."
@@ -88,23 +85,29 @@ export default function YearPage({ params }: { params: { id: string } }) {
             <Loader color={theme.colors.pslib[6]} type="bars" />
           </Center>
         ) : (
-          <Fancybox
-            options={{
-              Carousel: {
-                infinite: false,
-              },
-            }}
-          >
-            <Grid>
-              {
-                filteredStudents.map((s) => (
-                  <Grid.Col span={{ xs: 12, sm: 6, md: 4 }}>
-                    <StudentCard student={s} />
-                  </Grid.Col>
-                ))
-              }
-            </Grid>
-          </Fancybox>
+          filteredStudents.length === 0 ? (
+            <Center>
+              <Title order={1}>No students found</Title>
+            </Center>
+          ) : (
+            <Fancybox
+              options={{
+                Carousel: {
+                  infinite: false,
+                },
+              }}
+            >
+              <Grid>
+                {
+                  Array.isArray(filteredStudents) && filteredStudents.map((s) => (
+                    <Grid.Col span={{ xs: 12, sm: 6, md: 4 }}>
+                      <StudentCard student={s} textToHighlight={query} />
+                    </Grid.Col>
+                  ))
+                }
+              </Grid>
+            </Fancybox>
+          )
         )
       }
     </>

@@ -4,9 +4,16 @@ import prisma from "@/lib/prismaHelper";
 export async function GET(req: Request, res: Response) {
   try {
     const url = new URL(req.url);
-    const id = url.pathname.split("/").pop();
-    const classData = await prisma.class.findUnique({
-      where: { id: id },
+    const pathParts = url.pathname.split("/");
+    const year = pathParts[pathParts.indexOf("years") + 1];
+    const clazzName = pathParts[pathParts.indexOf("classes") + 1];
+    const clazz = await prisma.class.findFirst({
+      where: {
+        year: {
+          year: Number(year),
+        },
+        name: clazzName,
+      },
       include: {
         year: true,
         students: {
@@ -15,11 +22,11 @@ export async function GET(req: Request, res: Response) {
             { middlename: "asc" },
             { firstname: "asc" },
           ],
-        }
+        },
       },
     });
     
-    return new Response(JSON.stringify(classData), {
+    return new Response(JSON.stringify(clazz), {
       status: 200,
       headers: {
         "content-type": "application/json;charset=UTF-8",

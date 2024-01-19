@@ -1,12 +1,12 @@
 import prisma from "@/lib/prismaHelper";
 
-// GET a year by id
+// GET a year by year
 export async function GET(req: Request, res: Response) {
   try {
     const url = new URL(req.url);
     const id = url.pathname.split("/").pop();
-    const year = await prisma.year.findUnique({
-      where: { id: id },
+    const year = await prisma.year.findFirst({
+      where: { year: Number(id) },
       include: { classes: true }
     });
     
