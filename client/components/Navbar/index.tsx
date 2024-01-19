@@ -63,7 +63,7 @@ const Navbar = ({ refNavbar }: { refNavbar: React.RefObject<HTMLElement> }) => {
         padding="md"
         title="Navigation"
         hiddenFrom="sm"
-        zIndex={10000}
+        zIndex={1000}
       >
         <ScrollArea h={`calc(100vh - ${rem(80)})`} mx="-md">
           <Divider my="sm" />

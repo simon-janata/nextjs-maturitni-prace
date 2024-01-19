@@ -14,3 +14,7 @@ main {
   padding: rem(40px) 0;
   background-color: inherit;
 }
+
+.fancybox-image {
+  border-radius: var(--mantine-radius-md);
+}
