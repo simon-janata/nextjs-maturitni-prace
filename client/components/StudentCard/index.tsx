@@ -44,7 +44,7 @@ const StudentCard: React.FC<StudentCardProps> = ({ student, textToHighlight }) =
             mx="auto"
           />
         </Link>
-        <Highlight color="orange" highlight={textToHighlight} ta="center" fz="lg" fw={500} mt="md">
+        <Highlight highlight={textToHighlight} ta="center" fz="lg" fw={500} mt="md">
           {`${student.lastname} ${student.middlename} ${student.firstname}`}
         </Highlight>
       </Paper>

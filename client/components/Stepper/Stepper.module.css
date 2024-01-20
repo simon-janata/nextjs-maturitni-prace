@@ -1,3 +1,7 @@
+.root {
+  min-height: 340px;
+}
+
 .steps {
   margin-bottom: rem(32);
 }

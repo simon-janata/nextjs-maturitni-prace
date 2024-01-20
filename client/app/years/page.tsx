@@ -41,7 +41,7 @@ export default function SchoolYearsPage() {
         setYears(data);
         setFilteredYears(data);
         dataLoaded = true;
-      });
+    });
   }, []);
 
   const handleSearch = (searchQuery: string) => {

@@ -51,13 +51,13 @@ export default function ClassesPage({ params }: { params: { year: number } }) {
         setClasses(data.classes);
         setFilteredClasses(data.classes);
         dataLoaded = true;
-      });
+    });
   }, []);
 
   const handleSearch = (searchQuery: string) => {
     setQuery(searchQuery);
     const filteredResults = classes.filter((c) =>
-      c.name.toLowerCase().includes(searchQuery) || c.name.toUpperCase().includes(searchQuery)
+      c.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
     setFilteredClasses(filteredResults);

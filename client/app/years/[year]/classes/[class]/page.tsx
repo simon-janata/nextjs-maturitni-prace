@@ -53,18 +53,15 @@ export default function StudentsPage({ params }: { params: { year: number, class
         setStudents(data.students);
         setFilteredStudents(data.students);
         dataLoaded = true;
-      });
+    });
   }, []);
 
   const handleSearch = (searchQuery: string) => {
     setQuery(searchQuery);
     const filteredResults = students.filter((s) =>
-      s.firstname.toLowerCase().includes(searchQuery) ||
-      s.firstname.toUpperCase().includes(searchQuery) ||
-      s.middlename.toLowerCase().includes(searchQuery) ||
-      s.middlename.toUpperCase().includes(searchQuery) ||
-      s.lastname.toLowerCase().includes(searchQuery) ||
-      s.lastname.toUpperCase().includes(searchQuery)
+      s.firstname.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      s.middlename.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      s.lastname.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
     setFilteredStudents(filteredResults);

@@ -26,7 +26,7 @@ const DirectoryCard: React.FC<DirectoryCardProps> = ({ entity, type, pathParamet
           style={{ color: type === "year" ? "#fcbc19" : `${(entity as Class).folderColor}` }}
         />
       </Center>
-      <Highlight color="orange" highlight={textToHighlight} ta="center" fz="lg" fw={500} mt="md">
+      <Highlight highlight={textToHighlight} ta="center" fz="lg" fw={500} mt="md">
         {`${label}`}
       </Highlight>
     </Paper>
