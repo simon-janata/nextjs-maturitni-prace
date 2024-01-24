@@ -1,0 +1,22 @@
+{
+  "MainBanner": {
+    "title": {
+      "firstPart": "Optimieren Sie",
+      "secondPart": "die Verwaltung Ihrer Studentenfotos",
+      "thirdPart": "mit Automatisierung"
+    },
+    "description": "Unsere Web-App optimiert das Zuschneiden, Benennen und Bearbeiten von Schülerfotos, vereinheitlicht das Aussehen und vereinfacht die Verwaltung.",
+    "leftButton": "Mehr Informationen",
+    "rightButton": "Kostenlos ausprobieren"
+  },
+  "Navbar": {
+    "homePage": "Startseite",
+    "addPage": "Hinzufügen",
+    "yearsPage": "Schuljahre",
+    "aboutPage": "Über",
+    "drawerTitle": "Navigation"
+  },
+  "ScrollToTopButton": {
+    "label": "Nach oben"
+  }
+}

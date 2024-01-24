@@ -3,10 +3,13 @@
 import { Affix, Button, rem, Transition } from "@mantine/core";
 import { useMediaQuery, useViewportSize, useWindowScroll } from "@mantine/hooks";
 import { IconArrowUp } from "@tabler/icons-react";
+import { useTranslations } from "next-intl";
 
 import classes from "./ScrollToTopButton.module.css";
 
 const ScrollToTopButton = () => {
+  const t = useTranslations("ScrollToTopButton");
+
   const [scroll, scrollTo] = useWindowScroll();
   const { height } = useViewportSize();
   const isMobile = useMediaQuery("(max-width: 48em)");
@@ -21,7 +24,7 @@ const ScrollToTopButton = () => {
                 leftSection={<IconArrowUp style={{ width: rem(16), height: rem(16) }} />}
                 onClick={() => scrollTo({ y: 0 })}
               >
-                Scroll to top
+                {t("label")}
               </Button>
             ) : (
               <Button

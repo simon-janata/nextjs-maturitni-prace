@@ -9,6 +9,7 @@ import {
   ScrollArea
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { useLocale, useTranslations } from "next-intl";
 
 import ColorSchemeToggle from "../ColorSchemeToggle";
 import LanguagePicker from "../LanguagePicker";
@@ -16,6 +17,8 @@ import NavbarSearch from "../NavbarSearch";
 import classes from "./Navbar.module.css";
 
 const Navbar = ({ refNavbar }: { refNavbar: React.RefObject<HTMLElement> }) => {
+  const locale = useLocale();
+  const t = useTranslations("Navbar");
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
 
   return (
@@ -28,17 +31,17 @@ const Navbar = ({ refNavbar }: { refNavbar: React.RefObject<HTMLElement> }) => {
           </Link>
 
           <Group h="100%" gap={0} visibleFrom="sm">
-            <Link href="/" className={classes.link}>
-              Home
+            <Link href={`/${locale}`} className={classes.link}>
+              {t("homePage")}
             </Link>
-            <Link href="/add" className={classes.link}>
-              Add
+            <Link href={`/${locale}/add`} className={classes.link}>
+              {t("addPage")}
             </Link>
-            <Link href="/years" className={classes.link}>
-              School years
+            <Link href={`/${locale}/years`} className={classes.link}>
+              {t("yearsPage")}
             </Link>
-            <Link href="/about" className={classes.link}>
-              About
+            <Link href={`/${locale}/about`} className={classes.link}>
+              {t("aboutPage")}
             </Link>
           </Group>
 
@@ -61,24 +64,24 @@ const Navbar = ({ refNavbar }: { refNavbar: React.RefObject<HTMLElement> }) => {
         onClose={closeDrawer}
         size="100%"
         padding="md"
-        title="Navigation"
+        title={t("drawerTitle")}
         hiddenFrom="sm"
         zIndex={1000}
       >
         <ScrollArea h={`calc(100vh - ${rem(80)})`} mx="-md">
           <Divider my="sm" />
 
-          <Link href="/" className={classes.link} onClick={closeDrawer}>
-            Home
+          <Link href={`/${locale}`} className={classes.link} onClick={closeDrawer}>
+            {t("homePage")}
           </Link>
-          <Link href="/add" className={classes.link} onClick={closeDrawer}>
-            Add
+          <Link href={`/${locale}/add`} className={classes.link} onClick={closeDrawer}>
+            {t("addPage")}
           </Link>
-          <Link href="/years" className={classes.link} onClick={closeDrawer}>
-            School years
+          <Link href={`/${locale}/years`} className={classes.link} onClick={closeDrawer}>
+            {t("yearsPage")}
           </Link>
-          <Link href="/about" className={classes.link} onClick={closeDrawer}>
-            About
+          <Link href={`/${locale}/about`} className={classes.link} onClick={closeDrawer}>
+            {t("aboutPage")}
           </Link>
 
           <Divider my="sm" />

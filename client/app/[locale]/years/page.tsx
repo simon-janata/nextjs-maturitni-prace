@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useLocale } from "next-intl";
 
 import Breadcrumbs from "@/components/Breadcrumbs";
 import DirectoryCard from "@/components/DirectoryCard";
@@ -11,6 +12,7 @@ import { useDocumentTitle } from "@mantine/hooks";
 
 export default function SchoolYearsPage() {
   useDocumentTitle("School years");
+  const locale = useLocale();
   const theme = useMantineTheme();
   const [years, setYears] = useState<Year[]>([]);
   const [filteredYears, setFilteredYears] = useState<Year[]>([]);
@@ -35,7 +37,7 @@ export default function SchoolYearsPage() {
       }
     }, 1500);
 
-    fetch(`/api/years`, { method: "GET" })
+    fetch(`/${locale}/api/years`, { method: "GET" })
       .then((res) => res.json())
       .then((data) => {
         setYears(data);

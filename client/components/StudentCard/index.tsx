@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 
-import { Avatar, Highlight, Modal, Paper, UnstyledButton } from "@mantine/core";
+import { Highlight, Image, Modal, Paper, UnstyledButton } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconDownload, IconEdit } from "@tabler/icons-react";
 
@@ -36,8 +36,9 @@ const StudentCard: React.FC<StudentCardProps> = ({ student, textToHighlight }) =
           data-fancybox="gallery"
           data-caption={`${student.lastname} ${student.middlename} ${student.firstname}`}
         >
-          <Avatar
+          <Image
             src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-10.png"
+            fallbackSrc="https://fakeimg.pl/1050x1400?text=Not+found"
             w={120}
             h="auto"
             radius="md"

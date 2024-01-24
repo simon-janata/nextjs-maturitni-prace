@@ -7,10 +7,13 @@
   border-radius: var(--mantine-radius-md);
   border: rem(1px) solid light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-5));
   transition: background-color 150ms ease;
-  background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6));
 
-  &[data-expanded] {
-    background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-5));
+  @mixin light {
+    background-color: var(--mantine-color-gray-0);
+  }
+
+  @mixin dark {
+    background-color: var(--mantine-color-dark-6);
   }
 
   @mixin hover {
@@ -19,6 +22,10 @@
 
   @media (max-width: $mantine-breakpoint-sm) {
     width: calc(100% - 60px);
+  }
+
+  &[data-expanded] {
+    background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-5));
   }
 }
 

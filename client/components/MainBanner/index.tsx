@@ -3,11 +3,14 @@
 import Link from "next/link";
 
 import { Button, Container, Text, Title } from "@mantine/core";
+import { useTranslations } from "next-intl";
 
 import Dots from "./Dots";
 import classes from "./MainBanner.module.css";
 
 const MainBanner = () => {
+  const t = useTranslations("MainBanner");
+
   return (
     <Container className={classes.wrapper} size={1400}>
       <Dots className={classes.dots} style={{ left: 0, top: 0 }} />
@@ -26,25 +29,25 @@ const MainBanner = () => {
 
       <div className={classes.inner}>
         <Title className={classes.title}>
-          Streamline Your{" "}
+          {t("title.firstPart")}{" "}
           <Text component="span" className={classes.highlight} inherit>
-            Student Photo Management
+            {t("title.secondPart")}
           </Text>{" "}
-          with Automation
+          {t("title.thirdPart")}
         </Title>
 
         <Container p={0} size={600}>
           <Text size="lg" c="dimmed" fw={500} className={classes.description}>
-            Simplify the process of cropping, naming, and editing new student photos with our web-based application. Designed to increase efficiency, unify the look of profile photos, and ease administrative procedures.
+            {t("description")}
           </Text>
         </Container>
 
         <div className={classes.controls}>
           <Button component={Link} href="/about" className={classes.control} size="lg" variant="default" color="gray">
-            Learn More
+            {t("leftButton")}
           </Button>
           <Button component={Link} href="/add" className={classes.control} size="lg">
-            Get Started
+            {t("rightButton")}
           </Button>
         </div>
       </div>

@@ -3,7 +3,7 @@
 import { useRef } from "react";
 
 import { Button, Center, Group, rem, Text, useMantineTheme } from "@mantine/core";
-import { Dropzone as DropzoneMantine } from "@mantine/dropzone";
+import { Dropzone as DropzoneMantine, FileWithPath, MIME_TYPES } from "@mantine/dropzone";
 import { IconCloudUpload, IconDownload, IconX } from "@tabler/icons-react";
 
 import classes from "./Dropzone.module.css";
@@ -14,10 +14,11 @@ interface DropzoneProps {
   multiple: boolean;
   idle: string;
   typesString: string[];
-  handleUpload: (file: File) => void;
+  handleCSVUpload?: (file: File) => void;
+  handlePhotosUpload?: (files: FileWithPath[]) => void;
 }
 
-const Dropzone: React.FC<DropzoneProps> = ({ acceptedMimeTypes, maxSize, multiple, idle, typesString, handleUpload }) => {
+const Dropzone: React.FC<DropzoneProps> = ({ acceptedMimeTypes, maxSize, multiple, idle, typesString, handleCSVUpload, handlePhotosUpload }) => {
   const theme = useMantineTheme();
   const openRef = useRef<() => void>(null);
 
@@ -25,7 +26,14 @@ const Dropzone: React.FC<DropzoneProps> = ({ acceptedMimeTypes, maxSize, multipl
     <Center className={classes.wrapper}>
       <DropzoneMantine
         openRef={openRef}
-        onDrop={(e) => handleUpload(e[0])}
+        onDrop={(e) => {
+          if (acceptedMimeTypes.includes(MIME_TYPES.csv)) {
+            handleCSVUpload && handleCSVUpload(e[0])
+          } else {
+            e.sort((a, b) => a.name.localeCompare(b.name));
+            handlePhotosUpload && handlePhotosUpload(e)
+          }
+        }}
         className={classes.dropzone}
         radius="md"
         accept={acceptedMimeTypes}

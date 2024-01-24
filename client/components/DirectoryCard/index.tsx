@@ -4,19 +4,22 @@ import Link from "next/link";
 
 import { Center, Highlight, Paper } from "@mantine/core";
 import { IconFolderFilled } from "@tabler/icons-react";
+import { useLocale } from "next-intl";
 
 import classes from "./DirectoryCard.module.css";
 
 interface DirectoryCardProps {
   entity: Year | Class;
   type: "year" | "class";
-  pathParameter?: number;
+  classParameter?: number;
   textToHighlight: string;
 }
 
-const DirectoryCard: React.FC<DirectoryCardProps> = ({ entity, type, pathParameter, textToHighlight }) => {
+const DirectoryCard: React.FC<DirectoryCardProps> = ({ entity, type, classParameter, textToHighlight }) => {
+  const locale = useLocale();
+
   const label = type === "year" ? (entity as Year).year : (entity as Class).name;
-  const link = type === "year" ? `/years/${(entity as Year).year}` : `/years/${pathParameter}/classes/${(entity as Class).name.toLowerCase()}`;
+  const link = type === "year" ? `/${locale}/years/${(entity as Year).year}` : `/${locale}/years/${classParameter}/classes/${(entity as Class).name.toLowerCase()}`;
 
   return (
     <Paper component={Link} href={link} radius="md" withBorder p="lg" className={classes.directoryCard}>

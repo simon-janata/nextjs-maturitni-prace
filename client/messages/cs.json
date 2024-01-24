@@ -1,0 +1,22 @@
+{
+  "MainBanner": {
+    "title": {
+      "firstPart": "Zefektivněte správu",
+      "secondPart": "studentských fotografií",
+      "thirdPart": "pomocí automatizace"
+    },
+    "description": "Zjednodušte si proces ořezávání, pojmenovávání a úprav nových studentských fotografií pomocí naší webové aplikace. Je navržena tak, aby zvýšila efektivitu, sjednotila vzhled profilových fotografií a usnadnila administrativní postupy.",
+    "leftButton": "Více informací",
+    "rightButton": "Vyzkoušet zdarma"
+  },
+  "Navbar": {
+    "homePage": "Úvod",
+    "addPage": "Přidat",
+    "yearsPage": "Školní roky",
+    "aboutPage": "O aplikaci",
+    "drawerTitle": "Navigace"
+  },
+  "ScrollToTopButton": {
+    "label": "Vrátit se nahoru"
+  }
+}

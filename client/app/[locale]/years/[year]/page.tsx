@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useLocale } from "next-intl";
 
 import Breadcrumbs from "@/components/Breadcrumbs";
 import DirectoryCard from "@/components/DirectoryCard";
@@ -18,6 +19,7 @@ import { useDocumentTitle } from "@mantine/hooks";
 
 export default function ClassesPage({ params }: { params: { year: number } }) {
   useDocumentTitle(`School year ${params.year}`);
+  const locale = useLocale();
   const theme = useMantineTheme();
   const [year, setYear] = useState<Year>();
   const [classes, setClasses] = useState<Class[]>([]);
@@ -44,7 +46,7 @@ export default function ClassesPage({ params }: { params: { year: number } }) {
       }
     }, 1500);
 
-    fetch(`/api/years/${params.year}`, { method: "GET" })
+    fetch(`/${locale}/api/years/${params.year}`, { method: "GET" })
       .then((res) => res.json())
       .then((data) => {
         setYear(data);
@@ -86,7 +88,7 @@ export default function ClassesPage({ params }: { params: { year: number } }) {
               {
                 filteredClasses.map((c) => (
                   <Grid.Col span={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-                    <DirectoryCard entity={c} type="class" pathParameter={params.year} textToHighlight={query} />
+                    <DirectoryCard entity={c} type="class" classParameter={params.year} textToHighlight={query} />
                   </Grid.Col>
                 ))
               }

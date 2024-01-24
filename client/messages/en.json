@@ -1,0 +1,22 @@
+{
+  "MainBanner": {
+    "title": {
+      "firstPart": "Streamline Your",
+      "secondPart": "Student Photo Management",
+      "thirdPart": "with Automation"
+    },
+    "description": "Simplify the process of cropping, naming, and editing new student photos with our web-based application. Designed to increase efficiency, unify the look of profile photos, and ease administrative procedures.",
+    "leftButton": "More information",
+    "rightButton": "Try for free"
+  },
+  "Navbar": {
+    "homePage": "Home",
+    "addPage": "Add",
+    "yearsPage": "School years",
+    "aboutPage": "About",
+    "drawerTitle": "Navigation"
+  },
+  "ScrollToTopButton": {
+    "label": "Scroll to top"
+  }
+}

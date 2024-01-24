@@ -4,6 +4,8 @@ import Stepper from "@/components/Stepper";
 import { useDocumentTitle } from "@mantine/hooks";
 import Papa from "papaparse";
 import { useState } from "react";
+import { Image } from "@mantine/core";
+import { FileWithPath } from "@mantine/dropzone";
 
 export default function AddPage() {
   useDocumentTitle("Add");
@@ -17,7 +19,7 @@ export default function AddPage() {
   //   const form = document.getElementById(`form-step-${currentStep}`);
   
   //   if (form) {
-  //     form.dispatchEvent(new Event('submit', { cancelable: true }));
+  //     form.dispatchEvent(new Event("submit", { cancelable: true }));
   //   }
   //   setActive(currentStep < 4 ? currentStep + 1 : currentStep)
   // };
@@ -32,6 +34,7 @@ export default function AddPage() {
   const [classesInYear, setClassesInYear] = useState<string[]>([]);
   const [classExists, setClassExists] = useState<boolean>(false);
   const [photos, setPhotos] = useState<File[]>([]);
+  const [previews, setPreviews] = useState<React.ReactNode[]>([]);
 
   const handlePickYearChange = (date: Date | null) => {
     const year = date?.getFullYear();
@@ -72,6 +75,15 @@ export default function AddPage() {
     });
   }
 
+  const handlePhotosUpload = (files: FileWithPath[]) => {
+    setPreviews(files.map((file, index) => {
+      const imageUrl = URL.createObjectURL(file);
+      return (
+        <Image key={index} src={imageUrl} onLoad={() => URL.revokeObjectURL(imageUrl)} />
+      );
+    }));
+  }
+
   const stateAndHandlers = {
     active: active,
     setActive: setActive,
@@ -83,11 +95,13 @@ export default function AddPage() {
     setStudents: setStudents,
     classesInYear: classesInYear,
     classExists: classExists,
+    previews: previews,
     nextStep: nextStep,
     prevStep: prevStep,
     handlePickYearChange: handlePickYearChange,
     handleClassNameChange: handleClassNameChange,
     handleCSVUpload: handleCSVUpload,
+    handlePhotosUpload: handlePhotosUpload,
   };
 
   return (

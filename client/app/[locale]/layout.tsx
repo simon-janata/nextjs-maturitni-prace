@@ -13,12 +13,27 @@ import Navbar from "@/components/Navbar";
 import ScrollToTopButton from "@/components/ScrollToTopButton";
 import { ColorSchemeScript, Container, MantineProvider } from "@mantine/core";
 
-import { theme } from "../theme";
+import { theme } from "../../theme";
+import { NextIntlClientProvider, useMessages, useTimeZone, useLocale } from "next-intl";
+
+import csTranslations from "@/messages/cs.json";
+import enTranslations from "@/messages/en.json";
+import deTranslations from "@/messages/de.json";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const refNavbar: React.RefObject<HTMLElement> = useRef(null);
   const refFooter: React.RefObject<HTMLElement> = useRef(null);
   const refMain: React.RefObject<HTMLElement> = useRef(null);
+
+  const locale = useLocale() as "cs" | "en" | "de";
+  // const messages = useMessages();
+  // const timeZone = useTimeZone();
+
+  const messages = {
+    "cs": csTranslations,
+    "en": enTranslations,
+    "de": deTranslations,
+  };
 
   useEffect(() => {
     const handleResize = () => {
@@ -35,7 +50,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
     handleResize();
     window.addEventListener("resize", handleResize);
-
+    
     // Cleanup
     return () => {
       window.removeEventListener("resize", handleResize);
@@ -43,23 +58,25 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   }, []);
 
   return (
-    <html lang="en">
+    <html lang={locale}>
       <head>
         <ColorSchemeScript defaultColorScheme="auto" />
         <link rel="shortcut icon" href="/pslib-logo-icon.svg" type="image/x-icon" />
         <meta name="description" content="Next.js app" />
       </head>
       <body>
-        <MantineProvider theme={theme} defaultColorScheme="auto">
-          <Navbar refNavbar={refNavbar} />
-          <main ref={refMain}>
-            <Container>
-              {children}
-              <ScrollToTopButton />
-            </Container>
-          </main>
-          <Footer refFooter={refFooter} />
-        </MantineProvider>
+        <NextIntlClientProvider locale={locale} messages={messages[locale]} timeZone="Europe/Prague">
+          <MantineProvider theme={theme} defaultColorScheme="auto">
+            <Navbar refNavbar={refNavbar} />
+            <main ref={refMain}>
+              <Container>
+                {children}
+                <ScrollToTopButton />
+              </Container>
+            </main>
+            <Footer refFooter={refFooter} />
+          </MantineProvider>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

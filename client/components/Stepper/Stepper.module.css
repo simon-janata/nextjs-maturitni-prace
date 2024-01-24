@@ -5,3 +5,11 @@
 .steps {
   margin-bottom: rem(32);
 }
+
+.summaryBox {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #4154fa;
+}

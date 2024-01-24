@@ -1,6 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { usePathname, useRouter } from "@/navigation";
+import { useLocale } from "next-intl";
+import { FormEvent, useEffect, useState, useTransition } from "react";
 
 import CzechFlag from "@/assets/cz-circle.png";
 import GermanFlag from "@/assets/de-circle.png";
@@ -10,6 +12,12 @@ import { IconChevronDown } from "@tabler/icons-react";
 
 import classes from "./LanguagePicker.module.css";
 
+interface Selected {
+  value: string;
+  label: string;
+  image: string;
+}
+
 const data = [
   { value: "cs", label: "Čeština", image: CzechFlag.src },
   { value: "en", label: "English", image: EnglishFlag.src },
@@ -17,12 +25,36 @@ const data = [
 ];
 
 const LanguagePicker = () => {
+  const pathname = usePathname();
+  const router = useRouter();
+  const locale = useLocale();
   const [opened, setOpened] = useState(false);
-  const [selected, setSelected] = useState(data[0]);
+  const [selected, setSelected] = useState<Selected>(data[0]);
+  const [isPending, startTransition] = useTransition();
+
+  useEffect(() => {
+    const index = data.findIndex((item) => item.value === locale);
+    if (index !== -1) {
+      setSelected(data[index]);
+    }
+  }, [selected]);
+
+  const onLanguageChange = (e: FormEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    const nextLocale = e.currentTarget.value;
+    startTransition(() => {
+      router.replace(pathname, { locale: nextLocale });
+    });
+  }
+
   const items = data.map((item) => (
     <Menu.Item
+      value={item.value}
       leftSection={<Image src={item.image} width={18} height={18} />}
-      onClick={() => setSelected(item)}
+      onClick={(e) => {
+        setSelected(item);
+        onLanguageChange(e);
+      }}
       key={item.label}
     >
       {item.label}
@@ -36,6 +68,7 @@ const LanguagePicker = () => {
       radius="md"
       width="target"
       withinPortal
+      disabled={isPending}
     >
       <Menu.Target>
         <UnstyledButton className={classes.control} data-expanded={opened || undefined}>
@@ -46,7 +79,9 @@ const LanguagePicker = () => {
           <IconChevronDown size="1rem" className={classes.icon} stroke={1.5} />
         </UnstyledButton>
       </Menu.Target>
-      <Menu.Dropdown className={classes.dropdown}>{items}</Menu.Dropdown>
+      <Menu.Dropdown className={classes.dropdown}>
+        {items}
+      </Menu.Dropdown>
     </Menu>
   );
 }

@@ -12,7 +12,7 @@ export async function GET(req: Request, res: Response) {
         year: {
           year: Number(year),
         },
-        name: clazzName,
+        name: clazzName.toUpperCase(),
       },
       include: {
         year: true,

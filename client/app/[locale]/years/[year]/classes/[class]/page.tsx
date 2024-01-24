@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useLocale } from "next-intl";
 
 import Breadcrumbs from "@/components/Breadcrumbs";
 import Fancybox from "@/components/Fancybox";
@@ -19,6 +20,7 @@ import { useDocumentTitle } from "@mantine/hooks";
 
 export default function StudentsPage({ params }: { params: { year: number, class: string } }) {
   useDocumentTitle("Year");
+  const locale = useLocale();
   const theme = useMantineTheme();
   const [classData, setClassData] = useState<Class>();
   const [students, setStudents] = useState<Student[]>([]);
@@ -46,7 +48,7 @@ export default function StudentsPage({ params }: { params: { year: number, class
       }
     }, 1500);
 
-    fetch(`/api/years/${params.year}/classes/${params.class.toUpperCase()}`, { method: "GET" })
+    fetch(`/${locale}/api/years/${params.year}/classes/${params.class}`, { method: "GET" })
       .then((res) => res.json())
       .then((data) => {
         setClassData(data);
