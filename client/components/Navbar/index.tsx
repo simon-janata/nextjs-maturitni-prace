@@ -25,7 +25,7 @@ const Navbar = ({ refNavbar }: { refNavbar: React.RefObject<HTMLElement> }) => {
     <Box>
       <header ref={refNavbar} className={classes.header}>
         <Group justify="space-between" h="100%">
-          <Link href="/" className={classes.linkLogo}>
+          <Link href={`/${locale}`} className={classes.linkLogo}>
             <Image src="/pslib-logo-dark.svg" className={classes.imgLogo} darkHidden />
             <Image src="/pslib-logo-light.svg" className={classes.imgLogo} lightHidden />
           </Link>

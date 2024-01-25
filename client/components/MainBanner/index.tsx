@@ -3,12 +3,13 @@
 import Link from "next/link";
 
 import { Button, Container, Text, Title } from "@mantine/core";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 
 import Dots from "./Dots";
 import classes from "./MainBanner.module.css";
 
 const MainBanner = () => {
+  const locale = useLocale();
   const t = useTranslations("MainBanner");
 
   return (
@@ -43,10 +44,10 @@ const MainBanner = () => {
         </Container>
 
         <div className={classes.controls}>
-          <Button component={Link} href="/about" className={classes.control} size="lg" variant="default" color="gray">
+          <Button component={Link} href={`/${locale}/about`} className={classes.control} size="lg" variant="default" color="gray">
             {t("leftButton")}
           </Button>
-          <Button component={Link} href="/add" className={classes.control} size="lg">
+          <Button component={Link} href={`/${locale}/add`} className={classes.control} size="lg">
             {t("rightButton")}
           </Button>
         </div>

@@ -4,8 +4,11 @@ import Link from "next/link";
 
 import underConstruction from "@/assets/under-construction.png";
 import { Button, Flex, Image, Text, Title } from "@mantine/core";
+import { useTranslations, useLocale } from "next-intl";
 
 const UnderConstruction = (props: { pageName: string, description: string }) => {
+  const locale = useLocale();
+
   return (
     <>
       <Flex
@@ -31,7 +34,7 @@ const UnderConstruction = (props: { pageName: string, description: string }) => 
         <Text c="dimmed" size="lg" ta="center" >
           {props.description}
         </Text>
-        <Button component={Link} href="/" size="md">Take me back to home page</Button>
+        <Button component={Link} href={`/${locale}`} size="md">Take me back to home page</Button>
       </Flex>
     </>
   );

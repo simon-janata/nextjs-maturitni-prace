@@ -4,14 +4,17 @@ import Link from "next/link";
 
 import { ActionIcon, Container, Group, Image, rem } from "@mantine/core";
 import { IconBrandFacebook, IconBrandInstagram, IconBrandYoutube } from "@tabler/icons-react";
+import { useLocale } from "next-intl";
 
 import classes from "./Footer.module.css";
 
 const Footer = ({ refFooter }: { refFooter: React.RefObject<HTMLElement> }) => {
+  const locale = useLocale();
+
   return (
     <footer ref={refFooter} className={classes.footer}>
       <Container className={classes.inner}>
-        <Link href="/" className={classes.linkLogo}>
+        <Link href={`/${locale}`} className={classes.linkLogo}>
           <Image src="/pslib-logo-dark.svg" className={classes.imgLogo} darkHidden />
           <Image src="/pslib-logo-light.svg" className={classes.imgLogo} lightHidden />
         </Link>
