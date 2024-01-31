@@ -1,4 +1,31 @@
 {
+  "SchoolYearsPage": {
+    "breadcrumbs": {
+      "home": "Home",
+      "schoolYears": "School years"
+    },
+    "searchBar": {
+      "placeholder": "Search by school year..."
+    }
+  },
+  "ClassesPage": {
+    "breadcrumbs": {
+      "home": "Home",
+      "schoolYears": "School years"
+    },
+    "searchBar": {
+      "placeholder": "Search by class name..."
+    }
+  },
+  "StudentsPage": {
+    "breadcrumbs": {
+      "home": "Home",
+      "schoolYears": "School years"
+    },
+    "searchBar": {
+      "placeholder": "Search by student name..."
+    }
+  },
   "MainBanner": {
     "title": {
       "firstPart": "Streamline Your",
@@ -18,5 +45,23 @@
   },
   "ScrollToTopButton": {
     "label": "Scroll to top"
+  },
+  "Stepper": {
+    "firstStep": {
+      "label": "First step",
+      "description": "Select a school year"
+    },
+    "secondStep": {
+      "label": "Second step",
+      "description": "Select a class"
+    },
+    "thirdStep": {
+      "label": "Third step",
+      "description": "Upload an CSV file"
+    },
+    "fourthStep": {
+      "label": "Fourth step",
+      "description": "Upload photos"
+    }
   }
 }

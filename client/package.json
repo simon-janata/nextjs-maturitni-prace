@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@fancyapps/ui": "^5.0.33",
+    "@hello-pangea/dnd": "^16.5.0",
     "@mantine/carousel": "^7.3.2",
     "@mantine/code-highlight": "^7.3.2",
     "@mantine/core": "^7.3.2",
@@ -24,13 +25,15 @@
     "@mantinex/dev-icons": "^1.0.2",
     "@prisma/client": "^5.7.1",
     "@tabler/icons-react": "^2.44.0",
+    "axios": "^1.6.7",
     "dayjs": "^1.11.10",
     "embla-carousel-react": "^7.1.0",
     "next": "14.0.4",
     "next-intl": "^3.4.5",
     "papaparse": "^5.4.1",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@svgr/webpack": "^8.1.0",
@@ -38,6 +41,7 @@
     "@types/papaparse": "^5.3.14",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/uuid": "^9.0.8",
     "postcss": "^8.4.32",
     "postcss-preset-mantine": "^1.12.2",
     "postcss-simple-vars": "^7.0.1",

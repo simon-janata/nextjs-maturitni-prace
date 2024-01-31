@@ -1,4 +1,31 @@
 {
+  "SchoolYearsPage": {
+    "breadcrumbs": {
+      "home": "Úvod",
+      "schoolYears": "Školní roky"
+    },
+    "searchBar": {
+      "placeholder": "Hledat podle školního roku..."
+    }
+  },
+  "ClassesPage": {
+    "breadcrumbs": {
+      "home": "Úvod",
+      "schoolYears": "Školní roky"
+    },
+    "searchBar": {
+      "placeholder": "Hledat podle názvu třídy..."
+    }
+  },
+  "StudentsPage": {
+    "breadcrumbs": {
+      "home": "Úvod",
+      "schoolYears": "Školní roky"
+    },
+    "searchBar": {
+      "placeholder": "Hledat podle jména studenta..."
+    }
+  },
   "MainBanner": {
     "title": {
       "firstPart": "Zefektivněte správu",
@@ -18,5 +45,23 @@
   },
   "ScrollToTopButton": {
     "label": "Vrátit se nahoru"
+  },
+  "Stepper": {
+    "firstStep": {
+      "label": "První krok",
+      "description": "Výběr školního roku"
+    },
+    "secondStep": {
+      "label": "Druhý krok",
+      "description": "Výběr třídy"
+    },
+    "thirdStep": {
+      "label": "Třetí krok",
+      "description": "Nahrání souboru CSV"
+    },
+    "fourthStep": {
+      "label": "Čtvrtý krok",
+      "description": "Nahrání fotografií"
+    }
   }
 }

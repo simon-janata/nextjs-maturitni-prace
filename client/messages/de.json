@@ -1,4 +1,22 @@
 {
+  "SchoolYearsPage": {
+    "breadcrumbs": {
+      "home": "Startseite",
+      "schoolYears": "Schuljahre"
+    }
+  },
+  "ClassesPage": {
+    "breadcrumbs": {
+      "home": "Startseite",
+      "schoolYears": "Schuljahre"
+    }
+  },
+  "StudentsPage": {
+    "breadcrumbs": {
+      "home": "Startseite",
+      "schoolYears": "Schuljahre"
+    }
+  },
   "MainBanner": {
     "title": {
       "firstPart": "Optimieren Sie",
@@ -18,5 +36,25 @@
   },
   "ScrollToTopButton": {
     "label": "Nach oben"
+  },
+  "Stepper": {
+    "steps": {
+      "first": {
+        "label": "First step",
+        "description": "Select a school year"
+      },
+      "second": {
+        "label": "Second step",
+        "description": "Select a class"
+      },
+      "third": {
+        "label": "Third step",
+        "description": "Upload an CSV file"
+      },
+      "fourth": {
+        "label": "Fourth step",
+        "description": "Upload photos"
+      }
+    }
   }
 }

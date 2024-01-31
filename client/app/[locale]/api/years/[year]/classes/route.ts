@@ -38,12 +38,15 @@ export async function GET(req: Request, res: Response) {
 // POST a new class
 export async function POST(req: Request, res: Response) {
   try {
+    const url = new URL(req.url);
+    const pathParts = url.pathname.split("/");
+    const year = pathParts[pathParts.indexOf("years") + 1];
     const body = await req.json();
     
-    if (!body.name || !body.folderColor || !body.yearId) {
+    if (!body.name || !body.folderColor) {
       return new Response(
         JSON.stringify({
-          message: "name, folderColor and yearId must be filled in",
+          message: "name and folderColor must be filled in",
         }),
         {
           status: 400,
@@ -60,7 +63,7 @@ export async function POST(req: Request, res: Response) {
         folderColor: body.folderColor,
         year: {
           connect: {
-            id: body.yearId
+            year: Number(year)
           }
         },
       },

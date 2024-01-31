@@ -106,10 +106,17 @@ export async function PATCH(req: Request, res: Response) {
 export async function DELETE(req: Request, res: Response) {
   try {
     const url = new URL(req.url);
-    const id = url.pathname.split("/").pop();
+    const pathParts = url.pathname.split("/");
+    const year = pathParts[pathParts.indexOf("years") + 1];
+    const clazzName = pathParts[pathParts.indexOf("classes") + 1];
   
-    const deletedClass = await prisma.class.delete({
-      where: { id: id },
+    const deletedClass = await prisma.class.deleteMany({
+      where: {
+        year: {
+          year: Number(year),
+        },
+        name: clazzName.toUpperCase(),
+      },
     });
 
     return new Response(JSON.stringify(deletedClass), {
