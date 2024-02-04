@@ -9,13 +9,16 @@ import { Image } from "@mantine/core";
 import { FileWithPath } from "@mantine/dropzone";
 import { useLocale } from "next-intl";
 import { v4 as uuidv4 } from "uuid";
+import { useRouter } from "next/navigation";
+import axios from "axios";
 
 export default function AddPage() {
   useDocumentTitle("Add");
+  const router = useRouter();
   const locale = useLocale();
 
   const [active, setActive] = useState<number>(0);
-  const nextStep = () => setActive((current) => (current < 3 ? current + 1 : current));
+  const nextStep = () => setActive((current) => (current < 4 ? current + 1 : current));
   const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
 
   type ClazzData = {
@@ -24,12 +27,12 @@ export default function AddPage() {
     folderColor: string;
     students: Array<string>;
     photos: Array<FileWithPath>;
-    studentsWithPhotos: Array<{ name: string, photo: string, preview: React.ReactNode }>;
+    studentsWithPhotos: Array<{ name: string, photo: FileWithPath, preview: React.ReactNode }>;
   };
 
   const initialClazzData: ClazzData = {
     schoolYear: new Date(),
-    clazzName: "",
+    clazzName: "P1A",
     folderColor: "#fcbc19",
     students: [],
     photos: [],
@@ -86,9 +89,9 @@ export default function AddPage() {
       delimiter: ";",
       complete: (results) => {
         const studentsNames = results.data[0] as Array<string>;
-        const namesWithPhotos: Array<{ name: string, photo: string, preview: React.ReactNode }> = [];
+        const namesWithPhotos: Array<{ name: string, photo: FileWithPath, preview: React.ReactNode }> = [];
         studentsNames.forEach((name, index) => {
-          namesWithPhotos.push({ name: name, photo: "", preview: <></> });
+          namesWithPhotos.push({ name: name, photo: new File([], "") as FileWithPath, preview: <></> });
         });
         setClazzData({ ...clazzData, students: studentsNames, studentsWithPhotos: namesWithPhotos });
       },
@@ -131,6 +134,7 @@ export default function AddPage() {
       const imageUrl = URL.createObjectURL(files[index]);
       return {
         ...student,
+        photo: files[index],
         preview: (
           <Link href={imageUrl} data-fancybox="gallery" data-caption={`${student.name}`} key={uuidv4()}>
             <Image radius="md" src={imageUrl} />
@@ -140,6 +144,42 @@ export default function AddPage() {
     });
 
     setClazzData({ ...clazzData, photos: files, studentsWithPhotos: updatedStudentsWithPhotos });
+  }
+
+  const handleStudentsDataSubmission = (files: FileWithPath[]) => {
+    if (!files) {
+      return;
+    }
+    
+    try {
+      const formData = new FormData();
+
+      for (let i = 0; i < files.length; i++) {
+        formData.set("file", files[i]);
+
+        // console.log(`${process.env.NEXT_PUBLIC_API_URL}/${locale}/api/photos?year=${clazzData.schoolYear?.getFullYear()}&clazz=${clazzData.clazzName}`)
+
+        axios.post(`${process.env.NEXT_PUBLIC_API_URL}/${locale}/api/photos`, formData, {
+          params: {
+            year: clazzData.schoolYear?.getFullYear(),
+            clazz: clazzData.clazzName
+          },
+          headers: {
+            "content-type": "multipart/form-data"
+          }
+        })
+        .then((res) => {
+          console.log("Uploaded!");
+        })
+        .catch((error) => {
+          console.log("Upload failed!");
+          console.error(error);
+        });
+      }
+      router.push(`/${locale}`);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   console.log(clazzData);
@@ -158,6 +198,7 @@ export default function AddPage() {
     handleFolderColorChange: handleFolderColorChange,
     handleCSVUpload: handleCSVUpload,
     handlePhotosUpload: handlePhotosUpload,
+    handleStudentsDataSubmission: handleStudentsDataSubmission,
   };
 
   return (

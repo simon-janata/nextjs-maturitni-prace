@@ -70,12 +70,12 @@ const Dropzone: React.FC<DropzoneProps> = ({ acceptedMimeTypes, maxSize, multipl
                 typesString.map((type, i) => (
                   <span key={uuidv4()}>
                     {i > 0 && i < typesString.length - 1 && ", "}
-                    {i === typesString.length - 1 && " or "}
-                    {type}
+                    {i === typesString.length - 1 && typesString.length > 1 && " or "}
+                    <>{type}</>
                   </span>
                 ))
               }
-              {" "}file less than 30mb
+              {" "}file less than {maxSize}mb
             </DropzoneMantine.Reject>
             <DropzoneMantine.Idle>{idle}</DropzoneMantine.Idle>
           </Text>
@@ -85,7 +85,7 @@ const Dropzone: React.FC<DropzoneProps> = ({ acceptedMimeTypes, maxSize, multipl
               typesString.map((type, i) => (
                 <span key={uuidv4()}>
                   {i > 0 && i < typesString.length - 1 && ", "}
-                  {i === typesString.length - 1 && " or "}
+                  {i === typesString.length - 1 && typesString.length > 1 && " or "}
                   <>{type}</>
                 </span>
               ))

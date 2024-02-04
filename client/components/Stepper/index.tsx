@@ -12,6 +12,7 @@ import {
   Image,
   Paper,
   Text,
+  Stack,
   Flex,
   Box,
   Card, Badge,
@@ -38,7 +39,7 @@ type ClazzData = {
   folderColor: string;
   students: Array<string>;
   photos: Array<File>;
-  studentsWithPhotos: Array<{ name: string, photo: string, preview: React.ReactNode }>;
+  studentsWithPhotos: Array<{ name: string, photo: FileWithPath, preview: React.ReactNode }>;
 };
 
 type StateAndHandlers = {
@@ -55,6 +56,7 @@ type StateAndHandlers = {
   handleFolderColorChange: (color: string) => void;
   handleCSVUpload: (files: File) => void;
   handlePhotosUpload: (files: FileWithPath[]) => void;
+  handleStudentsDataSubmission: (files: FileWithPath[]) => void;
 }
 
 type StepperProps = {
@@ -68,11 +70,28 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
   const mimeTypesCSV = [MIME_TYPES.csv];
   const mimeTypesPhotos = [MIME_TYPES.png, MIME_TYPES.jpeg, MIME_TYPES.webp];
 
+  const {
+    active,
+    setActive,
+    clazzData,
+    setClazzData,
+    classesInSelectedYear,
+    previews,
+    nextStep,
+    prevStep,
+    handlePickYearChange,
+    handleClassNameChange,
+    handleFolderColorChange,
+    handleCSVUpload,
+    handlePhotosUpload,
+    handleStudentsDataSubmission
+  } = stateAndHandlers;
+
   return (
     <>
       <StepperMantine
-        active={stateAndHandlers.active}
-        onStepClick={stateAndHandlers.setActive}
+        active={active}
+        onStepClick={setActive}
         allowNextStepsSelect={false}
         completedIcon={<IconCircleCheck style={{ width: rem(18), height: rem(18) }} />}
         w="100%"
@@ -86,8 +105,8 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
         >
           <YearPickerInput
             label="Pick year"
-            value={stateAndHandlers.clazzData.schoolYear}
-            onChange={(e) => stateAndHandlers.handlePickYearChange(e)}
+            value={clazzData.schoolYear}
+            onChange={(e) => handlePickYearChange(e)}
             required
           />
         </StepperMantine.Step>
@@ -101,8 +120,8 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
             mb={rem(16)}
             label="Enter class name"
             placeholder="Enter class name"
-            value={stateAndHandlers.clazzData.clazzName}
-            onChange={(e) => stateAndHandlers.handleClassNameChange(e.target.value)}
+            value={clazzData.clazzName}
+            onChange={(e) => handleClassNameChange(e.target.value)}
             required
           />
           <ColorInput
@@ -110,8 +129,8 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
             format="hex"
             swatches={["#fcbc19", "#4154fa", "#429fe3", "#e34242", "#3cab68", "#e3a342", "#9c42e3", "#436a68"]}
             swatchesPerRow={8}
-            defaultValue={stateAndHandlers.clazzData.folderColor}
-            onChange={(color) => stateAndHandlers.handleFolderColorChange(color)}
+            defaultValue={clazzData.folderColor}
+            onChange={(color) => handleFolderColorChange(color)}
             disallowInput
             required
           />
@@ -128,8 +147,23 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
             multiple={false}
             idle="Upload CSV file of students"
             typesString={[".csv"]}
-            handleCSVUpload={stateAndHandlers.handleCSVUpload}
+            handleCSVUpload={handleCSVUpload}
           />
+          {
+            clazzData.students.length > 0 && (
+              <Stack mt={rem(48)}>
+                {
+                  clazzData.students.map((student) => {
+                    return (
+                      <Center>
+                        <Text>{student}</Text>
+                      </Center>
+                    )
+                  })
+                }
+              </Stack>
+            )
+          }
         </StepperMantine.Step>
 
         <StepperMantine.Step
@@ -143,41 +177,44 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
             multiple={true}
             idle="Upload photos of students"
             typesString={[".png", ".jpeg", ".webp"]}
-            handlePhotosUpload={stateAndHandlers.handlePhotosUpload}
+            handlePhotosUpload={handlePhotosUpload}
           />
           {
-            stateAndHandlers.clazzData.students
+            clazzData.studentsWithPhotos.length > 0 && (
+              <Fancybox
+                options={{
+                  Carousel: {
+                    infinite: false,
+                  },
+                }}
+              >
+                <SimpleGrid cols={{ base: 3, xs: 4, sm: 6, lg: 8 }} mt={rem(48)}>    
+                  {
+                    clazzData.studentsWithPhotos.map((student) => {
+                      return (
+                        student.preview
+                      )
+                    })
+                  }
+                </SimpleGrid>
+              </Fancybox>
+            )
           }
-          <Fancybox
-            options={{
-              Carousel: {
-                infinite: false,
-              },
-            }}
-          >
-            <SimpleGrid cols={{ base: 1, sm: 6 }} mt={stateAndHandlers.previews.length > 0 ? "xl" : 0}>    
-              {
-                stateAndHandlers.clazzData.studentsWithPhotos.map((student) => {
-                  return (
-                    student.preview
-                  )
-                })
-              }
-            </SimpleGrid>
-          </Fancybox>
         </StepperMantine.Step>
+        <StepperMantine.Completed>
+          <Text>Completed</Text>
+        </StepperMantine.Completed>
       </StepperMantine>
 
-      <Group justify="center" mt={rem(64)}>
-        <Button variant="default" onClick={stateAndHandlers.prevStep}>Back</Button>
-        <Button onClick={stateAndHandlers.nextStep}>Next step</Button>
-        {/* {
-          stateAndHandlers.active === 3 ? (
-            <Button component={Link} href={`/${locale}`}>Submit</Button>
+      <Group justify="center" mt="xl">
+        <Button variant="default" onClick={prevStep}>Back</Button>
+        {
+          active === 4 ? (
+            <Button onClick={() => handleStudentsDataSubmission(clazzData.photos)}>Submit</Button>
           ) : (
-            <Button onClick={stateAndHandlers.nextStep}>Next step</Button>
+            <Button onClick={nextStep}>Next step</Button>
           )
-        } */}
+        }
       </Group>
     </>
   );
