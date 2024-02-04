@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 
-import { Highlight, Image, Paper, UnstyledButton } from "@mantine/core";
-import { IconDownload } from "@tabler/icons-react";
+import { Highlight, Image, Paper, UnstyledButton, rem } from "@mantine/core";
+import { IconDownload, IconShare } from "@tabler/icons-react";
 
 import classes from "./StudentCard.module.css";
 
@@ -17,9 +17,14 @@ const StudentCard: React.FC<StudentCardProps> = ({ student, textToHighlight }) =
   return (
     <Paper radius="md" withBorder p="lg" className={classes.studentCard}>
       <UnstyledButton
-        style={{ position: "absolute", top: 10, right: 10, height: "24px", width: "24px" }}
+        style={{ position: "absolute", top: rem(10), right: rem(10), height: "22px", width: "22px" }}
       >
-        <IconDownload stroke={1.5} />
+        <IconShare style={{ width: rem(22), height: rem(22) }} stroke={1.5} />
+      </UnstyledButton>
+      <UnstyledButton
+        style={{ position: "absolute", top: rem(10), left: rem(10), height: "22px", width: "22px" }}
+      >
+        <IconDownload style={{ width: rem(22), height: rem(22) }} stroke={1.5} />
       </UnstyledButton>
       <Link
         style={{ display: "contents", width: "120px" }}
