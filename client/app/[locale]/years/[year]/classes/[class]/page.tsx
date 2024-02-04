@@ -17,6 +17,8 @@ import {
   IconTrash,
   IconArrowsLeftRight,
   IconDotsVertical,
+  IconCheck,
+  IconShare,
 } from '@tabler/icons-react';
 import {
   Anchor,
@@ -24,7 +26,9 @@ import {
   Grid,
   Loader,
   Title,
+  Group,
   Button,
+  Modal,
   Menu,
   rem,
   Flex,
@@ -32,12 +36,15 @@ import {
   UnstyledButton,
   useMantineTheme
 } from "@mantine/core";
-import { useDocumentTitle } from "@mantine/hooks";
+import { useDocumentTitle, useDisclosure } from "@mantine/hooks";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
+import { useRouter } from "next/navigation";
+import { notifications } from "@mantine/notifications";
 
 export default function StudentsPage({ params }: { params: { year: number, class: string } }) {
   useDocumentTitle("Year");
+  const router = useRouter();
   const locale = useLocale();
   const t = useTranslations("StudentsPage");
   const theme = useMantineTheme();
@@ -46,6 +53,8 @@ export default function StudentsPage({ params }: { params: { year: number, class
   const [filteredStudents, setFilteredStudents] = useState<Student[]>([]);
   const [query, setQuery] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
+
+  const [opened, { open, close }] = useDisclosure(false);
 
   const breadcrumbsItems: JSX.Element[] = [
     { title: t("breadcrumbs.home"), href: `/${locale}` },
@@ -65,16 +74,8 @@ export default function StudentsPage({ params }: { params: { year: number, class
       if (dataLoaded) {
         setLoading(false);
       }
-    }, 1500);
+    }, 1000);
 
-    // fetch(`${process.env.NEXT_PUBLIC_API_URL}/${locale}/api/years/${params.year}/classes/${params.class}`, { method: "GET" })
-    //   .then((res) => res.json())
-    //   .then((data) => {
-    //     setClassData(data);
-    //     setStudents(data.students);
-    //     setFilteredStudents(data.students);
-    //     dataLoaded = true;
-    // });
     axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${locale}/api/years/${params.year}/classes/${params.class}`)
       .then((res) => {
         const data = res.data;
@@ -107,10 +108,14 @@ export default function StudentsPage({ params }: { params: { year: number, class
     //   });
     axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/${locale}/api/years/${params.year}/classes/${params.class}`)
       .then((res) => {
-        console.log(res.data);
-      })
-      .catch((err) => {
-        console.log(`Error deleting book - ${err}`);
+        router.push(`/${locale}/years/${params.year}`);
+        notifications.show({
+          color: "teal",
+          icon: <IconCheck style={{ width: rem(18), height: rem(18) }} />,
+          title: "Default notification",
+          message: "Hey there, your code is awesome! 🤥",
+          autoClose: 2000,
+        });
       });
   };
 
@@ -133,10 +138,13 @@ export default function StudentsPage({ params }: { params: { year: number, class
             <Menu.Item leftSection={<IconFileZip style={{ width: rem(14), height: rem(14) }} />}>
               Download all photos (.zip)
             </Menu.Item>
+            <Menu.Item leftSection={<IconShare style={{ width: rem(14), height: rem(14) }} />}>
+              Share this class
+            </Menu.Item>
             <Menu.Item
               color="red"
               leftSection={<IconTrash style={{ width: rem(14), height: rem(14) }} />}
-              onClick={handleDeleteClass}
+              onClick={open}
             >
               Delete this class
             </Menu.Item>
@@ -152,7 +160,7 @@ export default function StudentsPage({ params }: { params: { year: number, class
       {
         loading === true ? (
           <Center>
-            <Loader color={theme.colors.pslib[6]} type="bars" />
+            <Loader color={theme.colors.pslib[6]} />
           </Center>
         ) : (
           filteredStudents.length === 0 ? (
@@ -180,6 +188,14 @@ export default function StudentsPage({ params }: { params: { year: number, class
           )
         )
       }
+
+      <Modal opened={opened} onClose={close} title="Delete Class Confirmation" centered radius="md" zIndex={1000}>
+        Are you sure you want to delete this class? Deleting this class will also delete all associated students and their photos. This action cannot be undone. Please confirm your decision.
+        <Group justify="center" mt="xl">
+          <Button color="red" onClick={handleDeleteClass}>Delete</Button>
+          <Button variant="default" onClick={close}>Cancel</Button>
+        </Group>
+      </Modal>
     </>
   );
 }

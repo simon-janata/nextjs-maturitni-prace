@@ -38,15 +38,8 @@ export default function SchoolYearsPage() {
       if (dataLoaded) {
         setLoading(false);
       }
-    }, 1500);
+    }, 1000);
 
-    // fetch(`/${locale}/api/years`, { method: "GET" })
-    //   .then((res) => res.json())
-    //   .then((data) => {
-    //     setYears(data);
-    //     setFilteredYears(data);
-    //     dataLoaded = true;
-    // });
     axios.get(`/${locale}/api/years`)
       .then((res) => {
         const data = res.data;
@@ -76,7 +69,7 @@ export default function SchoolYearsPage() {
       {
         loading === true ? (
           <Center>
-            <Loader color={theme.colors.pslib[6]} type="bars" />
+            <Loader color={theme.colors.pslib[6]} />
           </Center>
         ) : (
           filteredYears.length === 0 ? (

@@ -47,16 +47,8 @@ export default function ClassesPage({ params }: { params: { year: number } }) {
       if (dataLoaded) {
         setLoading(false);
       }
-    }, 1500);
+    }, 1000);
 
-    // fetch(`${process.env.NEXT_PUBLIC_API_URL}/${locale}/api/years/${params.year}`, { method: "GET" })
-    //   .then((res) => res.json())
-    //   .then((data) => {
-    //     setYear(data);
-    //     setClasses(data.classes);
-    //     setFilteredClasses(data.classes);
-    //     dataLoaded = true;
-    // });
     axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${locale}/api/years/${params.year}`)
       .then((res) => {
         const data = res.data;
@@ -87,7 +79,7 @@ export default function ClassesPage({ params }: { params: { year: number } }) {
       {
         loading === true ? (
           <Center>
-            <Loader color={theme.colors.pslib[6]} type="bars" />
+            <Loader color={theme.colors.pslib[6]} />
           </Center>
         ) : (
           filteredClasses.length === 0 ? (
