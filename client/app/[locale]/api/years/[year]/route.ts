@@ -47,7 +47,7 @@ export async function PATCH(req: Request, res: Response) {
     if (!body.year) {
       return new Response(
         JSON.stringify({
-          message: "year must be filled in",
+          message: "Year must be filled in",
         }),
         {
           status: 400,

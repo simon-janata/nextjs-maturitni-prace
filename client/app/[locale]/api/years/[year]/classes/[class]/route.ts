@@ -57,7 +57,7 @@ export async function PATCH(req: Request, res: Response) {
     if (!body.name || !body.folderColor || !body.yearId) {
       return new Response(
         JSON.stringify({
-          message: "name, folderColor and yearId must be filled in",
+          message: "Name, folderColor and yearId must be filled in",
         }),
         {
           status: 400,

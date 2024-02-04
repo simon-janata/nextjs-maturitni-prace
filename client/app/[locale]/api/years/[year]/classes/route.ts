@@ -46,7 +46,7 @@ export async function POST(req: Request, res: Response) {
     if (!body.name || !body.folderColor) {
       return new Response(
         JSON.stringify({
-          message: "name and folderColor must be filled in",
+          message: "Name and folderColor must be filled in",
         }),
         {
           status: 400,

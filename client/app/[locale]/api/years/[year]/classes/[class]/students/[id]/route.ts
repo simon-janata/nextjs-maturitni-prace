@@ -41,7 +41,7 @@ export async function PATCH(req: Request, res: Response) {
     if (!body.firstname || !body.lastname || !body.classId) {
       return new Response(
         JSON.stringify({
-          message: "firstname, lastname and class must be filled in",
+          message: "Firstname, lastname and class must be filled in",
         }),
         {
           status: 400,
