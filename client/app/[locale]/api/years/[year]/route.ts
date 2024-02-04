@@ -7,7 +7,13 @@ export async function GET(req: Request, res: Response) {
     const id = url.pathname.split("/").pop();
     const year = await prisma.year.findFirst({
       where: { year: Number(id) },
-      include: { classes: true }
+      include: {
+        classes: {
+          orderBy: {
+            name: "asc"
+          }
+        }
+      }
     });
     
     return new Response(JSON.stringify(year), {

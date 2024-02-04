@@ -4,7 +4,7 @@ import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
 import "@mantine/dropzone/styles.css";
 import "@mantine/spotlight/styles.css";
-import "@mantine/code-highlight/styles.css";
+import "@mantine/notifications/styles.css";
 import "./globals.css";
 
 import React, { useEffect, useRef } from "react";
@@ -13,6 +13,7 @@ import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import ScrollToTopButton from "@/components/ScrollToTopButton";
 import { ColorSchemeScript, Container, MantineProvider } from "@mantine/core";
+import { Notifications } from "@mantine/notifications";
 
 import { theme } from "../../theme";
 import { NextIntlClientProvider, useMessages, useTimeZone, useLocale } from "next-intl";
@@ -27,13 +28,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const refMain: React.RefObject<HTMLElement> = useRef(null);
 
   const locale = useLocale() as "cs" | "en" | "de";
-  // const messages = useMessages();
-  // const timeZone = useTimeZone();
 
   const messages = {
     "cs": csTranslations,
     "en": enTranslations,
     "de": deTranslations,
+  };
+
+  const timeZones = {
+    "cs": "Europe/Prague",
+    "en": "Europe/London",
+    "de": "Europe/Berlin",
   };
 
   useEffect(() => {
@@ -66,7 +71,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="description" content="Next.js app" />
       </head>
       <body>
-        <NextIntlClientProvider locale={locale} messages={messages[locale]} timeZone="Europe/Prague">
+        <NextIntlClientProvider locale={locale} messages={messages[locale]} timeZone={timeZones[locale]}>
           <MantineProvider theme={theme} defaultColorScheme="auto">
             <Navbar refNavbar={refNavbar} />
             <main ref={refMain}>
@@ -74,6 +79,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 {children}
                 <ScrollToTopButton />
               </Container>
+              <Notifications position="bottom-right" />
             </main>
             <Footer refFooter={refFooter} />
           </MantineProvider>

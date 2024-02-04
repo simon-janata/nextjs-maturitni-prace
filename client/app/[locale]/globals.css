@@ -18,3 +18,7 @@ main {
 .fancybox-image {
   border-radius: var(--mantine-radius-md);
 }
+
+.mantine-Modal-title {
+  font-weight: bold !important;
+}
