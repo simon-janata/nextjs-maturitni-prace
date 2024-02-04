@@ -8,6 +8,7 @@
       "placeholder": "Search by school year..."
     }
   },
+
   "ClassesPage": {
     "breadcrumbs": {
       "home": "Home",
@@ -17,6 +18,7 @@
       "placeholder": "Search by class name..."
     }
   },
+
   "StudentsPage": {
     "breadcrumbs": {
       "home": "Home",
@@ -26,6 +28,13 @@
       "placeholder": "Search by student name..."
     }
   },
+
+  "NotFoundPage": {
+    "title": "Nothing to see here",
+    "text": "Page you are trying to open does not exist. You may have mistyped the address, or the page has been moved to another URL. If you think this is an error contact support.",
+    "buttonText": "Take me back to home page"
+  },
+
   "MainBanner": {
     "title": {
       "firstPart": "Streamline Your",
@@ -36,6 +45,7 @@
     "leftButton": "More information",
     "rightButton": "Try for free"
   },
+
   "Navbar": {
     "homePage": "Home",
     "addPage": "Add",
@@ -43,9 +53,11 @@
     "aboutPage": "About",
     "drawerTitle": "Navigation"
   },
+
   "ScrollToTopButton": {
     "label": "Scroll to top"
   },
+
   "Stepper": {
     "firstStep": {
       "label": "First step",

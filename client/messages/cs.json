@@ -8,6 +8,7 @@
       "placeholder": "Hledat podle školního roku..."
     }
   },
+
   "ClassesPage": {
     "breadcrumbs": {
       "home": "Úvod",
@@ -17,6 +18,7 @@
       "placeholder": "Hledat podle názvu třídy..."
     }
   },
+
   "StudentsPage": {
     "breadcrumbs": {
       "home": "Úvod",
@@ -26,6 +28,13 @@
       "placeholder": "Hledat podle jména studenta..."
     }
   },
+
+  "NotFoundPage": {
+    "title": "Stránka nebyla nalezena",
+    "text": "Stránka, kterou se snažíte otevřít, neexistuje. Možná jste špatně zadali adresu nebo byla stránka přesunuta na jinou adresu URL. Pokud se domníváte, že se jedná o chybu, kontaktujte podporu.",
+    "buttonText": "Zpět na úvodní stránku"
+  },
+
   "MainBanner": {
     "title": {
       "firstPart": "Zefektivněte správu",
@@ -36,6 +45,7 @@
     "leftButton": "Více informací",
     "rightButton": "Vyzkoušet zdarma"
   },
+
   "Navbar": {
     "homePage": "Úvod",
     "addPage": "Přidat",
@@ -43,9 +53,11 @@
     "aboutPage": "O aplikaci",
     "drawerTitle": "Navigace"
   },
+
   "ScrollToTopButton": {
     "label": "Vrátit se nahoru"
   },
+
   "Stepper": {
     "firstStep": {
       "label": "První krok",
