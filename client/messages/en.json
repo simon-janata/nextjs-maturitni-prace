@@ -1,4 +1,11 @@
 {
+  "Pathnames": {
+    "add": "add",
+    "years": "school-years",
+    "classes": "classes",
+    "about": "about"
+  },
+  
   "SchoolYearsPage": {
     "breadcrumbs": {
       "home": "Home",

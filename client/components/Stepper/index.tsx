@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useLocale, useTranslations } from "next-intl";
 
 import {
@@ -28,6 +28,7 @@ import { MIME_TYPES, FileWithPath } from "@mantine/dropzone";
 import { useForm } from "@mantine/form";
 import { useMediaQuery } from "@mantine/hooks";
 import { IconCircleCheck, IconFileSpreadsheet, IconFolder, IconPhoto, IconCalendar, IconBackpack, IconPointFilled } from "@tabler/icons-react";
+import { v4 as uuid } from "uuid";
 
 import Fancybox from "../Fancybox";
 import Dropzone from "../Dropzone";
@@ -70,6 +71,9 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
   const mimeTypesCSV = [MIME_TYPES.csv];
   const mimeTypesPhotos = [MIME_TYPES.png, MIME_TYPES.jpeg, MIME_TYPES.webp];
 
+  const refNextStepButton: React.RefObject<HTMLButtonElement> = useRef(null);
+  const [isButtonDisabled, setButtonDisabled] = useState<boolean>(true);
+
   const {
     active,
     setActive,
@@ -86,6 +90,26 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
     handlePhotosUpload,
     handleStudentsDataSubmission
   } = stateAndHandlers;
+
+  useEffect(() => {
+    if (refNextStepButton.current) {
+      setButtonDisabled(false);
+      console.log(refNextStepButton.current.attributes);
+      console.log(refNextStepButton.current);
+    }
+    console.log("clazzData changed");
+
+
+    if (active === 0) {
+      console.log("zero");
+    } else if (active === 1) {
+      console.log("one");
+    } else if (active === 2) {
+      console.log("two");
+    } else if (active === 3) {
+      console.log("three");
+    }
+  }, [clazzData.schoolYear, clazzData.clazzName, clazzData.folderColor, clazzData.students, clazzData.photos, clazzData.studentsWithPhotos]);
 
   return (
     <>
@@ -188,15 +212,17 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
                   },
                 }}
               >
-                <SimpleGrid cols={{ base: 3, xs: 4, sm: 6, lg: 8 }} mt={rem(48)}>    
+                <Grid mt={rem(48)}>
                   {
-                    clazzData.studentsWithPhotos.map((student) => {
-                      return (
-                        student.preview
-                      )
-                    })
+                    clazzData.studentsWithPhotos.map((s) => (
+                      <Grid.Col span={{ base: 6, xs: 3, sm: 2.4, md: 2, lg: 1.5 }} key={uuid()}>
+                        {
+                          s.preview
+                        }
+                      </Grid.Col>
+                    ))
                   }
-                </SimpleGrid>
+                </Grid>
               </Fancybox>
             )
           }
@@ -212,7 +238,7 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
           active === 4 ? (
             <Button onClick={() => handleStudentsDataSubmission(clazzData.photos)}>Submit</Button>
           ) : (
-            <Button onClick={nextStep}>Next step</Button>
+            <Button ref={refNextStepButton} onClick={nextStep} disabled={isButtonDisabled}>Next step</Button>
           )
         }
       </Group>

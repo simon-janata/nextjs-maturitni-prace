@@ -5,7 +5,7 @@ import { useRef } from "react";
 import { Button, Center, Group, rem, Text, useMantineTheme } from "@mantine/core";
 import { Dropzone as DropzoneMantine, FileWithPath, MIME_TYPES } from "@mantine/dropzone";
 import { IconCloudUpload, IconDownload, IconX } from "@tabler/icons-react";
-import { v4 as uuidv4 } from "uuid";
+import { v4 as uuid } from "uuid";
 
 import classes from "./Dropzone.module.css";
 
@@ -68,7 +68,7 @@ const Dropzone: React.FC<DropzoneProps> = ({ acceptedMimeTypes, maxSize, multipl
               only{" "}
               {
                 typesString.map((type, i) => (
-                  <span key={uuidv4()}>
+                  <span key={uuid()}>
                     {i > 0 && i < typesString.length - 1 && ", "}
                     {i === typesString.length - 1 && typesString.length > 1 && " or "}
                     <>{type}</>
@@ -83,7 +83,7 @@ const Dropzone: React.FC<DropzoneProps> = ({ acceptedMimeTypes, maxSize, multipl
             Drag&apos;n&apos;drop files here to upload. We can accept only{" "}
             {
               typesString.map((type, i) => (
-                <span key={uuidv4()}>
+                <span key={uuid()}>
                   {i > 0 && i < typesString.length - 1 && ", "}
                   {i === typesString.length - 1 && typesString.length > 1 && " or "}
                   <>{type}</>

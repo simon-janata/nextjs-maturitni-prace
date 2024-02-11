@@ -1,4 +1,11 @@
 {
+  "Pathnames": {
+    "add": "pridat",
+    "years": "skolni-roky",
+    "classes": "tridy",
+    "about": "o-aplikaci"
+  },
+
   "SchoolYearsPage": {
     "breadcrumbs": {
       "home": "Úvod",

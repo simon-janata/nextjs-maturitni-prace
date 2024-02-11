@@ -12,17 +12,29 @@ import {
   Center,
   Grid,
   Loader,
+  Menu,
+  Flex,
   Title,
+  UnstyledButton,
+  Group,
+  Button,
+  rem,
+  Modal,
   useMantineTheme
 } from "@mantine/core";
-import { useDocumentTitle } from "@mantine/hooks";
+import { useDocumentTitle, useDisclosure } from "@mantine/hooks";
 import axios from "axios";
-import { v4 as uuidv4 } from "uuid";
+import { notifications } from "@mantine/notifications";
+import { v4 as uuid } from "uuid";
+import { IconCheck, IconSettings, IconTrash, IconShare } from "@tabler/icons-react";
+import { useRouter } from "next/navigation";
 
 export default function ClassesPage({ params }: { params: { year: number } }) {
   useDocumentTitle(`School year ${params.year}`);
+  const router = useRouter();
   const locale = useLocale();
   const t = useTranslations("ClassesPage");
+  const p = useTranslations("Pathnames");
   const theme = useMantineTheme();
   const [year, setYear] = useState<Year>();
   const [classes, setClasses] = useState<Class[]>([]);
@@ -30,12 +42,14 @@ export default function ClassesPage({ params }: { params: { year: number } }) {
   const [query, setQuery] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
 
+  const [opened, { open, close }] = useDisclosure(false);
+
   const breadcrumbsItems = [
     { title: t("breadcrumbs.home"), href: `/${locale}` },
-    { title: t("breadcrumbs.schoolYears"), href: `/${locale}/years` },
-    { title: `${params.year}`, href: `/${locale}/years/${params.year}` },
+    { title: t("breadcrumbs.schoolYears"), href: `/${locale}/${p("years")}` },
+    { title: `${params.year}`, href: `/${locale}/${p("years")}/${params.year}` },
   ].map((item, index) => (
-    <Anchor component={Link} href={item.href} key={uuidv4()} c={theme.colors.pslib[6]}>
+    <Anchor component={Link} href={item.href} key={uuid()} c={theme.colors.pslib[6]}>
       {item.title}
     </Anchor>
   ));
@@ -68,9 +82,53 @@ export default function ClassesPage({ params }: { params: { year: number } }) {
     setFilteredClasses(filteredResults);
   }
 
+  const handleDeleteSchoolYear = () => {
+    axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/${locale}/api/years/${params.year}`)
+      .then((res) => {
+        router.push(`/${locale}/years`);
+        notifications.show({
+          color: "teal",
+          icon: <IconCheck style={{ width: rem(18), height: rem(18) }} />,
+          title: "Default notification",
+          message: "Hey there, your code is awesome! 🤥",
+          autoClose: 2000,
+        });
+      })
+      .catch((err) => {
+        console.log(`Error deleting school year - ${err}`);
+      });
+  };
+
   return (
     <>
-      <Breadcrumbs items={breadcrumbsItems} />
+      <Flex
+        direction="row"
+        justify="space-between"
+        align="center"
+      >
+        <Breadcrumbs items={breadcrumbsItems} />
+        <Menu shadow="md" width={250} position="bottom-end" withArrow>
+          <Menu.Target>
+            <UnstyledButton w={24} h={24}>
+              <IconSettings />
+            </UnstyledButton>
+          </Menu.Target>
+
+          <Menu.Dropdown>
+            <Menu.Item leftSection={<IconShare style={{ width: rem(14), height: rem(14) }} />}>
+              Share link to this school year
+            </Menu.Item>
+            <Menu.Item
+              color="red"
+              leftSection={<IconTrash style={{ width: rem(14), height: rem(14) }} />}
+              onClick={open}
+            >
+              Delete this school year
+            </Menu.Item>
+          </Menu.Dropdown>
+        </Menu>
+      </Flex>
+
       <SearchBar
         placeholder={t("searchBar.placeholder")}
         handleSearch={handleSearch}
@@ -90,7 +148,7 @@ export default function ClassesPage({ params }: { params: { year: number } }) {
             <Grid>
               {
                 filteredClasses.map((c) => (
-                  <Grid.Col span={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={uuidv4()}>
+                  <Grid.Col span={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={uuid()}>
                     <DirectoryCard entity={c} type="class" classParameter={params.year} textToHighlight={query} />
                   </Grid.Col>
                 ))
@@ -99,6 +157,14 @@ export default function ClassesPage({ params }: { params: { year: number } }) {
           )
         )
       }
+
+      <Modal opened={opened} onClose={close} title="Delete School Year Confirmation" centered radius="md" zIndex={1000}>
+        Are you sure you want to delete this school year? Deleting this school year will also delete all associated classes, students, and their photos. This action cannot be undone. Please confirm your decision.
+        <Group justify="center" mt="xl">
+          <Button color="red" onClick={handleDeleteSchoolYear}>Delete</Button>
+          <Button variant="default" onClick={close}>Cancel</Button>
+        </Group>
+      </Modal>
     </>
   );
 }

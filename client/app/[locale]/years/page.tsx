@@ -10,12 +10,13 @@ import DirectoryCard from "@/components/DirectoryCard";
 import SearchBar from "@/components/SearchBar";
 import { Anchor, Center, Grid, Loader, Title, useMantineTheme } from "@mantine/core";
 import { useDocumentTitle } from "@mantine/hooks";
-import { v4 as uuidv4 } from "uuid";
+import { v4 as uuid } from "uuid";
 
 export default function SchoolYearsPage() {
   useDocumentTitle("School years");
   const locale = useLocale();
   const t = useTranslations("SchoolYearsPage");
+  const p = useTranslations("Pathnames");
   const theme = useMantineTheme();
   const [years, setYears] = useState<Year[]>([]);
   const [filteredYears, setFilteredYears] = useState<Year[]>([]);
@@ -24,9 +25,9 @@ export default function SchoolYearsPage() {
   
   const breadcrumbsItems = [
     { title: t("breadcrumbs.home"), href: `/${locale}` },
-    { title: t("breadcrumbs.schoolYears"), href: `/${locale}/years` },
+    { title: t("breadcrumbs.schoolYears"), href: `/${locale}/${p("years")}` },
   ].map((item, index) => (
-    <Anchor component={Link} href={item.href} key={uuidv4()} c={theme.colors.pslib[6]}>
+    <Anchor component={Link} href={item.href} key={uuid()} c={theme.colors.pslib[6]}>
       {item.title}
     </Anchor>
   ));
@@ -40,7 +41,7 @@ export default function SchoolYearsPage() {
       }
     }, 1000);
 
-    axios.get(`/${locale}/api/years`)
+    axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${locale}/api/years`)
       .then((res) => {
         const data = res.data;
         setYears(data);
@@ -80,7 +81,7 @@ export default function SchoolYearsPage() {
             <Grid>
               {
                 filteredYears.map((y) => (
-                  <Grid.Col span={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={uuidv4()}>
+                  <Grid.Col span={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={uuid()}>
                     <DirectoryCard entity={y} type="year" textToHighlight={query} />
                   </Grid.Col>
                 ))

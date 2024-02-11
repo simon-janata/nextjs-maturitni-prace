@@ -15,7 +15,7 @@ const ScrollToTopButton = () => {
   const isMobile = useMediaQuery("(max-width: 48em)");
 
   return (
-    <Affix position={{ bottom: 20, right: 20 }}>
+    <Affix position={{ bottom: rem(20), right: rem(20) }}>
       <Transition transition="slide-up" mounted={scroll.y > (height / 2)}>
         {(transitionStyles) => (
             isMobile === false ? (

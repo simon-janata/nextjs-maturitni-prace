@@ -4,11 +4,8 @@ import { spawnSync } from "child_process";
 
 export function GET(req: Request, res: Response) {
   try {
-    const { searchParams } = new URL(req.url);
-    const name = searchParams.get("name") || "";
-
     const dirPath = join(process.cwd(), "opencvScripts");
-    const path = join(dirPath, "hello.py");
+    const path = join(dirPath, "image_crop.py");
 
     if (!existsSync(path)) {
       return new Response(
@@ -25,11 +22,11 @@ export function GET(req: Request, res: Response) {
     }
 
     console.log(`Running Python script at: ${path}`);
-    // const pythonProcess = spawnSync("python", [path, name], { encoding: "utf8" });
-    const pythonProcess = spawnSync("python", [path, Buffer.from(name, "utf8").toString("hex")], { encoding: "utf8" });
-    // const pythonProcess = spawnSync("python", [path, name], { encoding: "utf8", env: { ...process.env, PYTHONIOENCODING: "UTF-8" } });
+    const pythonProcess = spawnSync("python", [path]);
     const result = pythonProcess.stdout.toString();
     console.log(result);
+    // const result = spawnSync('python', [path], { encoding : 'utf8' });
+    // console.log(`stderr: ${result.stderr}`);
 
     return new Response(
       JSON.stringify({

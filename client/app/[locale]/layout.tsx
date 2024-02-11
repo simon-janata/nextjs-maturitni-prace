@@ -67,8 +67,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang={locale}>
       <head>
         <ColorSchemeScript defaultColorScheme="auto" />
-        <link rel="shortcut icon" href="/pslib-logo-icon.svg" type="image/x-icon" />
+        <meta charSet="UTF-8" />
         <meta name="description" content="Next.js app" />
+        <link rel="shortcut icon" href="/pslib-logo-icon.svg" type="image/x-icon" />
       </head>
       <body>
         <NextIntlClientProvider locale={locale} messages={messages[locale]} timeZone={timeZones[locale]}>

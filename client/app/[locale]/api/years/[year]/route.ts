@@ -90,10 +90,11 @@ export async function PATCH(req: Request, res: Response) {
 export async function DELETE(req: Request, res: Response) {
   try {
     const url = new URL(req.url);
-    const id = url.pathname.split("/").pop();
+    const pathParts = url.pathname.split("/");
+    const year = pathParts[pathParts.indexOf("years") + 1];
   
     const deletedYear = await prisma.year.delete({
-      where: { id: id },
+      where: { year: Number(year) },
     });
 
     return new Response(JSON.stringify(deletedYear), {

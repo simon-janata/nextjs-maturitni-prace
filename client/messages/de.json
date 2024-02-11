@@ -1,4 +1,11 @@
 {
+  "Pathnames": {
+    "add": "hinzufuegen",
+    "years": "schuljahre",
+    "classes": "klassen",
+    "about": "uber"
+  },
+
   "SchoolYearsPage": {
     "breadcrumbs": {
       "home": "Startseite",

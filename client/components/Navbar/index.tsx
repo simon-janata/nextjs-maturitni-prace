@@ -18,6 +18,7 @@ import classes from "./Navbar.module.css";
 
 const Navbar = ({ refNavbar }: { refNavbar: React.RefObject<HTMLElement> }) => {
   const locale = useLocale();
+  const p = useTranslations("Pathnames");
   const t = useTranslations("Navbar");
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
 
@@ -34,13 +35,13 @@ const Navbar = ({ refNavbar }: { refNavbar: React.RefObject<HTMLElement> }) => {
             <Link href={`/${locale}`} className={classes.link}>
               {t("homePage")}
             </Link>
-            <Link href={`/${locale}/add`} className={classes.link}>
+            <Link href={`/${locale}/${p("add")}`} className={classes.link}>
               {t("addPage")}
             </Link>
-            <Link href={`/${locale}/years`} className={classes.link}>
+            <Link href={`/${locale}/${p("years")}`} className={classes.link}>
               {t("yearsPage")}
             </Link>
-            <Link href={`/${locale}/about`} className={classes.link}>
+            <Link href={`/${locale}/${p("about")}`} className={classes.link}>
               {t("aboutPage")}
             </Link>
           </Group>

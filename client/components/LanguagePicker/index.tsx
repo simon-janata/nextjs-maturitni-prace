@@ -9,7 +9,7 @@ import GermanFlag from "@/assets/de-circle.png";
 import EnglishFlag from "@/assets/uk-circle.png";
 import { Group, Image, Menu, UnstyledButton } from "@mantine/core";
 import { IconChevronDown } from "@tabler/icons-react";
-import { v4 as uuidv4 } from "uuid";
+import { v4 as uuid } from "uuid";
 
 import classes from "./LanguagePicker.module.css";
 
@@ -56,7 +56,7 @@ const LanguagePicker = () => {
         setSelected(item);
         onLanguageChange(e);
       }}
-      key={uuidv4()}
+      key={uuid()}
     >
       {item.label}
     </Menu.Item>

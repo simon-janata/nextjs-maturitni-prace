@@ -38,7 +38,7 @@ import {
 } from "@mantine/core";
 import { useDocumentTitle, useDisclosure } from "@mantine/hooks";
 import axios from "axios";
-import { v4 as uuidv4 } from "uuid";
+import { v4 as uuid } from "uuid";
 import { useRouter } from "next/navigation";
 import { notifications } from "@mantine/notifications";
 
@@ -47,6 +47,7 @@ export default function StudentsPage({ params }: { params: { year: number, class
   const router = useRouter();
   const locale = useLocale();
   const t = useTranslations("StudentsPage");
+  const p = useTranslations("Pathnames");
   const theme = useMantineTheme();
   const [classData, setClassData] = useState<Class>();
   const [students, setStudents] = useState<Student[]>([]);
@@ -58,11 +59,11 @@ export default function StudentsPage({ params }: { params: { year: number, class
 
   const breadcrumbsItems: JSX.Element[] = [
     { title: t("breadcrumbs.home"), href: `/${locale}` },
-    { title: t("breadcrumbs.schoolYears"), href: `/${locale}/years` },
-    { title: `${params.year}`, href: `/${locale}/years/${params.year}` },
-    { title: `${params.class.toUpperCase()}`, href: `/${locale}/years/${params.year}/classes/${params.class}` },
+    { title: t("breadcrumbs.schoolYears"), href: `/${locale}/${p("years")}` },
+    { title: `${params.year}`, href: `/${locale}/${p("years")}/${params.year}` },
+    { title: `${params.class.toUpperCase()}`, href: `/${locale}/${p("years")}/${params.year}/${p("classes")}/${params.class}` },
   ].map((item, index) => (
-    <Anchor component={Link} href={item.href} key={uuidv4()} c={theme.colors.pslib[6]}>
+    <Anchor component={Link} href={item.href} key={uuid()} c={theme.colors.pslib[6]}>
       {item.title}
     </Anchor>
   ));
@@ -98,14 +99,6 @@ export default function StudentsPage({ params }: { params: { year: number, class
   }
 
   const handleDeleteClass = () => {
-    // fetch(`${process.env.NEXT_PUBLIC_API_URL}/${locale}/api/years/${params.year}/classes/${params.class}`, { method: "DELETE" })
-    //   .then((res) => res.json())
-    //   .then((data) => {
-    //     console.log(data);
-    //   })
-    //   .catch((err) => {
-    //     console.log(`Error deleting book - ${err}`);
-    //   });
     axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/${locale}/api/years/${params.year}/classes/${params.class}`)
       .then((res) => {
         router.push(`/${locale}/years/${params.year}`);
@@ -116,6 +109,9 @@ export default function StudentsPage({ params }: { params: { year: number, class
           message: "Hey there, your code is awesome! 🤥",
           autoClose: 2000,
         });
+      })
+      .catch((err) => {
+        console.log(`Error deleting class - ${err}`);
       });
   };
 
@@ -178,7 +174,7 @@ export default function StudentsPage({ params }: { params: { year: number, class
               <Grid>
                 {
                   filteredStudents.map((s) => (
-                    <Grid.Col span={{ xs: 12, sm: 6, md: 4 }} key={uuidv4()}>
+                    <Grid.Col span={{ xs: 12, sm: 6, md: 4 }} key={uuid()}>
                       <StudentCard student={s} textToHighlight={query} />
                     </Grid.Col>
                   ))

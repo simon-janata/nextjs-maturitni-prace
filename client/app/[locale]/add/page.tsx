@@ -8,9 +8,10 @@ import { useEffect, useState } from "react";
 import { Image } from "@mantine/core";
 import { FileWithPath } from "@mantine/dropzone";
 import { useLocale } from "next-intl";
-import { v4 as uuidv4 } from "uuid";
+import { v4 as uuid } from "uuid";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import { remove as removeDiacritics } from "diacritics";
 
 export default function AddPage() {
   useDocumentTitle("Add");
@@ -44,10 +45,9 @@ export default function AddPage() {
   const [previews, setPreviews] = useState<React.ReactNode[]>([]);
 
   useEffect(() => {
-    fetch(`/${locale}/api/years/${clazzData.schoolYear?.getFullYear()}`, { method: "GET" })
-      .then((res) => res.json())
-      .then((data) => {
-        setClassesInSelectedYear(data.classes.map((c: Class) => (
+    axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${locale}/api/years/${clazzData.schoolYear?.getFullYear()}`)
+      .then((res) => {
+        setClassesInSelectedYear(res.data.classes.map((c: Class) => (
           c.name
         )));
       });
@@ -58,10 +58,9 @@ export default function AddPage() {
     setClazzData({ ...clazzData, schoolYear: date });
 
     if (year) {
-      fetch(`/${locale}/api/years/${year}`, { method: "GET" })
-        .then((res) => res.json())
-        .then((data) => {
-          setClassesInSelectedYear(data.classes.map((c: Class) => (
+      axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${locale}/api/years/${year}`)
+        .then((res) => {
+          setClassesInSelectedYear(res.data.classes.map((c: Class) => (
             c.name
           )));
         });
@@ -70,7 +69,8 @@ export default function AddPage() {
 
   const handleClassNameChange = (n: string) => {
     const name = n.toUpperCase();
-    setClazzData({ ...clazzData, clazzName: name });
+    const nameWithoutDiacritics = removeDiacritics(name);
+    setClazzData({ ...clazzData, clazzName: nameWithoutDiacritics });
 
     if (name && classesInSelectedYear.includes(name)) {
       console.log("Class already exists");
@@ -98,49 +98,42 @@ export default function AddPage() {
     });
   }
 
+  // const handlePhotosUpload = (files: FileWithPath[]) => {
+  //   const updatedStudentsWithPhotos = clazzData.studentsWithPhotos.map((student, i) => {
+  //     const imageUrl = URL.createObjectURL(files[i]);
+  //     return {
+  //       ...student,
+  //       photo: files[i],
+  //       preview: (
+  //         <Link href={imageUrl} data-fancybox="gallery" data-caption={`${student.name}`} key={uuid()}>
+  //           <Image radius="md" src={imageUrl} />
+  //         </Link>
+  //       ),
+  //     };
+  //   });
+
+  //   setClazzData({ ...clazzData, photos: files, studentsWithPhotos: updatedStudentsWithPhotos });
+  // }
+  
   const handlePhotosUpload = (files: FileWithPath[]) => {
-    // setPreviews(...previews, files.map((file, index) => {
-    //   const imageUrl = URL.createObjectURL(file);
-    //   return (
-    //     <Link
-    //       href={imageUrl}
-    //       data-fancybox="gallery"
-    //     >
-    //       <Image key={index} src={imageUrl} />
-    //     </Link>
-    //   );
-    // }));
-    // console.log(files)
-    // setClazzData({ ...clazzData, photos: files });
+    const updatedStudentsWithPhotos = clazzData.students.map((student, i) => {
+      let photo: FileWithPath;
+      let preview: React.ReactNode;
 
-    // setPreviews(prevPreviews => [
-    //   ...prevPreviews,
-    //   ...files
-    //     // .sort((a, b) => a.name.localeCompare(b.name))
-    //     .map((file, index) => {
-    //       const imageUrl = URL.createObjectURL(file);
-    //       return (
-    //         <Link
-    //           href={imageUrl}
-    //           data-fancybox="gallery"
-    //         >
-    //           <Image key={index} src={imageUrl} />
-    //         </Link>
-    //       );
-    //     })
-    // ]);
-
-    const updatedStudentsWithPhotos = clazzData.studentsWithPhotos.map((student, index) => {
-      const imageUrl = URL.createObjectURL(files[index]);
-      return {
-        ...student,
-        photo: files[index],
-        preview: (
-          <Link href={imageUrl} data-fancybox="gallery" data-caption={`${student.name}`} key={uuidv4()}>
+      if (i < files.length) {
+        photo = files[i];
+        const imageUrl = URL.createObjectURL(photo);
+        preview = (
+          <Link href={imageUrl} data-fancybox="gallery" data-caption={`${student}`} key={uuid()}>
             <Image radius="md" src={imageUrl} />
           </Link>
-        ),
-      };
+        );
+      } else {
+        photo = new File([], "") as FileWithPath;
+        preview = <></>;
+      }
+
+      return { name: student, photo: photo, preview: preview };
     });
 
     setClazzData({ ...clazzData, photos: files, studentsWithPhotos: updatedStudentsWithPhotos });
