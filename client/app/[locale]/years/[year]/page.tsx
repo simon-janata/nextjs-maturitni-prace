@@ -55,22 +55,17 @@ export default function ClassesPage({ params }: { params: { year: number } }) {
   ));
 
   useEffect(() => {
-    let dataLoaded = false;
-
-    setTimeout(() => {
-      if (dataLoaded) {
-        setLoading(false);
-      }
-    }, 1000);
-
-    axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${locale}/api/years/${params.year}`)
+    const dataPromise = axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${locale}/api/years/${params.year}`)
       .then((res) => {
         const data = res.data;
         setYear(data);
         setClasses(data.classes);
         setFilteredClasses(data.classes);
-        dataLoaded = true;
       });
+
+    const timeoutPromise = new Promise(resolve => setTimeout(resolve, 1000));
+
+    Promise.all([dataPromise, timeoutPromise]).then(() => setLoading(false));
   }, []);
 
   const handleSearch = (searchQuery: string) => {
@@ -82,21 +77,22 @@ export default function ClassesPage({ params }: { params: { year: number } }) {
     setFilteredClasses(filteredResults);
   }
 
-  const handleDeleteSchoolYear = () => {
-    axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/${locale}/api/years/${params.year}`)
-      .then((res) => {
-        router.push(`/${locale}/years`);
-        notifications.show({
-          color: "teal",
-          icon: <IconCheck style={{ width: rem(18), height: rem(18) }} />,
-          title: "Default notification",
-          message: "Hey there, your code is awesome! 🤥",
-          autoClose: 2000,
-        });
-      })
-      .catch((err) => {
-        console.log(`Error deleting school year - ${err}`);
+  const handleDeleteSchoolYear = async () => {
+    try {
+      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/${locale}/api/years/${params.year}`);
+      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/${locale}/api/photos?year=${params.year}`);
+
+      router.push(`/${locale}/years`);
+      notifications.show({
+        color: "teal",
+        icon: <IconCheck style={{ width: rem(18), height: rem(18) }} />,
+        title: "School Year Deleted",
+        message: `The school year ${params.year}, along with all its classes, students, and their photos, has been successfully deleted.`,
+        autoClose: 4000,
       });
+    } catch (err) {
+      console.log(`Error deleting school year - ${err}`);
+    }
   };
 
   return (

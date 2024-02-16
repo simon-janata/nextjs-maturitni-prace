@@ -36,12 +36,39 @@ export async function GET(req: Request, res: Response) {
 // POST a new student
 export async function POST(req: Request, res: Response) {
   try {
+    const url = new URL(req.url);
+    const pathParts = url.pathname.split("/");
+    const schoolYear = pathParts[pathParts.indexOf("years") + 1];
+    const clazzName = pathParts[pathParts.indexOf("classes") + 1];
     const body = await req.json();
     
-    if (!body.firstname || !body.lastname || !body.classId) {
+    if (!body.firstname || !body.lastname) {
       return new Response(
         JSON.stringify({
-          message: "Firstname, lastname and classId must be filled in",
+          message: "Firstname and lastname must be filled in",
+        }),
+        {
+          status: 400,
+          headers: {
+            "content-type": "application/json;charset=UTF-8",
+          },
+        }
+      )
+    }
+
+    const clazz = await prisma.class.findFirst({
+      where: {
+        year: {
+          year: Number(schoolYear),
+        },
+        name: clazzName.toUpperCase(),
+      },
+    });
+    
+    if (!clazz) {
+      return new Response(
+        JSON.stringify({
+          message: "Class not found",
         }),
         {
           status: 400,
@@ -55,12 +82,12 @@ export async function POST(req: Request, res: Response) {
     const newStudent = await prisma.student.create({
       data: {
         firstname: body.firstname,
-        middlename: body.middlename === undefined ? "" : body.middlename,
+        middlename: body.middlename,
         lastname: body.lastname,
         class: {
           connect: {
-            id: body.classId
-          }
+            id: clazz.id
+          },
         },
       },
     });

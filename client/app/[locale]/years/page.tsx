@@ -33,21 +33,16 @@ export default function SchoolYearsPage() {
   ));
 
   useEffect(() => {
-    let dataLoaded = false;
-
-    setTimeout(() => {
-      if (dataLoaded) {
-        setLoading(false);
-      }
-    }, 1000);
-
-    axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${locale}/api/years`)
+    const dataPromise = axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${locale}/api/years`)
       .then((res) => {
         const data = res.data;
         setYears(data);
         setFilteredYears(data);
-        dataLoaded = true;
       });
+
+    const timeoutPromise = new Promise(resolve => setTimeout(resolve, 1000));
+
+    Promise.all([dataPromise, timeoutPromise]).then(() => setLoading(false));
   }, []);
 
   const handleSearch = (searchQuery: string) => {

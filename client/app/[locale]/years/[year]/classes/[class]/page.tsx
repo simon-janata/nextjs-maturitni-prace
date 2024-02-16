@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useLocale, useTranslations } from "next-intl";
 
 import Breadcrumbs from "@/components/Breadcrumbs";
@@ -41,6 +41,8 @@ import axios from "axios";
 import { v4 as uuid } from "uuid";
 import { useRouter } from "next/navigation";
 import { notifications } from "@mantine/notifications";
+import JSZip from "jszip";
+import { saveAs } from "file-saver";
 
 export default function StudentsPage({ params }: { params: { year: number, class: string } }) {
   useDocumentTitle("Year");
@@ -50,8 +52,9 @@ export default function StudentsPage({ params }: { params: { year: number, class
   const p = useTranslations("Pathnames");
   const theme = useMantineTheme();
   const [classData, setClassData] = useState<Class>();
-  const [students, setStudents] = useState<Student[]>([]);
-  const [filteredStudents, setFilteredStudents] = useState<Student[]>([]);
+  const [students, setStudents] = useState<StudentWithPhoto[]>([]);
+  const [filteredStudents, setFilteredStudents] = useState<StudentWithPhoto[]>([]);
+  const [base64Photos, setBase64Photos] = useState<Array<string>>([]);
   const [query, setQuery] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -67,52 +70,75 @@ export default function StudentsPage({ params }: { params: { year: number, class
       {item.title}
     </Anchor>
   ));
-  
+
   useEffect(() => {
-    let dataLoaded = false;
-
-    setTimeout(() => {
-      if (dataLoaded) {
-        setLoading(false);
-      }
-    }, 1000);
-
-    axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${locale}/api/years/${params.year}/classes/${params.class}`)
-      .then((res) => {
+    const dataPromise = axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${locale}/api/years/${params.year}/classes/${params.class}`)
+      .then(res => {
         const data = res.data;
-        setClassData(data);
-        setStudents(data.students);
-        setFilteredStudents(data.students);
-        dataLoaded = true;
+        const students: Array<StudentWithPhoto> = data.students;
+
+        return Promise.all(students.map(s => 
+          axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${locale}/api/photos?year=${params.year}&clazz=${params.class}&name=${s.lastname}${s.middlename ? `_${s.middlename}` : ""}_${s.firstname}`)
+            .then(res => ({ ...s, photo: res.data.image }))
+            .catch(err => {
+              console.log(err);
+              return s;
+            })
+        ))
+        .then(updatedStudents => {
+          console.log(updatedStudents);
+
+          setClassData(data);
+          setStudents(updatedStudents);
+          setFilteredStudents(updatedStudents);
+        });
       });
+
+    const timeoutPromise = new Promise(resolve => setTimeout(resolve, 1000));
+
+    Promise.all([dataPromise, timeoutPromise]).then(() => setLoading(false));
   }, []);
 
   const handleSearch = (searchQuery: string) => {
     setQuery(searchQuery);
     const filteredResults = students.filter((s) =>
-      s.firstname.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      s.lastname.toLowerCase().includes(searchQuery.toLowerCase()) ||
       s.middlename.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      s.lastname.toLowerCase().includes(searchQuery.toLowerCase())
+      s.firstname.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
     setFilteredStudents(filteredResults);
   }
 
-  const handleDeleteClass = () => {
-    axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/${locale}/api/years/${params.year}/classes/${params.class}`)
-      .then((res) => {
-        router.push(`/${locale}/years/${params.year}`);
-        notifications.show({
-          color: "teal",
-          icon: <IconCheck style={{ width: rem(18), height: rem(18) }} />,
-          title: "Default notification",
-          message: "Hey there, your code is awesome! 🤥",
-          autoClose: 2000,
-        });
-      })
-      .catch((err) => {
-        console.log(`Error deleting class - ${err}`);
+  const handleDownloadAllPhotos = () => {
+    const zip = new JSZip();
+
+    students.forEach((s) => {
+      console.log(s);
+      zip.file(`${s.lastname}${s.middlename ? `_${s.middlename}` : ""}_${s.firstname}.jpeg`, s.photo.replace("data:image/jpeg;base64,", ""), { base64: true });
+    });
+
+    zip.generateAsync({ type: "blob" }).then(function(content) {
+        saveAs(content, `${params.year}_${params.class.toUpperCase()}.zip`);
+    });
+  }
+
+  const handleDeleteClass = async () => {
+    try {
+      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/${locale}/api/years/${params.year}/classes/${params.class}`);
+      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/${locale}/api/photos?year=${params.year}&clazz=${params.class}`);
+
+      router.push(`/${locale}/years/${params.year}`);
+      notifications.show({
+        color: "teal",
+        icon: <IconCheck style={{ width: rem(18), height: rem(18) }} />,
+        title: "Class Deleted",
+        message: `The class ${params.class} for the school year ${params.year} and its photos have been successfully deleted.`,
+        autoClose: 2000,
       });
+    } catch (err) {
+      console.log(`Error deleting class or photos - ${err}`);
+    }
   };
 
   return (
@@ -131,7 +157,10 @@ export default function StudentsPage({ params }: { params: { year: number, class
           </Menu.Target>
 
           <Menu.Dropdown>
-            <Menu.Item leftSection={<IconFileZip style={{ width: rem(14), height: rem(14) }} />}>
+            <Menu.Item
+              leftSection={<IconFileZip style={{ width: rem(14), height: rem(14) }} />}
+              onClick={handleDownloadAllPhotos}
+            >
               Download all photos (.zip)
             </Menu.Item>
             <Menu.Item leftSection={<IconShare style={{ width: rem(14), height: rem(14) }} />}>

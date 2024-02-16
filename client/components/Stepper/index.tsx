@@ -21,7 +21,8 @@ import {
   Divider,
   Stepper as StepperMantine,
   TextInput, Title,
-  rem
+  rem,
+  Progress
 } from "@mantine/core";
 import { YearPickerInput } from "@mantine/dates";
 import { MIME_TYPES, FileWithPath } from "@mantine/dropzone";
@@ -46,18 +47,19 @@ type ClazzData = {
 type StateAndHandlers = {
   active: number;
   setActive: React.Dispatch<React.SetStateAction<number>>;
+  nextStep: () => void;
+  prevStep: () => void;
+  nextStepButtonDisabled: Array<boolean>;
   clazzData: ClazzData;
   setClazzData: React.Dispatch<React.SetStateAction<ClazzData>>;
   classesInSelectedYear: string[];
   previews: React.ReactNode[];
-  nextStep: () => void;
-  prevStep: () => void;
   handlePickYearChange: (date: Date | null) => void;
   handleClassNameChange: (n: string) => void;
   handleFolderColorChange: (color: string) => void;
   handleCSVUpload: (files: File) => void;
   handlePhotosUpload: (files: FileWithPath[]) => void;
-  handleStudentsDataSubmission: (files: FileWithPath[]) => void;
+  handleStudentsDataSubmission: () => void;
 }
 
 type StepperProps = {
@@ -74,15 +76,18 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
   const refNextStepButton: React.RefObject<HTMLButtonElement> = useRef(null);
   const [isButtonDisabled, setButtonDisabled] = useState<boolean>(true);
 
+  const [value, setValue] = useState<number>(50);
+
   const {
     active,
     setActive,
+    nextStep,
+    prevStep,
+    nextStepButtonDisabled,
     clazzData,
     setClazzData,
     classesInSelectedYear,
     previews,
-    nextStep,
-    prevStep,
     handlePickYearChange,
     handleClassNameChange,
     handleFolderColorChange,
@@ -91,25 +96,25 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
     handleStudentsDataSubmission
   } = stateAndHandlers;
 
-  useEffect(() => {
-    if (refNextStepButton.current) {
-      setButtonDisabled(false);
-      console.log(refNextStepButton.current.attributes);
-      console.log(refNextStepButton.current);
-    }
-    console.log("clazzData changed");
+  // useEffect(() => {
+  //   if (refNextStepButton.current) {
+  //     setButtonDisabled(false);
+  //     // console.log(refNextStepButton.current.attributes);
+  //     // console.log(refNextStepButton.current);
+  //   }
+  //   // console.log("clazzData changed");
 
 
-    if (active === 0) {
-      console.log("zero");
-    } else if (active === 1) {
-      console.log("one");
-    } else if (active === 2) {
-      console.log("two");
-    } else if (active === 3) {
-      console.log("three");
-    }
-  }, [clazzData.schoolYear, clazzData.clazzName, clazzData.folderColor, clazzData.students, clazzData.photos, clazzData.studentsWithPhotos]);
+  //   if (active === 0) {
+  //     console.log("zero");
+  //   } else if (active === 1) {
+  //     console.log("one");
+  //   } else if (active === 2) {
+  //     console.log("two");
+  //   } else if (active === 3) {
+  //     console.log("three");
+  //   }
+  // }, [clazzData.schoolYear, clazzData.clazzName, clazzData.folderColor, clazzData.students, clazzData.photos, clazzData.studentsWithPhotos]);
 
   return (
     <>
@@ -228,7 +233,16 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
           }
         </StepperMantine.Step>
         <StepperMantine.Completed>
-          <Text>Completed</Text>
+          <Title order={1} ta="center">Completed</Title>
+          <Progress.Root size="lg" mt="xl">
+            <Progress.Section value={value} color="green" style={{ transitionDuration: "200ms" }}>
+            </Progress.Section>
+          </Progress.Root>
+          <Center>
+            <Button onClick={() => setValue(Math.random() * 100)} mt="md">
+              Set random value
+            </Button>
+          </Center>
         </StepperMantine.Completed>
       </StepperMantine>
 
@@ -236,9 +250,9 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
         <Button variant="default" onClick={prevStep}>Back</Button>
         {
           active === 4 ? (
-            <Button onClick={() => handleStudentsDataSubmission(clazzData.photos)}>Submit</Button>
+            <Button onClick={() => handleStudentsDataSubmission()}>Submit</Button>
           ) : (
-            <Button ref={refNextStepButton} onClick={nextStep} disabled={isButtonDisabled}>Next step</Button>
+            <Button ref={refNextStepButton} onClick={nextStep} disabled={nextStepButtonDisabled[active]}>Next step</Button>
           )
         }
       </Group>

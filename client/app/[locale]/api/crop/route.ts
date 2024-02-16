@@ -25,8 +25,6 @@ export function GET(req: Request, res: Response) {
     const pythonProcess = spawnSync("python", [path]);
     const result = pythonProcess.stdout.toString();
     console.log(result);
-    // const result = spawnSync('python', [path], { encoding : 'utf8' });
-    // console.log(`stderr: ${result.stderr}`);
 
     return new Response(
       JSON.stringify({

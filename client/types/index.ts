@@ -21,3 +21,5 @@ type Student = {
   middlename: string;
   lastname: string;
 }
+
+type StudentWithPhoto = Student & { photo: string };

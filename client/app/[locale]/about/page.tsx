@@ -24,26 +24,26 @@ export default function AboutPage() {
   //     });
   // }, []);
 
-  useEffect(() => {
-    axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${locale}/api/photos?year=2024&clazz=P1A&name=Mendřický_Radomír.JPG`)
-      .then(res => {
-        console.log(res.data);
-        document.getElementById("myImage")?.setAttribute("src", res.data.image);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }, []);
+  // useEffect(() => {
+  //   axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${locale}/api/photos?year=2028&clazz=P1A&name=Mendřický_Radomír.JPG`)
+  //     .then(res => {
+  //       console.log(res.data);
+  //       document.getElementById("myImage")?.setAttribute("src", res.data.image);
+  //     })
+  //     .catch(err => {
+  //       console.log(err);
+  //     });
+  // }, []);
 
-  const handleCropImage = () => {
-    axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${locale}/api/crop`)
-      .then(res => {
-        console.log(res.data.message);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }
+  // const handleCropImage = () => {
+  //   axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${locale}/api/crop`)
+  //     .then(res => {
+  //       console.log(res.data.message);
+  //     })
+  //     .catch(err => {
+  //       console.log(err);
+  //     });
+  // }
   
   return (
     <>
@@ -63,7 +63,7 @@ export default function AboutPage() {
         </Button>
       </Center>
 
-      <Center>
+      {/* <Center>
         <Button
           size="md"
           mt="xl"
@@ -71,14 +71,14 @@ export default function AboutPage() {
         >
           Crop image using Python
         </Button>
-      </Center>
+      </Center> */}
 
-      <Image
+      {/* <Image
         id="myImage"
         src=""
         alt="pslib-logo"
         style={{ width: "400px", height: "auto" }}
-      />
+      /> */}
     </>
   );
 }
