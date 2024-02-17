@@ -26,7 +26,7 @@ import { useDocumentTitle, useDisclosure } from "@mantine/hooks";
 import axios from "axios";
 import { notifications } from "@mantine/notifications";
 import { v4 as uuid } from "uuid";
-import { IconCheck, IconSettings, IconTrash, IconShare } from "@tabler/icons-react";
+import { IconCheck, IconSettings, IconTrash, IconShare, IconDotsVertical } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 
 export default function ClassesPage({ params }: { params: { year: number } }) {
@@ -103,26 +103,9 @@ export default function ClassesPage({ params }: { params: { year: number } }) {
         align="center"
       >
         <Breadcrumbs items={breadcrumbsItems} />
-        <Menu shadow="md" width={250} position="bottom-end" withArrow>
-          <Menu.Target>
-            <UnstyledButton w={24} h={24}>
-              <IconSettings />
-            </UnstyledButton>
-          </Menu.Target>
-
-          <Menu.Dropdown>
-            <Menu.Item leftSection={<IconShare style={{ width: rem(14), height: rem(14) }} />}>
-              Share link to this school year
-            </Menu.Item>
-            <Menu.Item
-              color="red"
-              leftSection={<IconTrash style={{ width: rem(14), height: rem(14) }} />}
-              onClick={open}
-            >
-              Delete this school year
-            </Menu.Item>
-          </Menu.Dropdown>
-        </Menu>
+        <UnstyledButton w={24} h={24} onClick={open}>
+          <IconTrash />
+        </UnstyledButton>
       </Flex>
 
       <SearchBar

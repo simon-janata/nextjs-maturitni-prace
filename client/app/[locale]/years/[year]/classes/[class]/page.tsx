@@ -152,7 +152,7 @@ export default function StudentsPage({ params }: { params: { year: number, class
         <Menu shadow="md" width={250} position="bottom-end" withArrow>
           <Menu.Target>
             <UnstyledButton w={24} h={24}>
-              <IconSettings />
+              <IconDotsVertical />
             </UnstyledButton>
           </Menu.Target>
 
@@ -162,9 +162,6 @@ export default function StudentsPage({ params }: { params: { year: number, class
               onClick={handleDownloadAllPhotos}
             >
               Download all photos (.zip)
-            </Menu.Item>
-            <Menu.Item leftSection={<IconShare style={{ width: rem(14), height: rem(14) }} />}>
-              Share this class
             </Menu.Item>
             <Menu.Item
               color="red"

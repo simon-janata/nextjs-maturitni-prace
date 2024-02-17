@@ -61,10 +61,6 @@
     "drawerTitle": "Navigation"
   },
 
-  "ScrollToTopButton": {
-    "label": "Scroll to top"
-  },
-
   "Stepper": {
     "firstStep": {
       "label": "First step",

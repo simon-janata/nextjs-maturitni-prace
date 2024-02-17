@@ -47,7 +47,7 @@ const Navbar = ({ refNavbar }: { refNavbar: React.RefObject<HTMLElement> }) => {
           </Group>
 
           <Group visibleFrom="sm" gap="sm">
-            <NavbarSearch />
+            {/* <NavbarSearch /> */}
             <LanguagePicker />
             <ColorSchemeToggle />
           </Group>

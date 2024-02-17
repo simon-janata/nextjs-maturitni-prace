@@ -61,10 +61,6 @@
     "drawerTitle": "Navigace"
   },
 
-  "ScrollToTopButton": {
-    "label": "Vrátit se nahoru"
-  },
-
   "Stepper": {
     "firstStep": {
       "label": "První krok",

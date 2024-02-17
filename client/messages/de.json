@@ -41,9 +41,6 @@
     "aboutPage": "Über",
     "drawerTitle": "Navigation"
   },
-  "ScrollToTopButton": {
-    "label": "Nach oben"
-  },
   "Stepper": {
     "steps": {
       "first": {
