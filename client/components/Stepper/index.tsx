@@ -234,12 +234,13 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
         </StepperMantine.Step>
         <StepperMantine.Completed>
           <Title order={1} ta="center">Completed</Title>
-          <Progress.Root size="lg" mt="xl">
+          <Text ta="center" mt="xl">{value}</Text>
+          <Progress.Root size="lg" mt="sm">
             <Progress.Section value={value} color="green" style={{ transitionDuration: "200ms" }}>
             </Progress.Section>
           </Progress.Root>
           <Center>
-            <Button onClick={() => setValue(Math.random() * 100)} mt="md">
+            <Button onClick={() => setValue(Math.round(Math.random() * 100))} mt="md">
               Set random value
             </Button>
           </Center>

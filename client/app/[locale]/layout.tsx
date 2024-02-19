@@ -17,6 +17,7 @@ import { Notifications } from "@mantine/notifications";
 
 import { theme } from "../../theme";
 import { NextIntlClientProvider, useMessages, useTimeZone, useLocale } from "next-intl";
+import axios from "axios";
 
 import csTranslations from "@/messages/cs.json";
 import enTranslations from "@/messages/en.json";
@@ -61,6 +62,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     return () => {
       window.removeEventListener("resize", handleResize);
     };
+  }, []);
+
+  useEffect(() => {
+    const startCleanupJob = async () => {
+      try {
+        await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${locale}/api/scheduleSchoolYearCleanup`);
+        console.log('Cleanup job scheduled');
+      } catch (err) {
+        console.error('Failed to schedule cleanup job', err);
+      }
+    };
+  
+    startCleanupJob();
   }, []);
 
   return (
