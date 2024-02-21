@@ -7,14 +7,14 @@ export async function GET(req: Request, res: Response) {
 		// const locale = cookies?.split("; ").find(cookie => cookie.startsWith("NEXT_LOCALE="))?.split("=")[1];
 
 		// console.log(locale);
-		// console.log(`${process.env.NEXT_PUBLIC_API_URL}/${locale}/api/years`);
+		// console.log(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/years`);
 
 		new CronJob("0 0 * * *", async function() {
 			try {
-				const schoolYears = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/en/api/years`);
+				const schoolYears = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/years`);
 				for (const schoolYear of schoolYears.data) {
-					await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/en/api/years/${schoolYear}`);
-					await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/en/api/photos?year=${schoolYear}`);
+					await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/years/${schoolYear.year}`);
+					await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/photos?year=${schoolYear.year}`);
 				}
 			} catch (err) {
 				console.log(`Error deleting school year - ${err}`);

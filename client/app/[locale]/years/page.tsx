@@ -33,7 +33,7 @@ export default function SchoolYearsPage() {
   ));
 
   useEffect(() => {
-    const dataPromise = axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${locale}/api/years`)
+    const dataPromise = axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/years`)
       .then((res) => {
         const data = res.data;
         setYears(data);

@@ -64,18 +64,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     };
   }, []);
 
-  useEffect(() => {
-    const startCleanupJob = async () => {
-      try {
-        await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${locale}/api/scheduleSchoolYearCleanup`);
-        console.log('Cleanup job scheduled');
-      } catch (err) {
-        console.error('Failed to schedule cleanup job', err);
-      }
-    };
+  // useEffect(() => {
+  //   const startCleanupJob = async () => {
+  //     try {
+  //       await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/scheduleSchoolYearCleanup`);
+  //       console.log('Cleanup job scheduled');
+  //     } catch (err) {
+  //       console.error('Failed to schedule cleanup job', err);
+  //     }
+  //   };
   
-    startCleanupJob();
-  }, []);
+  //   startCleanupJob();
+  // }, []);
 
   return (
     <html lang={locale}>

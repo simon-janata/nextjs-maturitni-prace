@@ -72,13 +72,13 @@ export default function StudentsPage({ params }: { params: { year: number, class
   ));
 
   useEffect(() => {
-    const dataPromise = axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${locale}/api/years/${params.year}/classes/${params.class}`)
+    const dataPromise = axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/years/${params.year}/classes/${params.class}`)
       .then(res => {
         const data = res.data;
         const students: Array<StudentWithPhoto> = data.students;
 
         return Promise.all(students.map(s => 
-          axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${locale}/api/photos?year=${params.year}&clazz=${params.class}&name=${s.lastname}${s.middlename ? `_${s.middlename}` : ""}_${s.firstname}`)
+          axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/photos?year=${params.year}&clazz=${params.class}&name=${s.lastname}${s.middlename ? `_${s.middlename}` : ""}_${s.firstname}`)
             .then(res => ({ ...s, photo: res.data.image }))
             .catch(err => {
               console.log(err);
@@ -125,8 +125,8 @@ export default function StudentsPage({ params }: { params: { year: number, class
 
   const handleDeleteClass = async () => {
     try {
-      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/${locale}/api/years/${params.year}/classes/${params.class}`);
-      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/${locale}/api/photos?year=${params.year}&clazz=${params.class}`);
+      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/years/${params.year}/classes/${params.class}`);
+      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/photos?year=${params.year}&clazz=${params.class}`);
 
       router.push(`/${locale}/years/${params.year}`);
       notifications.show({

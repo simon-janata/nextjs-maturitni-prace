@@ -49,7 +49,7 @@ export default function AddPage() {
   const [previews, setPreviews] = useState<React.ReactNode[]>([]);
 
   useEffect(() => {
-    axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${locale}/api/years`)
+    axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/years`)
       .then((res) => {
         const existingSchoolYearsArray: Array<number> = [];
         res.data.forEach((element: any) => {
@@ -58,7 +58,7 @@ export default function AddPage() {
         setExistingSchoolYears(existingSchoolYearsArray);
       });
 
-    axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${locale}/api/years/${clazzData.schoolYear?.getFullYear()}`)
+    axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/years/${clazzData.schoolYear?.getFullYear()}`)
       .then((res) => {
         if (res.data) {
           setClassesInSelectedYear(res.data.classes.map((c: Class) => (
@@ -119,7 +119,7 @@ export default function AddPage() {
     setClazzData({ ...clazzData, schoolYear: date });
 
     if (year) {
-      axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${locale}/api/years/${year}`)
+      axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/years/${year}`)
         .then((res) => {
           if (res.data) {
             setClassesInSelectedYear(res.data.classes.map((c: Class) => (
@@ -215,7 +215,7 @@ export default function AddPage() {
     try {
       // POST new year if it does not exist
       if (!existingSchoolYears.includes(clazzData.schoolYear?.getFullYear() ?? 0)) {
-        await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/${locale}/api/years`, {
+        await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/years`, {
           year: clazzData.schoolYear?.getFullYear(),
         })
         .then((res) => {
@@ -228,7 +228,7 @@ export default function AddPage() {
       }
 
       // POST new class
-      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/${locale}/api/years/${clazzData.schoolYear?.getFullYear()}/classes`, {
+      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/years/${clazzData.schoolYear?.getFullYear()}/classes`, {
         name: clazzData.clazzName,
         folderColor: clazzData.folderColor,
       })
@@ -244,7 +244,7 @@ export default function AddPage() {
       for (let i = 0; i < clazzData.students.length; i++) {
         const studentNameParts = clazzData.students[i].split(" ");
 
-        await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/${locale}/api/years/${clazzData.schoolYear?.getFullYear()}/classes/${clazzData.clazzName.toLowerCase()}/students`, {
+        await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/years/${clazzData.schoolYear?.getFullYear()}/classes/${clazzData.clazzName.toLowerCase()}/students`, {
           lastname: studentNameParts[0],
           middlename: studentNameParts.length > 2 ? studentNameParts[1] : "",
           firstname: studentNameParts.length > 2 ? studentNameParts[2] : studentNameParts[1],
@@ -265,7 +265,7 @@ export default function AddPage() {
         formData.set("photo", clazzData.photos[i]);
         const studentNameParts = clazzData.students[i].split(" ");
 
-        await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/${locale}/api/photos`, formData, {
+        await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/photos`, formData, {
           params: {
             year: clazzData.schoolYear?.getFullYear(),
             clazz: clazzData.clazzName.toLowerCase(),

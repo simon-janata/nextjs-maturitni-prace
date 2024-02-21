@@ -14,8 +14,8 @@ export default function AboutPage() {
   const locale = useLocale();
 
   // useEffect(() => {
-  //   console.log(`${process.env.NEXT_PUBLIC_API_URL}/${locale}/api/hello?name=Jiří`);
-  //   axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${locale}/api/hello?name=Jiří`)
+  //   console.log(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/hello?name=Jiří`);
+  //   axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/hello?name=Jiří`)
   //     .then((res) => {
   //       console.log(`Response from server: ${res.data.message}`);
   //     })
@@ -25,7 +25,7 @@ export default function AboutPage() {
   // }, []);
 
   // useEffect(() => {
-  //   axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${locale}/api/photos?year=2028&clazz=P1A&name=Mendřický_Radomír.JPG`)
+  //   axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/photos?year=2028&clazz=P1A&name=Mendřický_Radomír.JPG`)
   //     .then(res => {
   //       console.log(res.data);
   //       document.getElementById("myImage")?.setAttribute("src", res.data.image);
@@ -36,7 +36,7 @@ export default function AboutPage() {
   // }, []);
 
   // const handleCropImage = () => {
-  //   axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${locale}/api/crop`)
+  //   axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/crop`)
   //     .then(res => {
   //       console.log(res.data.message);
   //     })

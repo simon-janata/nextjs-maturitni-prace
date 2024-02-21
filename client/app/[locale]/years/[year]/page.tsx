@@ -55,7 +55,7 @@ export default function ClassesPage({ params }: { params: { year: number } }) {
   ));
 
   useEffect(() => {
-    const dataPromise = axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${locale}/api/years/${params.year}`)
+    const dataPromise = axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/years/${params.year}`)
       .then((res) => {
         const data = res.data;
         setYear(data);
@@ -79,8 +79,8 @@ export default function ClassesPage({ params }: { params: { year: number } }) {
 
   const handleDeleteSchoolYear = async () => {
     try {
-      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/${locale}/api/years/${params.year}`);
-      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/${locale}/api/photos?year=${params.year}`);
+      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/years/${params.year}`);
+      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/photos?year=${params.year}`);
 
       router.push(`/${locale}/years`);
       notifications.show({
