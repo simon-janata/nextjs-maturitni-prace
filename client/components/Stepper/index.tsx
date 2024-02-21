@@ -49,7 +49,6 @@ type StateAndHandlers = {
   setActive: React.Dispatch<React.SetStateAction<number>>;
   nextStep: () => void;
   prevStep: () => void;
-  nextStepButtonDisabled: Array<boolean>;
   clazzData: ClazzData;
   setClazzData: React.Dispatch<React.SetStateAction<ClazzData>>;
   classesInSelectedYear: string[];
@@ -73,8 +72,7 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
   const mimeTypesCSV = [MIME_TYPES.csv];
   const mimeTypesPhotos = [MIME_TYPES.png, MIME_TYPES.jpeg, MIME_TYPES.webp];
 
-  const refNextStepButton: React.RefObject<HTMLButtonElement> = useRef(null);
-  const [isButtonDisabled, setButtonDisabled] = useState<boolean>(true);
+  const nextStepButtonRef: React.RefObject<HTMLButtonElement> = useRef(null);
 
   const [value, setValue] = useState<number>(50);
 
@@ -83,7 +81,6 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
     setActive,
     nextStep,
     prevStep,
-    nextStepButtonDisabled,
     clazzData,
     setClazzData,
     classesInSelectedYear,
@@ -96,25 +93,29 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
     handleStudentsDataSubmission
   } = stateAndHandlers;
 
-  // useEffect(() => {
-  //   if (refNextStepButton.current) {
-  //     setButtonDisabled(false);
-  //     // console.log(refNextStepButton.current.attributes);
-  //     // console.log(refNextStepButton.current);
-  //   }
-  //   // console.log("clazzData changed");
-
-
-  //   if (active === 0) {
-  //     console.log("zero");
-  //   } else if (active === 1) {
-  //     console.log("one");
-  //   } else if (active === 2) {
-  //     console.log("two");
-  //   } else if (active === 3) {
-  //     console.log("three");
-  //   }
-  // }, [clazzData.schoolYear, clazzData.clazzName, clazzData.folderColor, clazzData.students, clazzData.photos, clazzData.studentsWithPhotos]);
+  useEffect(() => {
+    if (active === 0) {
+      const isFormValid: boolean = clazzData.schoolYear !== null;
+      if (nextStepButtonRef.current) {
+        nextStepButtonRef.current.disabled = !isFormValid;
+      }
+    } else if (active === 1) {
+      const isFormValid: boolean = clazzData.clazzName !== "" && clazzData.folderColor !== "";
+      if (nextStepButtonRef.current) {
+        nextStepButtonRef.current.disabled = !isFormValid;
+      }
+    } else if (active === 2) {
+      const isFormValid: boolean = clazzData.students.length > 0;
+      if (nextStepButtonRef.current) {
+        nextStepButtonRef.current.disabled = !isFormValid;
+      }
+    } else if (active === 3) {
+      const isFormValid: boolean = clazzData.photos.length > 0;
+      if (nextStepButtonRef.current) {
+        nextStepButtonRef.current.disabled = !isFormValid;
+      }
+    }
+  }, [active, clazzData]);
 
   return (
     <>
@@ -253,7 +254,7 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
           active === 4 ? (
             <Button onClick={() => handleStudentsDataSubmission()}>Submit</Button>
           ) : (
-            <Button ref={refNextStepButton} onClick={nextStep} disabled={nextStepButtonDisabled[active]}>Next step</Button>
+            <Button ref={nextStepButtonRef} onClick={nextStep}>Next step</Button>
           )
         }
       </Group>

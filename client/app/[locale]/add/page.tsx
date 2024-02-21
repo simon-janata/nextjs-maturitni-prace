@@ -19,8 +19,6 @@ export default function AddPage() {
   const locale = useLocale();
 
   const [active, setActive] = useState<number>(0);
-  // const [nextStepButtonDisabled, setNextStepButtonDisabled] = useState<Array<boolean>>([false, false, true, true]);
-  let nextStepButtonDisabled: Array<boolean> = [false, false, false, false];
   const nextStep = () => setActive((current) => (current < 4 ? current + 1 : current));
   const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
 
@@ -37,7 +35,7 @@ export default function AddPage() {
 
   const initialClazzData: ClazzData = {
     schoolYear: new Date(),
-    clazzName: "P1A",
+    clazzName: "",
     folderColor: "#fcbc19",
     students: [],
     photos: [],
@@ -68,52 +66,6 @@ export default function AddPage() {
       });
   }, []);
 
-  const checkStepCompletion = () =>{
-    if (active === 0) {
-      const buttonValues = nextStepButtonDisabled;
-      buttonValues[1] = true;
-      // setNextStepButtonDisabled(buttonValues);
-
-
-
-
-
-    } else if (active === 1) {
-
-      console.log("one");
-
-      // if (clazzData.clazzName === "" || clazzData.folderColor === "") {
-      //   const buttonValues = nextStepButtonDisabled;
-      //   buttonValues[1] = true;
-      //   setNextStepButtonDisabled(buttonValues);
-      // } else {
-      //   const buttonValues = nextStepButtonDisabled;
-      //   buttonValues[1] = false;
-      //   setNextStepButtonDisabled(buttonValues);
-      // }
-
-      if (clazzData.clazzName === "" || clazzData.folderColor === "") {
-        const newState = [...nextStepButtonDisabled];
-        newState[1] = true;
-        nextStepButtonDisabled = newState;
-      
-      }  // } else {
-      //   const newState = [...nextStepButtonDisabled];
-      //   newState[1] = false;
-      //   nextStepButtonDisabled = newState;
-      // }
-
-      console.log(nextStepButtonDisabled)
-
-
-
-    } else if (active === 2) {
-      console.log("two");
-    } else if (active === 3) {
-      console.log("three");
-    }
-  }
-
   const handlePickYearChange = (date: Date | null) => {
     const year = date?.getFullYear();
     setClazzData({ ...clazzData, schoolYear: date });
@@ -128,8 +80,6 @@ export default function AddPage() {
           }
         });
     }
-
-    checkStepCompletion();
   }
 
   const handleClassNameChange = (n: string) => {
@@ -143,14 +93,10 @@ export default function AddPage() {
     } else {
       console.log("Class does not exist");
     }
-
-    checkStepCompletion();
   }
 
   const handleFolderColorChange = (color: string) => {
     setClazzData({ ...clazzData, folderColor: color });
-
-    checkStepCompletion();
   }
 
   const handleCSVUpload = (file: File) => {
@@ -165,8 +111,6 @@ export default function AddPage() {
         setClazzData({ ...clazzData, students: studentsNames, studentsWithPhotos: namesWithPhotos });
       },
     });
-
-    checkStepCompletion();
   }
 
   // const handlePhotosUpload = (files: FileWithPath[]) => {
@@ -290,13 +234,14 @@ export default function AddPage() {
   }
   
   console.log(clazzData);
+  // console.log(classesInSelectedYear);
+  // console.log(existingSchoolYears);
 
   const stateAndHandlers = {
     active: active,
     setActive: setActive,
     nextStep: nextStep,
     prevStep: prevStep,
-    nextStepButtonDisabled: nextStepButtonDisabled,
     clazzData: clazzData,
     setClazzData: setClazzData,
     classesInSelectedYear: classesInSelectedYear,
