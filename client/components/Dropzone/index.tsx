@@ -40,6 +40,7 @@ const Dropzone: React.FC<DropzoneProps> = ({ acceptedMimeTypes, maxSize, multipl
         accept={acceptedMimeTypes}
         maxSize={maxSize * 1024 ** 2}
         multiple={multiple}
+        aria-required
       >
         <div style={{ pointerEvents: "none" }}>
           <Group justify="center">

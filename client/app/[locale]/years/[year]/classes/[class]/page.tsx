@@ -133,7 +133,7 @@ export default function StudentsPage({ params }: { params: { year: number, class
         color: "teal",
         icon: <IconCheck style={{ width: rem(18), height: rem(18) }} />,
         title: "Class Deleted",
-        message: `The class ${params.class} for the school year ${params.year} and its photos have been successfully deleted.`,
+        message: `The class ${params.class.toUpperCase()} for the school year ${params.year} and its photos have been successfully deleted.`,
         autoClose: 2000,
       });
     } catch (err) {

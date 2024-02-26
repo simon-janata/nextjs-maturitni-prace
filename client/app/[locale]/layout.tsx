@@ -7,7 +7,7 @@ import "@mantine/spotlight/styles.css";
 import "@mantine/notifications/styles.css";
 import "./globals.css";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
@@ -24,10 +24,6 @@ import enTranslations from "@/messages/en.json";
 import deTranslations from "@/messages/de.json";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const refNavbar: React.RefObject<HTMLElement> = useRef(null);
-  const refFooter: React.RefObject<HTMLElement> = useRef(null);
-  const refMain: React.RefObject<HTMLElement> = useRef(null);
-
   const locale = useLocale() as "cs" | "en" | "de";
 
   const messages = {
@@ -41,28 +37,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     "en": "Europe/London",
     "de": "Europe/Berlin",
   };
-
-  useEffect(() => {
-    const handleResize = () => {
-      const windowHeight = window.innerHeight;
-      const navbarHeight = refNavbar.current ? refNavbar.current.offsetHeight : 0;
-      const footerHeight = refFooter.current ? refFooter.current.offsetHeight : 0;
-
-      const mainHeight = windowHeight - navbarHeight - footerHeight;
-
-      if (refMain.current) {
-        refMain.current.style.minHeight = `${mainHeight}px`;
-      }
-    };
-
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    
-    // Cleanup
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
 
   // useEffect(() => {
   //   const startCleanupJob = async () => {
@@ -88,15 +62,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <NextIntlClientProvider locale={locale} messages={messages[locale]} timeZone={timeZones[locale]}>
           <MantineProvider theme={theme} defaultColorScheme="auto">
-            <Navbar refNavbar={refNavbar} />
-            <main ref={refMain}>
-              <Container>
+            <Navbar/>
+            <main>
+              <Container className="container">
                 {children}
                 <ScrollToTopButton />
               </Container>
               <Notifications position="bottom-right" />
             </main>
-            <Footer refFooter={refFooter} />
+            <Footer/>
           </MantineProvider>
         </NextIntlClientProvider>
       </body>

@@ -13,10 +13,9 @@ import { useLocale, useTranslations } from "next-intl";
 
 import ColorSchemeToggle from "../ColorSchemeToggle";
 import LanguagePicker from "../LanguagePicker";
-import NavbarSearch from "../NavbarSearch";
 import classes from "./Navbar.module.css";
 
-const Navbar = ({ refNavbar }: { refNavbar: React.RefObject<HTMLElement> }) => {
+const Navbar = () => {
   const locale = useLocale();
   const p = useTranslations("Pathnames");
   const t = useTranslations("Navbar");
@@ -24,7 +23,7 @@ const Navbar = ({ refNavbar }: { refNavbar: React.RefObject<HTMLElement> }) => {
 
   return (
     <Box>
-      <header ref={refNavbar} className={classes.header}>
+      <header className={classes.header}>
         <Group justify="space-between" h="100%">
           <Link href={`/${locale}`} className={classes.linkLogo}>
             <Image src="/pslib-logo-dark.svg" className={classes.imgLogo} darkHidden />
@@ -47,7 +46,6 @@ const Navbar = ({ refNavbar }: { refNavbar: React.RefObject<HTMLElement> }) => {
           </Group>
 
           <Group visibleFrom="sm" gap="sm">
-            {/* <NavbarSearch /> */}
             <LanguagePicker />
             <ColorSchemeToggle />
           </Group>

@@ -22,7 +22,8 @@ import {
   Stepper as StepperMantine,
   TextInput, Title,
   rem,
-  Progress
+  Progress,
+  Select,
 } from "@mantine/core";
 import { YearPickerInput } from "@mantine/dates";
 import { MIME_TYPES, FileWithPath } from "@mantine/dropzone";
@@ -93,14 +94,30 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
     handleStudentsDataSubmission
   } = stateAndHandlers;
 
+  const formSchoolYear = useForm({
+    initialValues: { schoolYear: clazzData.schoolYear },
+    validate: {
+      schoolYear: (value) => (value && value.getFullYear() <= new Date().getFullYear() ? null : "School year must be filled in and cannot be in the future."),
+    },
+    validateInputOnChange: true,
+  });
+
+  const formClazzName = useForm({
+    initialValues: { clazzName: clazzData.clazzName },
+    validate: {
+      clazzName: (value) => (value.trim() ? null : "Class name must be filled in"),
+    },
+    validateInputOnChange: true,
+  });
+
   useEffect(() => {
     if (active === 0) {
-      const isFormValid: boolean = clazzData.schoolYear !== null;
+      const isFormValid: boolean = (clazzData.schoolYear ? (clazzData.schoolYear.getFullYear() <= new Date().getFullYear() ? true : false) : false);
       if (nextStepButtonRef.current) {
         nextStepButtonRef.current.disabled = !isFormValid;
       }
     } else if (active === 1) {
-      const isFormValid: boolean = clazzData.clazzName !== "" && clazzData.folderColor !== "";
+      const isFormValid: boolean = clazzData.clazzName.trim() !== "" && clazzData.folderColor !== "";
       if (nextStepButtonRef.current) {
         nextStepButtonRef.current.disabled = !isFormValid;
       }
@@ -136,7 +153,11 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
           <YearPickerInput
             label="Pick year"
             value={clazzData.schoolYear}
-            onChange={(e) => handlePickYearChange(e)}
+            onChange={(e) => {
+              handlePickYearChange(e);
+              formSchoolYear.setFieldValue("schoolYear", e);
+            }}
+            error={formSchoolYear.errors.schoolYear}
             required
           />
         </StepperMantine.Step>
@@ -151,19 +172,27 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
             label="Enter class name"
             placeholder="Enter class name"
             value={clazzData.clazzName}
-            onChange={(e) => handleClassNameChange(e.target.value)}
+            onChange={(e) => {
+              handleClassNameChange(e.target.value);
+              formClazzName.setFieldValue("clazzName", e.target.value);
+            }}
+            error={formClazzName.errors.clazzName}
             required
           />
-          <ColorInput
-            label="Pick folder colour"
-            format="hex"
-            swatches={["#fcbc19", "#4154fa", "#429fe3", "#e34242", "#3cab68", "#e3a342", "#9c42e3", "#436a68"]}
-            swatchesPerRow={8}
-            defaultValue={clazzData.folderColor}
-            onChange={(color) => handleFolderColorChange(color)}
-            disallowInput
-            required
-          />
+          {
+            !classesInSelectedYear.includes(clazzData.clazzName) && (
+              <ColorInput
+                label="Pick folder colour"
+                format="hex"
+                swatches={["#fcbc19", "#4154fa", "#429fe3", "#e34242", "#3cab68", "#e3a342", "#9c42e3", "#436a68"]}
+                swatchesPerRow={8}
+                defaultValue={clazzData.folderColor}
+                onChange={(color) => handleFolderColorChange(color)}
+                disallowInput
+                required
+              />
+            )
+          }
         </StepperMantine.Step>
 
         <StepperMantine.Step
@@ -203,7 +232,7 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
         >
           <Dropzone
             acceptedMimeTypes={mimeTypesPhotos}
-            maxSize={180}
+            maxSize={300}
             multiple={true}
             idle="Upload photos of students"
             typesString={[".png", ".jpeg", ".webp"]}

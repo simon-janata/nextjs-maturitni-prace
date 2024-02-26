@@ -13,6 +13,20 @@ main {
   margin-top: rem(70px);
   padding: rem(40px) 0;
   background-color: inherit;
+  min-height: calc(100dvb - rem(70px) - rem(99px));
+
+  @media (max-width: $mantine-breakpoint-xs) {
+    min-height: calc(100dvb - rem(70px) - rem(143px));
+  }
+}
+
+.container {
+  /* min-height: 500px; */
+  min-height: calc(100dvb - rem(70px) - rem(99px) - rem(40px) - rem(40px));
+
+  @media (max-width: $mantine-breakpoint-xs) {
+    min-height: calc(100dvb - rem(70px) - rem(143px) - rem(40px) - rem(40px));
+  }
 }
 
 .fancybox-image {

@@ -13,7 +13,7 @@ const MainBanner = () => {
   const t = useTranslations("MainBanner");
 
   return (
-    <Container className={classes.wrapper} size={1400}>
+    <Container className={classes.wrapper}>
       <Dots className={classes.dots} style={{ left: 0, top: 0 }} />
       <Dots className={classes.dots} style={{ left: 100, top: 0 }} />
       <Dots className={classes.dots} style={{ left: 200, top: 0 }} />

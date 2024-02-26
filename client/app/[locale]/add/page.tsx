@@ -5,13 +5,17 @@ import Stepper from "@/components/Stepper";
 import { useDocumentTitle } from "@mantine/hooks";
 import Papa from "papaparse";
 import { useEffect, useState } from "react";
-import { Image } from "@mantine/core";
+import { Image, ActionIcon, RingProgress as RingProgressMantine, Text, Center, rem, Flex, Button, Title, Loader, Container, Blockquote } from "@mantine/core";
 import { FileWithPath } from "@mantine/dropzone";
 import { useLocale } from "next-intl";
 import { v4 as uuid } from "uuid";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { remove as removeDiacritics } from "diacritics";
+import { IconCheck, IconInfoCircle } from "@tabler/icons-react";
+import RingProgress from "@/components/RingProgress";
+import Dots from "@/components/MainBanner/Dots";
+import classes from "@/components/MainBanner/MainBanner.module.css";
 
 export default function AddPage() {
   useDocumentTitle("Add");
@@ -45,6 +49,12 @@ export default function AddPage() {
   const [clazzData, setClazzData] = useState<ClazzData>(initialClazzData);
   const [classesInSelectedYear, setClassesInSelectedYear] = useState<string[]>([]);
   const [previews, setPreviews] = useState<React.ReactNode[]>([]);
+  const [uploading, setUploading] = useState<boolean>(false);
+
+  const [schoolYearProgress, setSchoolYearProgress] = useState<number>(0);
+  const [clazzProgress, setClazzProgress] = useState<number>(0);
+  const [studentsProgress, setStudentsProgress] = useState<number>(0);
+  const [photosProgress, setPhotosProgress] = useState<number>(0);
 
   useEffect(() => {
     axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/years`)
@@ -157,6 +167,8 @@ export default function AddPage() {
 
   const handleStudentsDataSubmission = async () => {
     try {
+      setUploading(true);
+
       // POST new year if it does not exist
       if (!existingSchoolYears.includes(clazzData.schoolYear?.getFullYear() ?? 0)) {
         await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/years`, {
@@ -170,19 +182,23 @@ export default function AddPage() {
           console.error(error);
         });
       }
+      setTimeout(() => setSchoolYearProgress(100), 500);
 
-      // POST new class
-      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/years/${clazzData.schoolYear?.getFullYear()}/classes`, {
-        name: clazzData.clazzName,
-        folderColor: clazzData.folderColor,
-      })
-      .then((res) => {
-        console.log("Submitted!");
-      })
-      .catch((error) => {
-        console.log("Submission failed!");
-        console.error(error);
-      });
+      // POST new class if it does not exist
+      if (!classesInSelectedYear.includes(clazzData.clazzName)) {
+        await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/years/${clazzData.schoolYear?.getFullYear()}/classes`, {
+          name: clazzData.clazzName,
+          folderColor: clazzData.folderColor,
+        })
+        .then((res) => {
+          console.log("Submitted!");
+        })
+        .catch((error) => {
+          console.log("Submission failed!");
+          console.error(error);
+        });
+      }
+      setTimeout(() => setClazzProgress(100), 500);
 
       // POST new students
       for (let i = 0; i < clazzData.students.length; i++) {
@@ -194,6 +210,7 @@ export default function AddPage() {
           firstname: studentNameParts.length > 2 ? studentNameParts[2] : studentNameParts[1],
         })
         .then((res) => {
+          setTimeout(() => setStudentsProgress(100 / clazzData.students.length * (i + 1)), 500);
           console.log("Submitted!");
         })
         .catch((error) => {
@@ -220,6 +237,7 @@ export default function AddPage() {
           }
         })
         .then((res) => {
+          setTimeout(() => setPhotosProgress(100 / clazzData.photos.length * (i + 1)), 500);
           console.log("Uploaded!");
         })
         .catch((error) => {
@@ -227,7 +245,7 @@ export default function AddPage() {
           console.error(error);
         });
       }
-      router.push(`/${locale}`);
+      setTimeout(() => router.push(`/${locale}`), 2500);
     } catch (error) {
       console.error(error);
     }
@@ -255,6 +273,55 @@ export default function AddPage() {
   };
 
   return (
-    <Stepper stateAndHandlers={stateAndHandlers} />
+    <>
+      {
+        uploading === true ? (
+          <Container className={classes.wrapper}>
+            <Dots className={classes.dots} style={{ left: 0, top: 0 }} />
+            <Dots className={classes.dots} style={{ left: 100, top: 0 }} />
+            <Dots className={classes.dots} style={{ left: 200, top: 0 }} />
+            <Dots className={classes.dots} style={{ left: 0, top: 40 }} />
+            <Dots className={classes.dots} style={{ right: 0, top: 0 }} />
+            <Dots className={classes.dots} style={{ right: 100, top: 0 }} />
+            <Dots className={classes.dots} style={{ right: 160, top: 0 }} />
+            <Dots className={classes.dots} style={{ right: 0, top: 40 }} />
+
+            <div className={classes.inner}>
+
+              <Flex
+                direction="column"
+                justify="center"
+                // style={{ minHeight: "inherit"}}
+              >
+                <Flex
+                  direction={{ base: "column", sm: "row" }}
+                  justify={{ base: "center", md: "space-between" }}
+                  align={{ base: "center", md: "center" }}
+                >
+                  <RingProgress value={schoolYearProgress} label="School year" />
+                  <RingProgress value={clazzProgress} label="Class" />
+                  <RingProgress value={studentsProgress} label="Students" />
+                  <RingProgress value={photosProgress} label="Photos" />
+                </Flex>
+                {/* <div className={classes.controls}>
+                  <Button component={Link} href={`/${locale}/about`} className={classes.control} size="md" variant="default" color="gray">
+                    aaa
+                  </Button>
+                  <Button component={Link} href={`/${locale}/add`} className={classes.control} size="md">
+                    bbb
+                  </Button>
+                </div> */}
+              </Flex>
+              {/* <Blockquote color="blue" cite="– Forrest Gump" icon={<IconInfoCircle />} mt={60}>
+                Life is like an npm install – you never know what you are going to get.
+              </Blockquote> */}
+
+            </div>
+          </Container>
+        ) : (
+          <Stepper stateAndHandlers={stateAndHandlers} />
+        )
+      }
+    </>
   );
 }

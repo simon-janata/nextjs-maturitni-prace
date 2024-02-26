@@ -53,7 +53,7 @@ const Features = () => {
   const items = mockdata.map((item) => <Feature {...item} key={item.title} />);
 
   return (
-    <Container mt={30} mb={30} size="lg">
+    <Container mb={30} size="lg">
       <SimpleGrid cols={{ base: 1, sm: 3 }} spacing={50}>
         {items}
       </SimpleGrid>

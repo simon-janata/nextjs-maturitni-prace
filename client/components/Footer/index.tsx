@@ -8,11 +8,11 @@ import { useLocale } from "next-intl";
 
 import classes from "./Footer.module.css";
 
-const Footer = ({ refFooter }: { refFooter: React.RefObject<HTMLElement> }) => {
+const Footer = () => {
   const locale = useLocale();
 
   return (
-    <footer ref={refFooter} className={classes.footer}>
+    <footer className={classes.footer}>
       <Container className={classes.inner}>
         <Link href={`/${locale}`} className={classes.linkLogo}>
           <Image src="/pslib-logo-dark.svg" className={classes.imgLogo} darkHidden />
