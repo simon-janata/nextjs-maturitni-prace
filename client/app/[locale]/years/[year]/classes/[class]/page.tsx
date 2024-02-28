@@ -19,6 +19,7 @@ import {
   IconDotsVertical,
   IconCheck,
   IconShare,
+  IconX,
 } from '@tabler/icons-react';
 import {
   Anchor,
@@ -125,8 +126,8 @@ export default function StudentsPage({ params }: { params: { year: number, class
 
   const handleDeleteClass = async () => {
     try {
-      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/years/${params.year}/classes/${params.class}`);
       await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/photos?year=${params.year}&clazz=${params.class}`);
+      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/years/${params.year}/classes/${params.class}`);
 
       router.push(`/${locale}/years/${params.year}`);
       notifications.show({
@@ -134,10 +135,18 @@ export default function StudentsPage({ params }: { params: { year: number, class
         icon: <IconCheck style={{ width: rem(18), height: rem(18) }} />,
         title: "Class Deleted",
         message: `The class ${params.class.toUpperCase()} for the school year ${params.year} and its photos have been successfully deleted.`,
-        autoClose: 2000,
+        autoClose: 4000,
       });
     } catch (err) {
-      console.log(`Error deleting class or photos - ${err}`);
+      // console.log(`Error deleting class or photos - ${err}`);
+      router.push(`/${locale}/years/${params.year}`);
+      notifications.show({
+        color: "red",
+        icon: <IconX style={{ width: rem(18), height: rem(18) }} />,
+        title: "Class Deletion Failed",
+        message: `Failed to delete the class ${params.class.toUpperCase()} for the school year ${params.year}. Please try again.`,
+        autoClose: 4000,
+      });
     }
   };
 

@@ -24,13 +24,16 @@ import {
   rem,
   Progress,
   Select,
+  Modal,
 } from "@mantine/core";
 import { YearPickerInput } from "@mantine/dates";
 import { MIME_TYPES, FileWithPath } from "@mantine/dropzone";
 import { useForm } from "@mantine/form";
-import { useMediaQuery } from "@mantine/hooks";
-import { IconCircleCheck, IconFileSpreadsheet, IconFolder, IconPhoto, IconCalendar, IconBackpack, IconPointFilled } from "@tabler/icons-react";
+import { useMediaQuery, useDisclosure } from "@mantine/hooks";
+import { IconCircleCheck, IconFileSpreadsheet, IconFileTypeCsv, IconFolder, IconPhoto, IconCalendar, IconBackpack, IconPointFilled } from "@tabler/icons-react";
 import { v4 as uuid } from "uuid";
+import VerticalCard from "../VerticalCard";
+import SummaryTable from "../SummaryTable";
 
 import Fancybox from "../Fancybox";
 import Dropzone from "../Dropzone";
@@ -42,8 +45,13 @@ type ClazzData = {
   folderColor: string;
   students: Array<string>;
   photos: Array<File>;
-  studentsWithPhotos: Array<{ name: string, photo: FileWithPath, preview: React.ReactNode }>;
+  studentsWithPhotos: Array<{ name: string, photo: FileWithPath, isPhotoValid: boolean, preview: React.ReactElement }>;
 };
+
+enum ModalType {
+  ConfirmUpload,
+  Error,
+}
 
 type StateAndHandlers = {
   active: number;
@@ -59,6 +67,7 @@ type StateAndHandlers = {
   handleFolderColorChange: (color: string) => void;
   handleCSVUpload: (files: File) => void;
   handlePhotosUpload: (files: FileWithPath[]) => void;
+  handleDeleteStudent: (index: number) => void;
   handleStudentsDataSubmission: () => void;
 }
 
@@ -75,7 +84,8 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
 
   const nextStepButtonRef: React.RefObject<HTMLButtonElement> = useRef(null);
 
-  const [value, setValue] = useState<number>(50);
+  const [modalType, setModalType] = useState<ModalType | null>(null);
+  const [opened, { open, close }] = useDisclosure(false);
 
   const {
     active,
@@ -91,20 +101,17 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
     handleFolderColorChange,
     handleCSVUpload,
     handlePhotosUpload,
-    handleStudentsDataSubmission
+    handleStudentsDataSubmission,
+    handleDeleteStudent,
   } = stateAndHandlers;
 
-  const formSchoolYear = useForm({
-    initialValues: { schoolYear: clazzData.schoolYear },
+  const form = useForm({
+    initialValues: {
+      schoolYear: clazzData.schoolYear,
+      clazzName: clazzData.clazzName,
+    },
     validate: {
       schoolYear: (value) => (value && value.getFullYear() <= new Date().getFullYear() ? null : "School year must be filled in and cannot be in the future."),
-    },
-    validateInputOnChange: true,
-  });
-
-  const formClazzName = useForm({
-    initialValues: { clazzName: clazzData.clazzName },
-    validate: {
       clazzName: (value) => (value.trim() ? null : "Class name must be filled in"),
     },
     validateInputOnChange: true,
@@ -134,6 +141,16 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
     }
   }, [active, clazzData]);
 
+  const openModal = () => {
+    if (clazzData.students.length === clazzData.photos.length) {
+      setModalType(ModalType.ConfirmUpload);
+      open();
+    } else {
+      setModalType(ModalType.Error);
+      open();
+    }
+  }
+
   return (
     <>
       <StepperMantine
@@ -155,9 +172,9 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
             value={clazzData.schoolYear}
             onChange={(e) => {
               handlePickYearChange(e);
-              formSchoolYear.setFieldValue("schoolYear", e);
+              form.setFieldValue("schoolYear", e);
             }}
-            error={formSchoolYear.errors.schoolYear}
+            error={form.errors.schoolYear}
             required
           />
         </StepperMantine.Step>
@@ -174,9 +191,9 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
             value={clazzData.clazzName}
             onChange={(e) => {
               handleClassNameChange(e.target.value);
-              formClazzName.setFieldValue("clazzName", e.target.value);
+              form.setFieldValue("clazzName", e.target.value);
             }}
-            error={formClazzName.errors.clazzName}
+            error={form.errors.clazzName}
             required
           />
           {
@@ -196,7 +213,7 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
         </StepperMantine.Step>
 
         <StepperMantine.Step
-          icon={<IconFileSpreadsheet style={{ width: rem(18), height: rem(18) }} />}
+          icon={<IconFileTypeCsv style={{ width: rem(18), height: rem(18) }} />}
           label={t("thirdStep.label")}
           description={t("thirdStep.description")}
         >
@@ -263,17 +280,9 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
           }
         </StepperMantine.Step>
         <StepperMantine.Completed>
-          <Title order={1} ta="center">Completed</Title>
-          <Text ta="center" mt="xl">{value}</Text>
-          <Progress.Root size="lg" mt="sm">
-            <Progress.Section value={value} color="green" style={{ transitionDuration: "200ms" }}>
-            </Progress.Section>
-          </Progress.Root>
-          <Center>
-            <Button onClick={() => setValue(Math.round(Math.random() * 100))} mt="md">
-              Set random value
-            </Button>
-          </Center>
+          <Title order={1} ta="center">Summary</Title>
+          <Text ta="center" mb="xl">{`${clazzData.schoolYear?.getFullYear()} – ${clazzData.clazzName}`}</Text>
+          <SummaryTable studentsWithPhotos={clazzData.studentsWithPhotos} handleDeleteStudent={handleDeleteStudent} />
         </StepperMantine.Completed>
       </StepperMantine>
 
@@ -281,12 +290,40 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
         <Button variant="default" onClick={prevStep}>Back</Button>
         {
           active === 4 ? (
-            <Button onClick={() => handleStudentsDataSubmission()}>Submit</Button>
+            <Button onClick={openModal}>Submit</Button>
           ) : (
             <Button ref={nextStepButtonRef} onClick={nextStep}>Next step</Button>
           )
         }
       </Group>
+
+      <Modal
+        opened={opened}
+        onClose={close}
+        title={modalType === ModalType.ConfirmUpload ? "Confirm Upload" : "Data Validation Error"}
+        centered
+        radius="md"
+        zIndex={1000}
+      >
+        {
+          modalType === ModalType.ConfirmUpload ? (
+            <>
+              All data has been validated and is ready for upload. Are you sure you want to proceed?
+              <Group justify="center" mt="xl">
+                <Button variant="default" onClick={close}>Cancel</Button>
+                <Button onClick={handleStudentsDataSubmission}>Upload</Button>
+              </Group>
+            </>
+          ) : (
+            <>
+              The data is not valid. This could be due to the number of names not matching the number of photos, or because no face was found in some photos. Please check your data and try again.
+              <Group justify="center" mt="xl">
+                <Button color="red" onClick={close}>Try Again</Button>
+              </Group>
+            </>
+          )
+        }
+      </Modal>
     </>
   );
 }

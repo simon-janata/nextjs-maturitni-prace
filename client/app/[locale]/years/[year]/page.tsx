@@ -26,7 +26,7 @@ import { useDocumentTitle, useDisclosure } from "@mantine/hooks";
 import axios from "axios";
 import { notifications } from "@mantine/notifications";
 import { v4 as uuid } from "uuid";
-import { IconCheck, IconSettings, IconTrash, IconShare, IconDotsVertical } from "@tabler/icons-react";
+import { IconCheck, IconSettings, IconTrash, IconShare, IconDotsVertical, IconX } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 
 export default function ClassesPage({ params }: { params: { year: number } }) {
@@ -79,8 +79,8 @@ export default function ClassesPage({ params }: { params: { year: number } }) {
 
   const handleDeleteSchoolYear = async () => {
     try {
-      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/years/${params.year}`);
       await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/photos?year=${params.year}`);
+      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/years/${params.year}`);
 
       router.push(`/${locale}/years`);
       notifications.show({
@@ -91,7 +91,15 @@ export default function ClassesPage({ params }: { params: { year: number } }) {
         autoClose: 4000,
       });
     } catch (err) {
-      console.log(`Error deleting school year - ${err}`);
+      // console.log(`Error deleting school year - ${err}`);
+      router.push(`/${locale}/years`);
+      notifications.show({
+        color: "red",
+        icon: <IconX style={{ width: rem(18), height: rem(18) }} />,
+        title: "School Year Deletion Failed",
+        message: `Failed to delete the school year ${params.year}, along with all its classes, students, and their photos. Please try again.`,
+        autoClose: 4000,
+      });
     }
   };
 

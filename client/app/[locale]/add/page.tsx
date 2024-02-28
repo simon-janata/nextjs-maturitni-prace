@@ -22,7 +22,7 @@ export default function AddPage() {
   const router = useRouter();
   const locale = useLocale();
 
-  const [active, setActive] = useState<number>(0);
+  const [active, setActive] = useState<number>(4);
   const nextStep = () => setActive((current) => (current < 4 ? current + 1 : current));
   const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
 
@@ -34,7 +34,7 @@ export default function AddPage() {
     folderColor: string;
     students: Array<string>;
     photos: Array<FileWithPath>;
-    studentsWithPhotos: Array<{ name: string, photo: FileWithPath, preview: React.ReactNode }>;
+    studentsWithPhotos: Array<{ name: string, photo: FileWithPath, isPhotoValid: boolean, preview: React.ReactElement }>;
   };
 
   const initialClazzData: ClazzData = {
@@ -114,9 +114,9 @@ export default function AddPage() {
       delimiter: ";",
       complete: (results) => {
         const studentsNames = results.data[0] as Array<string>;
-        const namesWithPhotos: Array<{ name: string, photo: FileWithPath, preview: React.ReactNode }> = [];
+        const namesWithPhotos: Array<{ name: string, photo: FileWithPath, isPhotoValid: boolean, preview: React.ReactElement }> = [];
         studentsNames.forEach((name, index) => {
-          namesWithPhotos.push({ name: name, photo: new File([], "") as FileWithPath, preview: <></> });
+          namesWithPhotos.push({ name: name, photo: new File([], "") as FileWithPath, isPhotoValid: false, preview: <></> });
         });
         setClazzData({ ...clazzData, students: studentsNames, studentsWithPhotos: namesWithPhotos });
       },
@@ -150,19 +150,27 @@ export default function AddPage() {
         photo = files[i];
         const imageUrl = URL.createObjectURL(photo);
         preview = (
-          <Link href={imageUrl} data-fancybox="gallery" data-caption={`${student}`} key={uuid()}>
+          // <Link href={imageUrl} data-fancybox="gallery" data-caption={`${student}`} key={uuid()}>
             <Image radius="md" src={imageUrl} />
-          </Link>
+          // </Link>
         );
       } else {
         photo = new File([], "") as FileWithPath;
         preview = <></>;
       }
 
-      return { name: student, photo: photo, preview: preview };
+      return { name: student, photo: photo, isPhotoValid: true, preview: preview };
     });
 
     setClazzData({ ...clazzData, photos: photos, studentsWithPhotos: updatedStudentsWithPhotos });
+  }
+
+  const handleDeleteStudent = (index: number) => {
+    const updatedStudents = clazzData.students.filter((s, i) => i !== index);
+    const updatedPhotos = clazzData.photos.filter((p, i) => i !== index);
+    const updatedStudentsWithPhotos = clazzData.studentsWithPhotos.filter((s, i) => i !== index);
+
+    setClazzData({ ...clazzData, students: updatedStudents, photos: updatedPhotos, studentsWithPhotos: updatedStudentsWithPhotos });
   }
 
   const handleStudentsDataSubmission = async () => {
@@ -269,13 +277,14 @@ export default function AddPage() {
     handleFolderColorChange: handleFolderColorChange,
     handleCSVUpload: handleCSVUpload,
     handlePhotosUpload: handlePhotosUpload,
+    handleDeleteStudent: handleDeleteStudent,
     handleStudentsDataSubmission: handleStudentsDataSubmission,
   };
 
   return (
     <>
       {
-        uploading === true ? (
+        uploading === false ? (
           <Container className={classes.wrapper}>
             <Dots className={classes.dots} style={{ left: 0, top: 0 }} />
             <Dots className={classes.dots} style={{ left: 100, top: 0 }} />
@@ -291,7 +300,6 @@ export default function AddPage() {
               <Flex
                 direction="column"
                 justify="center"
-                // style={{ minHeight: "inherit"}}
               >
                 <Flex
                   direction={{ base: "column", sm: "row" }}
