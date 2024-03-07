@@ -20,7 +20,7 @@ const DirectoryCard: React.FC<DirectoryCardProps> = ({ entity, type, classParame
   const p = useTranslations("Pathnames");
 
   const label = type === "year" ? (entity as Year).year : (entity as Class).name;
-  const link = type === "year" ? `/${locale}/${p("years")}/${(entity as Year).year}` : `/${locale}/${p("years")}/${classParameter}/${p("classes")}/${(entity as Class).name.toLowerCase()}`;
+  const link = type === "year" ? `/${locale}/${p("schoolYears")}/${(entity as Year).year}` : `/${locale}/${p("schoolYears")}/${classParameter}/${p("clazzes")}/${(entity as Class).name.toLowerCase()}`;
 
   return (
     <Paper component={Link} href={link} radius="md" withBorder p="lg" className={classes.directoryCard}>

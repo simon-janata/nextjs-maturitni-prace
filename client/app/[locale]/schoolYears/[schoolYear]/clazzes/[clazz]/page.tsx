@@ -63,9 +63,9 @@ export default function StudentsPage({ params }: { params: { year: number, class
 
   const breadcrumbsItems: JSX.Element[] = [
     { title: t("breadcrumbs.home"), href: `/${locale}` },
-    { title: t("breadcrumbs.schoolYears"), href: `/${locale}/${p("years")}` },
-    { title: `${params.year}`, href: `/${locale}/${p("years")}/${params.year}` },
-    { title: `${params.class.toUpperCase()}`, href: `/${locale}/${p("years")}/${params.year}/${p("classes")}/${params.class}` },
+    { title: t("breadcrumbs.schoolYears"), href: `/${locale}/${p("schoolYears")}` },
+    { title: `${params.year}`, href: `/${locale}/${p("schoolYears")}/${params.year}` },
+    { title: `${params.class.toUpperCase()}`, href: `/${locale}/${p("schoolYears")}/${params.year}/${p("clazzes")}/${params.class}` },
   ].map((item, index) => (
     <Anchor component={Link} href={item.href} key={uuid()} c={theme.colors.pslib[6]}>
       {item.title}
@@ -148,7 +148,7 @@ export default function StudentsPage({ params }: { params: { year: number, class
         }
       });
 
-      router.push(`/${locale}/years/${params.year}`);
+      router.push(`/${locale}/schoolYears/${params.year}`);
       notifications.show({
         color: "teal",
         icon: <IconCheck style={{ width: rem(18), height: rem(18) }} />,
@@ -158,7 +158,7 @@ export default function StudentsPage({ params }: { params: { year: number, class
       });
     } catch (err) {
       // console.log(`Error deleting class or photos - ${err}`);
-      router.push(`/${locale}/years/${params.year}`);
+      router.push(`/${locale}/schoolYears/${params.year}`);
       notifications.show({
         color: "red",
         icon: <IconX style={{ width: rem(18), height: rem(18) }} />,

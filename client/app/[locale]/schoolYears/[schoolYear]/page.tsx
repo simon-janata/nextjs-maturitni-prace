@@ -46,8 +46,8 @@ export default function ClassesPage({ params }: { params: { year: number } }) {
 
   const breadcrumbsItems = [
     { title: t("breadcrumbs.home"), href: `/${locale}` },
-    { title: t("breadcrumbs.schoolYears"), href: `/${locale}/${p("years")}` },
-    { title: `${params.year}`, href: `/${locale}/${p("years")}/${params.year}` },
+    { title: t("breadcrumbs.schoolYears"), href: `/${locale}/${p("schoolYears")}` },
+    { title: `${params.year}`, href: `/${locale}/${p("schoolYears")}/${params.year}` },
   ].map((item, index) => (
     <Anchor component={Link} href={item.href} key={uuid()} c={theme.colors.pslib[6]}>
       {item.title}
@@ -86,7 +86,7 @@ export default function ClassesPage({ params }: { params: { year: number } }) {
       });
       await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/schoolYears/${params.year}`);
 
-      router.push(`/${locale}/years`);
+      router.push(`/${locale}/schoolYears`);
       notifications.show({
         color: "teal",
         icon: <IconCheck style={{ width: rem(18), height: rem(18) }} />,
@@ -96,7 +96,7 @@ export default function ClassesPage({ params }: { params: { year: number } }) {
       });
     } catch (err) {
       // console.log(`Error deleting school year - ${err}`);
-      router.push(`/${locale}/years`);
+      router.push(`/${locale}/schoolYears`);
       notifications.show({
         color: "red",
         icon: <IconX style={{ width: rem(18), height: rem(18) }} />,

@@ -1,8 +1,8 @@
 {
   "Pathnames": {
     "add": "hinzufuegen",
-    "years": "schuljahre",
-    "classes": "klassen",
+    "schoolYears": "schuljahre",
+    "clazzes": "klassen",
     "about": "uber"
   },
 

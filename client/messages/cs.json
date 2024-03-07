@@ -1,8 +1,8 @@
 {
   "Pathnames": {
     "add": "pridat",
-    "years": "skolni-roky",
-    "classes": "tridy",
+    "schoolYears": "skolni-roky",
+    "clazzes": "tridy",
     "about": "o-aplikaci"
   },
 

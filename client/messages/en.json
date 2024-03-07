@@ -1,8 +1,8 @@
 {
   "Pathnames": {
     "add": "add",
-    "years": "school-years",
-    "classes": "classes",
+    "schoolYears": "school-years",
+    "clazzes": "classes",
     "about": "about"
   },
   

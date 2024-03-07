@@ -37,7 +37,7 @@ const Navbar = () => {
             <Link href={`/${locale}/${p("add")}`} className={classes.link}>
               {t("addPage")}
             </Link>
-            <Link href={`/${locale}/${p("years")}`} className={classes.link}>
+            <Link href={`/${locale}/${p("schoolYears")}`} className={classes.link}>
               {t("yearsPage")}
             </Link>
             <Link href={`/${locale}/${p("about")}`} className={classes.link}>
@@ -73,13 +73,13 @@ const Navbar = () => {
           <Link href={`/${locale}`} className={classes.link} onClick={closeDrawer}>
             {t("homePage")}
           </Link>
-          <Link href={`/${locale}/add`} className={classes.link} onClick={closeDrawer}>
+          <Link href={`/${locale}/${p("add")}`} className={classes.link} onClick={closeDrawer}>
             {t("addPage")}
           </Link>
-          <Link href={`/${locale}/years`} className={classes.link} onClick={closeDrawer}>
+          <Link href={`/${locale}/${p("schoolYears")}`} className={classes.link} onClick={closeDrawer}>
             {t("yearsPage")}
           </Link>
-          <Link href={`/${locale}/about`} className={classes.link} onClick={closeDrawer}>
+          <Link href={`/${locale}/${p("about")}`} className={classes.link} onClick={closeDrawer}>
             {t("aboutPage")}
           </Link>
 

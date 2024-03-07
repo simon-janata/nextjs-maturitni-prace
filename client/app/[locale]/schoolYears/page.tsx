@@ -25,7 +25,7 @@ export default function SchoolYearsPage() {
   
   const breadcrumbsItems = [
     { title: t("breadcrumbs.home"), href: `/${locale}` },
-    { title: t("breadcrumbs.schoolYears"), href: `/${locale}/${p("years")}` },
+    { title: t("breadcrumbs.schoolYears"), href: `/${locale}/${p("schoolYears")}` },
   ].map((item, index) => (
     <Anchor component={Link} href={item.href} key={uuid()} c={theme.colors.pslib[6]}>
       {item.title}
