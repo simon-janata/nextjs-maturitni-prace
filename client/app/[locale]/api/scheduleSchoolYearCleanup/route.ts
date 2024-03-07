@@ -5,10 +5,10 @@ export async function GET(req: Request, res: Response) {
 	try {
 		new CronJob("0 0 * * *", async function() {
 			try {
-				const schoolYears = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/years`);
+				const schoolYears = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/schoolYears`);
 				for (const schoolYear of schoolYears.data) {
 					await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/photos?year=${schoolYear.year}`);
-					await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/years/${schoolYear.year}`);
+					await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/schoolYears/${schoolYear.year}`);
 				}
 			} catch (err) {
 				console.log(`Error deleting school year - ${err}`);

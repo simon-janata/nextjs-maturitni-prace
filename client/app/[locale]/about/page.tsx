@@ -12,38 +12,6 @@ import { useLocale } from "next-intl";
 export default function AboutPage() {
   useDocumentTitle("About");
   const locale = useLocale();
-
-  // useEffect(() => {
-  //   console.log(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/hello?name=Jiří`);
-  //   axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/hello?name=Jiří`)
-  //     .then((res) => {
-  //       console.log(`Response from server: ${res.data.message}`);
-  //     })
-  //     .catch((error) => {
-  //       console.error(`Error fetching data: ${error}`);
-  //     });
-  // }, []);
-
-  // useEffect(() => {
-  //   axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/photos?year=2028&clazz=P1A&name=Mendřický_Radomír.JPG`)
-  //     .then(res => {
-  //       console.log(res.data);
-  //       document.getElementById("myImage")?.setAttribute("src", res.data.image);
-  //     })
-  //     .catch(err => {
-  //       console.log(err);
-  //     });
-  // }, []);
-
-  // const handleCropImage = () => {
-  //   axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/crop`)
-  //     .then(res => {
-  //       console.log(res.data.message);
-  //     })
-  //     .catch(err => {
-  //       console.log(err);
-  //     });
-  // }
   
   return (
     <>
@@ -62,23 +30,6 @@ export default function AboutPage() {
           View Source Code
         </Button>
       </Center>
-
-      {/* <Center>
-        <Button
-          size="md"
-          mt="xl"
-          onClick={handleCropImage}
-        >
-          Crop image using Python
-        </Button>
-      </Center> */}
-
-      {/* <Image
-        id="myImage"
-        src=""
-        alt="pslib-logo"
-        style={{ width: "400px", height: "auto" }}
-      /> */}
     </>
   );
 }

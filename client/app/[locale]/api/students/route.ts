@@ -1,45 +1,17 @@
 import prisma from "@/lib/prismaHelper";
 
-// GET all students
-export async function GET(req: Request, res: Response) {
-  try {
-    const students = await prisma.student.findMany({
-      orderBy: [
-        { lastname: "asc" },
-        { middlename: "asc" },
-        { firstname: "asc" },
-      ],
-    });
-
-    return new Response(
-      JSON.stringify(students), {
-        status: 200,
-        headers: {
-          "content-type": "application/json;charset=UTF-8",
-        },
-      }
-    )
-  } catch (error) {
-    return new Response(
-      JSON.stringify({
-        message: `Internal Server Error - ${error}`,
-      }), {
-        status: 500,
-        headers: {
-          "content-type": "application/json;charset=UTF-8",
-        },
-      }
-    )
-  }
-}
-
 // POST a new student
 export async function POST(req: Request, res: Response) {
   try {
-    const url = new URL(req.url);
-    const pathParts = url.pathname.split("/");
-    const schoolYear = pathParts[pathParts.indexOf("years") + 1];
-    const clazzName = pathParts[pathParts.indexOf("classes") + 1];
+    // const url = new URL(req.url);
+    // const pathParts = url.pathname.split("/");
+    // const schoolYear = pathParts[pathParts.indexOf("years") + 1];
+    // const clazzName = pathParts[pathParts.indexOf("classes") + 1];
+
+    const { searchParams } = new URL(req.url);
+    const schoolYearParam = searchParams.get("schoolYear") || "";
+    const clazzNameParam = searchParams.get("clazzName") || "";
+
     const body = await req.json();
     
     if (!body.firstname || !body.lastname) {
@@ -56,12 +28,12 @@ export async function POST(req: Request, res: Response) {
       )
     }
 
-    const clazz = await prisma.class.findFirst({
+    const clazz = await prisma.clazz.findFirst({
       where: {
-        year: {
-          year: Number(schoolYear),
+        schoolYear: {
+          year: Number(schoolYearParam),
         },
-        name: clazzName.toUpperCase(),
+        name: clazzNameParam.toUpperCase(),
       },
     });
     
@@ -84,7 +56,7 @@ export async function POST(req: Request, res: Response) {
         firstname: body.firstname,
         middlename: body.middlename,
         lastname: body.lastname,
-        class: {
+        clazz: {
           connect: {
             id: clazz.id
           },

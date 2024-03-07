@@ -22,7 +22,7 @@ export default function AddPage() {
   const router = useRouter();
   const locale = useLocale();
 
-  const [active, setActive] = useState<number>(4);
+  const [active, setActive] = useState<number>(0);
   const nextStep = () => setActive((current) => (current < 4 ? current + 1 : current));
   const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
 
@@ -34,7 +34,7 @@ export default function AddPage() {
     folderColor: string;
     students: Array<string>;
     photos: Array<FileWithPath>;
-    studentsWithPhotos: Array<{ name: string, photo: FileWithPath, isPhotoValid: boolean, preview: React.ReactElement }>;
+    studentsWithPhotos: Array<{ name: string, photo: File, isPhotoValid: boolean, preview: React.ReactElement }>;
   };
 
   const initialClazzData: ClazzData = {
@@ -57,7 +57,7 @@ export default function AddPage() {
   const [photosProgress, setPhotosProgress] = useState<number>(0);
 
   useEffect(() => {
-    axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/years`)
+    axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/schoolYears`)
       .then((res) => {
         const existingSchoolYearsArray: Array<number> = [];
         res.data.forEach((element: any) => {
@@ -66,10 +66,10 @@ export default function AddPage() {
         setExistingSchoolYears(existingSchoolYearsArray);
       });
 
-    axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/years/${clazzData.schoolYear?.getFullYear()}`)
+    axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/schoolYears/${clazzData.schoolYear?.getFullYear()}`)
       .then((res) => {
         if (res.data) {
-          setClassesInSelectedYear(res.data.classes.map((c: Class) => (
+          setClassesInSelectedYear(res.data.clazzes.map((c: Class) => (
             c.name
           )));
         } 
@@ -81,12 +81,14 @@ export default function AddPage() {
     setClazzData({ ...clazzData, schoolYear: date });
 
     if (year) {
-      axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/years/${year}`)
+      axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/schoolYears/${year}`)
         .then((res) => {
           if (res.data) {
-            setClassesInSelectedYear(res.data.classes.map((c: Class) => (
+            setClassesInSelectedYear(res.data.clazzes.map((c: Class) => (
               c.name
             )));
+          } else {
+            setClassesInSelectedYear([]);
           }
         });
     }
@@ -114,53 +116,74 @@ export default function AddPage() {
       delimiter: ";",
       complete: (results) => {
         const studentsNames = results.data[0] as Array<string>;
-        const namesWithPhotos: Array<{ name: string, photo: FileWithPath, isPhotoValid: boolean, preview: React.ReactElement }> = [];
+        const namesWithPhotos: Array<{ name: string, photo: File, isPhotoValid: boolean, preview: React.ReactElement }> = [];
         studentsNames.forEach((name, index) => {
-          namesWithPhotos.push({ name: name, photo: new File([], "") as FileWithPath, isPhotoValid: false, preview: <></> });
+          namesWithPhotos.push({ name: name, photo: new File([], ""), isPhotoValid: false, preview: <></> });
         });
         setClazzData({ ...clazzData, students: studentsNames, studentsWithPhotos: namesWithPhotos });
       },
     });
   }
 
-  // const handlePhotosUpload = (files: FileWithPath[]) => {
-  //   const updatedStudentsWithPhotos = clazzData.studentsWithPhotos.map((student, i) => {
-  //     const imageUrl = URL.createObjectURL(files[i]);
-  //     return {
-  //       ...student,
-  //       photo: files[i],
-  //       preview: (
-  //         <Link href={imageUrl} data-fancybox="gallery" data-caption={`${student.name}`} key={uuid()}>
-  //           <Image radius="md" src={imageUrl} />
-  //         </Link>
-  //       ),
-  //     };
-  //   });
+  const handlePhotosUpload = async (files: FileWithPath[]) => {
+    const formData = new FormData();
 
-  //   setClazzData({ ...clazzData, photos: files, studentsWithPhotos: updatedStudentsWithPhotos });
-  // }
-  
-  const handlePhotosUpload = (files: FileWithPath[]) => {
     const photos = files.slice(0, clazzData.students.length);
-    const updatedStudentsWithPhotos = clazzData.students.map((student, i) => {
-      let photo: FileWithPath;
+    const updatedStudentsWithPhotosPromises = clazzData.students.map(async (student, i) => {
+      let photoIn: FileWithPath;
+      let photoOut: File = new File([], "");
       let preview: React.ReactNode;
+      let imageUrl: string = "";
+      let photoIsValid: boolean = false;
 
-      if (i < files.length) {
-        photo = files[i];
-        const imageUrl = URL.createObjectURL(photo);
+      if (photos[i]) {
+        photoIn = photos[i];
+
+        console.log(photoIn);
+        formData.set("photo", photos[i]);
+
+        // try {
+        await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/photos/validate-and-resize`, formData, {
+          headers: {
+            "content-type": "multipart/form-data"
+          }
+        })
+        .then((res) => {
+          const base64Response = res.data.resizedImage;
+          imageUrl = `data:image/jpeg;base64,${base64Response}`;
+          photoIsValid = res.data.isSingleFace;
+          
+          const byteCharacters = atob(base64Response);
+          const byteNumbers = new Array(byteCharacters.length);
+          for (let i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+          }
+          const byteArray = new Uint8Array(byteNumbers);
+          const blob = new Blob([byteArray], {type: 'image/jpeg'});
+          photoOut = new File([blob], photoIn.name, {type: 'image/jpeg'});
+        })
+        .catch((error) => {
+          console.log("Validation failed!");
+          console.error(error);
+        })
+        .finally(() => {
+          console.log("Validation finished!");
+        });
+        
         preview = (
-          // <Link href={imageUrl} data-fancybox="gallery" data-caption={`${student}`} key={uuid()}>
+          <Link href={imageUrl} data-fancybox="gallery" data-caption={`${student}`} key={uuid()}>
             <Image radius="md" src={imageUrl} />
-          // </Link>
+          </Link>
         );
       } else {
-        photo = new File([], "") as FileWithPath;
+        photoOut = new File([], "");
         preview = <></>;
       }
 
-      return { name: student, photo: photo, isPhotoValid: true, preview: preview };
+      return { name: student, photo: photoOut, isPhotoValid: photoIsValid, preview: preview };
     });
+
+    const updatedStudentsWithPhotos = await Promise.all(updatedStudentsWithPhotosPromises);
 
     setClazzData({ ...clazzData, photos: photos, studentsWithPhotos: updatedStudentsWithPhotos });
   }
@@ -179,8 +202,8 @@ export default function AddPage() {
 
       // POST new year if it does not exist
       if (!existingSchoolYears.includes(clazzData.schoolYear?.getFullYear() ?? 0)) {
-        await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/years`, {
-          year: clazzData.schoolYear?.getFullYear(),
+        await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/schoolYears`, {
+          schoolYear: clazzData.schoolYear?.getFullYear(),
         })
         .then((res) => {
           console.log("Submitted!");
@@ -194,9 +217,13 @@ export default function AddPage() {
 
       // POST new class if it does not exist
       if (!classesInSelectedYear.includes(clazzData.clazzName)) {
-        await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/years/${clazzData.schoolYear?.getFullYear()}/classes`, {
+        await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/clazzes`, {
           name: clazzData.clazzName,
           folderColor: clazzData.folderColor,
+        }, {
+          params: {
+            schoolYear: clazzData.schoolYear?.getFullYear(),
+          }
         })
         .then((res) => {
           console.log("Submitted!");
@@ -212,10 +239,15 @@ export default function AddPage() {
       for (let i = 0; i < clazzData.students.length; i++) {
         const studentNameParts = clazzData.students[i].split(" ");
 
-        await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/years/${clazzData.schoolYear?.getFullYear()}/classes/${clazzData.clazzName.toLowerCase()}/students`, {
+        await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/students`, {
           lastname: studentNameParts[0],
           middlename: studentNameParts.length > 2 ? studentNameParts[1] : "",
           firstname: studentNameParts.length > 2 ? studentNameParts[2] : studentNameParts[1],
+        }, {
+          params: {
+            schoolYear: clazzData.schoolYear?.getFullYear(),
+            clazzName: clazzData.clazzName.toLowerCase()
+          }
         })
         .then((res) => {
           setTimeout(() => setStudentsProgress(100 / clazzData.students.length * (i + 1)), 500);
@@ -230,8 +262,8 @@ export default function AddPage() {
       // POST new photos
       const formData = new FormData();
 
-      for (let i = 0; i < clazzData.photos.length; i++) {
-        formData.set("photo", clazzData.photos[i]);
+      for (let i = 0; i < clazzData.studentsWithPhotos.length; i++) {
+        formData.set("photo", clazzData.studentsWithPhotos[i].photo);
         const studentNameParts = clazzData.students[i].split(" ");
 
         await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/photos`, formData, {
@@ -253,14 +285,14 @@ export default function AddPage() {
           console.error(error);
         });
       }
-      setTimeout(() => router.push(`/${locale}`), 2500);
+      setTimeout(() => router.push(`/${locale}`), 2000);
     } catch (error) {
       console.error(error);
     }
   }
   
-  console.log(clazzData);
-  // console.log(classesInSelectedYear);
+  console.log(clazzData.photos);
+  console.log(classesInSelectedYear);
   // console.log(existingSchoolYears);
 
   const stateAndHandlers = {
@@ -284,7 +316,7 @@ export default function AddPage() {
   return (
     <>
       {
-        uploading === false ? (
+        uploading === true ? (
           <Container className={classes.wrapper}>
             <Dots className={classes.dots} style={{ left: 0, top: 0 }} />
             <Dots className={classes.dots} style={{ left: 100, top: 0 }} />

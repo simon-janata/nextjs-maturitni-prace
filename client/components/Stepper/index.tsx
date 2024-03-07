@@ -22,9 +22,11 @@ import {
   Stepper as StepperMantine,
   TextInput, Title,
   rem,
+  Loader,
   Progress,
   Select,
   Modal,
+  useMantineTheme,
 } from "@mantine/core";
 import { YearPickerInput } from "@mantine/dates";
 import { MIME_TYPES, FileWithPath } from "@mantine/dropzone";
@@ -78,6 +80,7 @@ type StepperProps = {
 const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
   const locale = useLocale();
   const t = useTranslations("Stepper");
+  const theme = useMantineTheme();
   const isMobile = useMediaQuery("(max-width: 52em)");
   const mimeTypesCSV = [MIME_TYPES.csv];
   const mimeTypesPhotos = [MIME_TYPES.png, MIME_TYPES.jpeg, MIME_TYPES.webp];
@@ -142,8 +145,13 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
   }, [active, clazzData]);
 
   const openModal = () => {
-    if (clazzData.students.length === clazzData.photos.length) {
-      setModalType(ModalType.ConfirmUpload);
+    if (clazzData.students.length !== 0 && clazzData.photos.length !== 0 && clazzData.students.length === clazzData.photos.length) {
+      const hasInvalidPhoto = clazzData.studentsWithPhotos.some(element => !element.isPhotoValid);
+      if (hasInvalidPhoto) {
+        setModalType(ModalType.Error);
+      } else {
+        setModalType(ModalType.ConfirmUpload);
+      }
       open();
     } else {
       setModalType(ModalType.Error);
@@ -256,7 +264,7 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
             handlePhotosUpload={handlePhotosUpload}
           />
           {
-            clazzData.studentsWithPhotos.length > 0 && (
+            clazzData.studentsWithPhotos.length > 0 ? (
               <Fancybox
                 options={{
                   Carousel: {
@@ -276,6 +284,10 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
                   }
                 </Grid>
               </Fancybox>
+            ) : (
+              <Center>
+                {/* <Loader color={theme.colors.pslib[6]} /> */}
+              </Center>
             )
           }
         </StepperMantine.Step>

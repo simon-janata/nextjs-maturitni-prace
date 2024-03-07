@@ -55,13 +55,13 @@ export default function ClassesPage({ params }: { params: { year: number } }) {
   ));
 
   useEffect(() => {
-    const dataPromise = axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/years/${params.year}`)
-      .then((res) => {
-        const data = res.data;
-        setYear(data);
-        setClasses(data.classes);
-        setFilteredClasses(data.classes);
-      });
+    const dataPromise = axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/schoolYears/${params.year}`)
+    .then((res) => {
+      const data = res.data;
+      setYear(data);
+      setClasses(data.clazzes);
+      setFilteredClasses(data.clazzes);
+    });
 
     const timeoutPromise = new Promise(resolve => setTimeout(resolve, 1000));
 
@@ -79,8 +79,12 @@ export default function ClassesPage({ params }: { params: { year: number } }) {
 
   const handleDeleteSchoolYear = async () => {
     try {
-      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/photos?year=${params.year}`);
-      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/years/${params.year}`);
+      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/photos`, {
+        params: {
+          year: params.year
+        }
+      });
+      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/schoolYears/${params.year}`);
 
       router.push(`/${locale}/years`);
       notifications.show({

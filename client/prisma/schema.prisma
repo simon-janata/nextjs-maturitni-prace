@@ -7,25 +7,25 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Year {
+model SchoolYear {
   id      String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  year    Int
-  classes Class[]
+  year    Int     @unique
+  clazzes Clazz[]
 }
 
-model Class {
-  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name        String
-  folderColor String
-  year        Year      @relation(fields: [yearId], references: [id], onDelete: Cascade)
-  yearId      String    @db.Uuid
-  students    Student[]
+model Clazz {
+  id           String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name         String
+  folderColor  String
+  schoolYear   SchoolYear @relation(fields: [schoolYearId], references: [id], onDelete: Cascade)
+  schoolYearId String     @db.Uuid
+  students     Student[]
 }
 
 model Student {
   id         String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  class      Class   @relation(fields: [classId], references: [id], onDelete: Cascade)
-  classId    String  @db.Uuid
+  clazz      Clazz   @relation(fields: [clazzId], references: [id], onDelete: Cascade)
+  clazzId    String  @db.Uuid
   firstname  String
   middlename String?
   lastname   String
