@@ -6,12 +6,26 @@ export async function POST(req: Request, res: Response) {
     const schoolYearParam = searchParams.get("schoolYear") || "";
     const clazzNameParam = searchParams.get("clazzName") || "";
 
+    if (schoolYearParam === "" || clazzNameParam === "") {
+      return new Response(
+        JSON.stringify({
+          message: "schoolYear and clazzName must be provided",
+        }),
+        {
+          status: 400,
+          headers: {
+            "content-type": "application/json;charset=UTF-8",
+          },
+        }
+      );
+    }
+
     const body = await req.json();
 
     if (!body.firstname || !body.lastname) {
       return new Response(
         JSON.stringify({
-          message: "Firstname and lastname must be filled in",
+          message: "firstname and lastname must be filled in",
         }),
         {
           status: 400,
@@ -34,7 +48,7 @@ export async function POST(req: Request, res: Response) {
     if (!clazz) {
       return new Response(
         JSON.stringify({
-          message: "Class not found",
+          message: "Clazz not found",
         }),
         {
           status: 400,

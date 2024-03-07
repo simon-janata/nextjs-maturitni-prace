@@ -9,6 +9,20 @@ export async function GET(req: Request, res: Response) {
     const { searchParams } = new URL(req.url);
     const schoolYearParam = searchParams.get("schoolYear") || "";
 
+    if (schoolYearParam === "") {
+      return new Response(
+        JSON.stringify({
+          message: "schoolYear must be provided",
+        }),
+        {
+          status: 400,
+          headers: {
+            "content-type": "application/json;charset=UTF-8",
+          },
+        }
+      );
+    }
+
     const clazz = await prisma.clazz.findFirst({
       where: {
         schoolYear: {
@@ -58,7 +72,21 @@ export async function DELETE(req: Request, res: Response) {
     const { searchParams } = new URL(req.url);
     const schoolYearParam = searchParams.get("schoolYear") || "";
 
-    const deletedClass = await prisma.clazz.deleteMany({
+    if (schoolYearParam === "") {
+      return new Response(
+        JSON.stringify({
+          message: "schoolYear must be provided",
+        }),
+        {
+          status: 400,
+          headers: {
+            "content-type": "application/json;charset=UTF-8",
+          },
+        }
+      );
+    }
+
+    const deletedClazz = await prisma.clazz.deleteMany({
       where: {
         schoolYear: {
           year: Number(schoolYearParam),
@@ -67,7 +95,7 @@ export async function DELETE(req: Request, res: Response) {
       },
     });
 
-    return new Response(JSON.stringify(deletedClass), {
+    return new Response(JSON.stringify(deletedClazz), {
       status: 200,
       headers: {
         "content-type": "application/json;charset=UTF-8",

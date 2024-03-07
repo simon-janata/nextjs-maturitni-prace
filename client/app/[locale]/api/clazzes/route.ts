@@ -5,6 +5,20 @@ export async function POST(req: Request, res: Response) {
     const { searchParams } = new URL(req.url);
     const schoolYearParam = searchParams.get("schoolYear") || "";
 
+    if (schoolYearParam === "") {
+      return new Response(
+        JSON.stringify({
+          message: "schoolYear must be provided",
+        }),
+        {
+          status: 400,
+          headers: {
+            "content-type": "application/json;charset=UTF-8",
+          },
+        }
+      );
+    }
+
     const body = await req.json();
 
     if (!body.name || !body.folderColor) {
@@ -21,7 +35,7 @@ export async function POST(req: Request, res: Response) {
       );
     }
 
-    const newClass = await prisma.clazz.create({
+    const newClazz = await prisma.clazz.create({
       data: {
         name: body.name,
         folderColor: body.folderColor,
@@ -33,7 +47,7 @@ export async function POST(req: Request, res: Response) {
       },
     });
 
-    return new Response(JSON.stringify(newClass), {
+    return new Response(JSON.stringify(newClazz), {
       status: 200,
       headers: {
         "content-type": "application/json;charset=UTF-8",
