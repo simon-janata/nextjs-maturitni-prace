@@ -38,18 +38,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     "de": "Europe/Berlin",
   };
 
-  // useEffect(() => {
-  //   const startCleanupJob = async () => {
-  //     try {
-  //       await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/scheduleSchoolYearCleanup`);
-  //       console.log('Cleanup job scheduled');
-  //     } catch (err) {
-  //       console.error('Failed to schedule cleanup job', err);
-  //     }
-  //   };
-  
-  //   startCleanupJob();
-  // }, []);
+  useEffect(() => {
+    axios.get(`${process.env.NEXT_PUBLIC_API_URL}/cs/api/scheduleSchoolYearCleanup`)
+      .then((res) => {
+        console.log(res.data.message);
+      })
+      .catch((err) => {
+        console.error(err.data.message);
+      });
+  }, []);
 
   return (
     <html lang={locale}>
