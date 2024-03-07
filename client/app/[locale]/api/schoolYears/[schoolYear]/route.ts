@@ -1,10 +1,7 @@
 import prisma from "@/lib/prismaHelper";
 
-// GET a school year by year
 export async function GET(req: Request, res: Response) {
   try {
-    // const { searchParams } = new URL(req.url);
-    // const schoolYearParam = searchParams.get("schoolYear") || "";
     const url = new URL(req.url);
     const pathParts = url.pathname.split("/");
     const schoolYearParam = pathParts[pathParts.indexOf("schoolYears") + 1];
@@ -41,7 +38,6 @@ export async function GET(req: Request, res: Response) {
   }
 }
 
-// DELETE a school year
 export async function DELETE(req: Request, res: Response) {
   try {
     const { searchParams } = new URL(req.url);

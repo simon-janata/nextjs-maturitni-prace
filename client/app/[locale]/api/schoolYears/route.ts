@@ -1,6 +1,5 @@
 import prisma from "@/lib/prismaHelper";
 
-// GET all school years
 export async function GET(req: Request, res: Response) {
   try {
     const schoolYears = await prisma.schoolYear.findMany({
@@ -28,7 +27,6 @@ export async function GET(req: Request, res: Response) {
   }
 }
 
-// POST a new year
 export async function POST(req: Request, res: Response) {
   try {
     const body = await req.json();

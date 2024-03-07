@@ -1,13 +1,7 @@
 import prisma from "@/lib/prismaHelper";
 
-// GET a class by id
 export async function GET(req: Request, res: Response) {
   try {
-    // const url = new URL(req.url);
-    // const pathParts = url.pathname.split("/");
-    // const year = pathParts[pathParts.indexOf("years") + 1];
-    // const clazzName = pathParts[pathParts.indexOf("classes") + 1];
-
     const url = new URL(req.url);
     const pathParts = url.pathname.split("/");
     const clazzNameParam = pathParts[pathParts.indexOf("clazzes") + 1];
@@ -55,14 +49,8 @@ export async function GET(req: Request, res: Response) {
   }
 }
 
-// DELETE a class
 export async function DELETE(req: Request, res: Response) {
   try {
-    // const url = new URL(req.url);
-    // const pathParts = url.pathname.split("/");
-    // const year = pathParts[pathParts.indexOf("years") + 1];
-    // const clazzName = pathParts[pathParts.indexOf("classes") + 1];
-
     const { searchParams } = new URL(req.url);
     const schoolYearParam = searchParams.get("schoolYear") || "";
     const clazzNameParam = searchParams.get("clazzName") || "";

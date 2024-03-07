@@ -1,19 +1,13 @@
 import prisma from "@/lib/prismaHelper";
 
-// POST a new student
 export async function POST(req: Request, res: Response) {
   try {
-    // const url = new URL(req.url);
-    // const pathParts = url.pathname.split("/");
-    // const schoolYear = pathParts[pathParts.indexOf("years") + 1];
-    // const clazzName = pathParts[pathParts.indexOf("classes") + 1];
-
     const { searchParams } = new URL(req.url);
     const schoolYearParam = searchParams.get("schoolYear") || "";
     const clazzNameParam = searchParams.get("clazzName") || "";
 
     const body = await req.json();
-    
+
     if (!body.firstname || !body.lastname) {
       return new Response(
         JSON.stringify({
@@ -25,7 +19,7 @@ export async function POST(req: Request, res: Response) {
             "content-type": "application/json;charset=UTF-8",
           },
         }
-      )
+      );
     }
 
     const clazz = await prisma.clazz.findFirst({
@@ -36,7 +30,7 @@ export async function POST(req: Request, res: Response) {
         name: clazzNameParam.toUpperCase(),
       },
     });
-    
+
     if (!clazz) {
       return new Response(
         JSON.stringify({
@@ -48,7 +42,7 @@ export async function POST(req: Request, res: Response) {
             "content-type": "application/json;charset=UTF-8",
           },
         }
-      )
+      );
     }
 
     const newStudent = await prisma.student.create({
@@ -58,7 +52,7 @@ export async function POST(req: Request, res: Response) {
         lastname: body.lastname,
         clazz: {
           connect: {
-            id: clazz.id
+            id: clazz.id,
           },
         },
       },
@@ -69,7 +63,7 @@ export async function POST(req: Request, res: Response) {
       headers: {
         "content-type": "application/json;charset=UTF-8",
       },
-    })
+    });
   } catch (error) {
     return new Response(
       JSON.stringify({
@@ -81,6 +75,6 @@ export async function POST(req: Request, res: Response) {
           "content-type": "application/json;charset=UTF-8",
         },
       }
-    )
+    );
   }
 }
