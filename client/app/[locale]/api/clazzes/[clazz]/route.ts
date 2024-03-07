@@ -51,9 +51,12 @@ export async function GET(req: Request, res: Response) {
 
 export async function DELETE(req: Request, res: Response) {
   try {
+    const url = new URL(req.url);
+    const pathParts = url.pathname.split("/");
+    const clazzNameParam = pathParts[pathParts.indexOf("clazzes") + 1];
+
     const { searchParams } = new URL(req.url);
     const schoolYearParam = searchParams.get("schoolYear") || "";
-    const clazzNameParam = searchParams.get("clazzName") || "";
 
     const deletedClass = await prisma.clazz.deleteMany({
       where: {

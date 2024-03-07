@@ -22,15 +22,15 @@ export default createMiddleware({
     },
 
     "/schoolYears/[schoolYear]": {
-      cs: "/skolni-roky/[year]",
-      en: "/school-years/[year]",
-      de: "/schuljahre/[year]"
+      cs: "/skolni-roky/[schoolYear]",
+      en: "/school-years/[schoolYear]",
+      de: "/schuljahre/[schoolYear]"
     },
 
     "/schoolYears/[schoolYear]/clazzes/[clazz]": {
-      cs: "/skolni-roky/[year]/tridy/[class]",
-      en: "/school-years/[year]/classes/[class]",
-      de: "/schuljahre/[year]/klassen/[class]"
+      cs: "/skolni-roky/[schoolYear]/tridy/[clazz]",
+      en: "/school-years/[schoolYear]/classes/[clazz]",
+      de: "/schuljahre/[schoolYear]/klassen/[clazz]"
     },
 
     "/about": {

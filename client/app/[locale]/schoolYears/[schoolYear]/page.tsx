@@ -29,8 +29,8 @@ import { v4 as uuid } from "uuid";
 import { IconCheck, IconSettings, IconTrash, IconShare, IconDotsVertical, IconX } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 
-export default function ClassesPage({ params }: { params: { year: number } }) {
-  useDocumentTitle(`School year ${params.year}`);
+export default function ClassesPage({ params }: { params: { schoolYear: number } }) {
+  useDocumentTitle(`School year ${params.schoolYear}`);
   const router = useRouter();
   const locale = useLocale();
   const t = useTranslations("ClassesPage");
@@ -47,7 +47,7 @@ export default function ClassesPage({ params }: { params: { year: number } }) {
   const breadcrumbsItems = [
     { title: t("breadcrumbs.home"), href: `/${locale}` },
     { title: t("breadcrumbs.schoolYears"), href: `/${locale}/${p("schoolYears")}` },
-    { title: `${params.year}`, href: `/${locale}/${p("schoolYears")}/${params.year}` },
+    { title: `${params.schoolYear}`, href: `/${locale}/${p("schoolYears")}/${params.schoolYear}` },
   ].map((item, index) => (
     <Anchor component={Link} href={item.href} key={uuid()} c={theme.colors.pslib[6]}>
       {item.title}
@@ -55,7 +55,7 @@ export default function ClassesPage({ params }: { params: { year: number } }) {
   ));
 
   useEffect(() => {
-    const dataPromise = axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/schoolYears/${params.year}`)
+    const dataPromise = axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/schoolYears/${params.schoolYear}`)
     .then((res) => {
       const data = res.data;
       setYear(data);
@@ -81,17 +81,17 @@ export default function ClassesPage({ params }: { params: { year: number } }) {
     try {
       await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/photos`, {
         params: {
-          year: params.year
+          year: params.schoolYear
         }
       });
-      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/schoolYears/${params.year}`);
+      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/schoolYears/${params.schoolYear}`);
 
       router.push(`/${locale}/schoolYears`);
       notifications.show({
         color: "teal",
         icon: <IconCheck style={{ width: rem(18), height: rem(18) }} />,
         title: "School Year Deleted",
-        message: `The school year ${params.year}, along with all its classes, students, and their photos, has been successfully deleted.`,
+        message: `The school year ${params.schoolYear}, along with all its classes, students, and their photos, has been successfully deleted.`,
         autoClose: 4000,
       });
     } catch (err) {
@@ -101,7 +101,7 @@ export default function ClassesPage({ params }: { params: { year: number } }) {
         color: "red",
         icon: <IconX style={{ width: rem(18), height: rem(18) }} />,
         title: "School Year Deletion Failed",
-        message: `Failed to delete the school year ${params.year}, along with all its classes, students, and their photos. Please try again.`,
+        message: `Failed to delete the school year ${params.schoolYear}, along with all its classes, students, and their photos. Please try again.`,
         autoClose: 4000,
       });
     }
@@ -140,7 +140,7 @@ export default function ClassesPage({ params }: { params: { year: number } }) {
               {
                 filteredClasses.map((c) => (
                   <Grid.Col span={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={uuid()}>
-                    <DirectoryCard entity={c} type="class" classParameter={params.year} textToHighlight={query} />
+                    <DirectoryCard entity={c} type="class" classParameter={params.schoolYear} textToHighlight={query} />
                   </Grid.Col>
                 ))
               }

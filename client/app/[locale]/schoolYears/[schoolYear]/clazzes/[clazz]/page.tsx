@@ -45,7 +45,7 @@ import { notifications } from "@mantine/notifications";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
 
-export default function StudentsPage({ params }: { params: { year: number, class: string } }) {
+export default function StudentsPage({ params }: { params: { schoolYear: number, clazz: string } }) {
   useDocumentTitle("Year");
   const router = useRouter();
   const locale = useLocale();
@@ -64,8 +64,8 @@ export default function StudentsPage({ params }: { params: { year: number, class
   const breadcrumbsItems: JSX.Element[] = [
     { title: t("breadcrumbs.home"), href: `/${locale}` },
     { title: t("breadcrumbs.schoolYears"), href: `/${locale}/${p("schoolYears")}` },
-    { title: `${params.year}`, href: `/${locale}/${p("schoolYears")}/${params.year}` },
-    { title: `${params.class.toUpperCase()}`, href: `/${locale}/${p("schoolYears")}/${params.year}/${p("clazzes")}/${params.class}` },
+    { title: `${params.schoolYear}`, href: `/${locale}/${p("schoolYears")}/${params.schoolYear}` },
+    { title: `${params.clazz.toUpperCase()}`, href: `/${locale}/${p("schoolYears")}/${params.schoolYear}/${p("clazzes")}/${params.clazz}` },
   ].map((item, index) => (
     <Anchor component={Link} href={item.href} key={uuid()} c={theme.colors.pslib[6]}>
       {item.title}
@@ -73,9 +73,9 @@ export default function StudentsPage({ params }: { params: { year: number, class
   ));
 
   useEffect(() => {
-    const dataPromise = axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/clazzes/${params.class}`, {
+    const dataPromise = axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/clazzes/${params.clazz}`, {
       params: {
-        schoolYear: params.year
+        schoolYear: params.schoolYear
       }
     })
       .then(res => {
@@ -85,8 +85,8 @@ export default function StudentsPage({ params }: { params: { year: number, class
         return Promise.all(students.map(s => 
           axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/photos`, {
             params: {
-              year: params.year,
-              clazz: params.class,
+              year: params.schoolYear,
+              clazz: params.clazz,
               name: `${s.lastname}${s.middlename ? `_${s.middlename}` : ""}_${s.firstname}`
             }
           })
@@ -130,7 +130,7 @@ export default function StudentsPage({ params }: { params: { year: number, class
     });
 
     zip.generateAsync({ type: "blob" }).then(function(content) {
-        saveAs(content, `${params.year}_${params.class.toUpperCase()}.zip`);
+        saveAs(content, `${params.schoolYear}_${params.clazz.toUpperCase()}.zip`);
     });
   }
 
@@ -138,32 +138,32 @@ export default function StudentsPage({ params }: { params: { year: number, class
     try {
       await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/photos`, {
         params: {
-          year: params.year,
-          clazz: params.class
+          year: params.schoolYear,
+          clazz: params.clazz
         }
       });
-      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/clazzes/${params.class}`, {
+      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/clazzes/${params.clazz}`, {
         params: {
-          schoolYear: params.year
+          schoolYear: params.schoolYear
         }
       });
 
-      router.push(`/${locale}/schoolYears/${params.year}`);
+      router.push(`/${locale}/schoolYears/${params.schoolYear}`);
       notifications.show({
         color: "teal",
         icon: <IconCheck style={{ width: rem(18), height: rem(18) }} />,
         title: "Class Deleted",
-        message: `The class ${params.class.toUpperCase()} for the school year ${params.year} and its photos have been successfully deleted.`,
+        message: `The class ${params.clazz.toUpperCase()} for the school year ${params.schoolYear} and its photos have been successfully deleted.`,
         autoClose: 4000,
       });
     } catch (err) {
       // console.log(`Error deleting class or photos - ${err}`);
-      router.push(`/${locale}/schoolYears/${params.year}`);
+      router.push(`/${locale}/schoolYears/${params.schoolYear}`);
       notifications.show({
         color: "red",
         icon: <IconX style={{ width: rem(18), height: rem(18) }} />,
         title: "Class Deletion Failed",
-        message: `Failed to delete the class ${params.class.toUpperCase()} for the school year ${params.year}. Please try again.`,
+        message: `Failed to delete the class ${params.clazz.toUpperCase()} for the school year ${params.schoolYear}. Please try again.`,
         autoClose: 4000,
       });
     }
