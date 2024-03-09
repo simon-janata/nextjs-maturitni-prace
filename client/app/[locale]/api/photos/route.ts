@@ -142,10 +142,10 @@ export async function POST(req: Request, res: Response) {
 export async function DELETE(req: Request, res: Response) {
   try {
     const { searchParams } = new URL(req.url);
-    const year = searchParams.get("year") || "";
-    const clazz = searchParams.get("clazz")?.toUpperCase() || "";
+    const schoolYearParam = searchParams.get("schoolYear") || "";
+    const clazzNameParam = searchParams.get("clazzName")?.toUpperCase() || "";
 
-    const directoryPath = join(process.cwd(), "photos", year, clazz);
+    const directoryPath = join(process.cwd(), "photos", schoolYearParam, clazzNameParam);
 
     if (!existsSync(directoryPath)) {
       return new Response(

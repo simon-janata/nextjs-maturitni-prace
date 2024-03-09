@@ -11,6 +11,7 @@ import SearchBar from "@/components/SearchBar";
 import { Anchor, Center, Grid, Loader, Title, useMantineTheme } from "@mantine/core";
 import { useDocumentTitle } from "@mantine/hooks";
 import { v4 as uuid } from "uuid";
+import { error } from "console";
 
 export default function SchoolYearsPage() {
   useDocumentTitle("School years");
@@ -18,8 +19,8 @@ export default function SchoolYearsPage() {
   const t = useTranslations("SchoolYearsPage");
   const p = useTranslations("Pathnames");
   const theme = useMantineTheme();
-  const [years, setYears] = useState<Year[]>([]);
-  const [filteredYears, setFilteredYears] = useState<Year[]>([]);
+  const [years, setYears] = useState<Array<SchoolYear>>([]);
+  const [filteredYears, setFilteredYears] = useState<Array<SchoolYear>>([]);
   const [query, setQuery] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
   
@@ -33,11 +34,14 @@ export default function SchoolYearsPage() {
   ));
 
   useEffect(() => {
-    const dataPromise = axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/schoolYears`)
+    const dataPromise = axios.get(`${process.env.NEXT_PUBLIC_API_URL}/cs/api/schoolYears`)
       .then((res) => {
         const data = res.data;
         setYears(data);
         setFilteredYears(data);
+      })
+      .catch((err) => {
+        console.error(err);
       });
 
     const timeoutPromise = new Promise(resolve => setTimeout(resolve, 1000));

@@ -20,6 +20,7 @@ model Clazz {
   schoolYear   SchoolYear @relation(fields: [schoolYearId], references: [id], onDelete: Cascade)
   schoolYearId String     @db.Uuid
   students     Student[]
+  createdAt    DateTime   @default(now()) @db.Timestamptz(6)
 }
 
 model Student {

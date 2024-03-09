@@ -1,5 +1,35 @@
 import prisma from "@/lib/prismaHelper";
 
+export async function GET(req: Request, res: Response) {
+  try {
+    const clazzes = await prisma.clazz.findMany({
+      include: {
+        schoolYear: true,
+      },
+      orderBy: [{ schoolYear: { year: "desc" } }, { name: "asc" }],
+    });
+
+    return new Response(JSON.stringify(clazzes), {
+      status: 200,
+      headers: {
+        "content-type": "application/json;charset=UTF-8",
+      },
+    });
+  } catch (error) {
+    return new Response(
+      JSON.stringify({
+        message: `Internal Server Error - ${error}`,
+      }),
+      {
+        status: 500,
+        headers: {
+          "content-type": "application/json;charset=UTF-8",
+        },
+      }
+    );
+  }
+}
+
 export async function POST(req: Request, res: Response) {
   try {
     const { searchParams } = new URL(req.url);

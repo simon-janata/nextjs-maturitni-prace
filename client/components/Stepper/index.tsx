@@ -34,7 +34,6 @@ import { useForm } from "@mantine/form";
 import { useMediaQuery, useDisclosure } from "@mantine/hooks";
 import { IconCircleCheck, IconFileSpreadsheet, IconFileTypeCsv, IconFolder, IconPhoto, IconCalendar, IconBackpack, IconPointFilled } from "@tabler/icons-react";
 import { v4 as uuid } from "uuid";
-import VerticalCard from "../VerticalCard";
 import SummaryTable from "../SummaryTable";
 
 import Fancybox from "../Fancybox";
@@ -64,6 +63,7 @@ type StateAndHandlers = {
   setClazzData: React.Dispatch<React.SetStateAction<ClazzData>>;
   classesInSelectedYear: string[];
   previews: React.ReactNode[];
+  arePhotosValidating: boolean;
   handlePickYearChange: (date: Date | null) => void;
   handleClassNameChange: (n: string) => void;
   handleFolderColorChange: (color: string) => void;
@@ -99,6 +99,7 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
     setClazzData,
     classesInSelectedYear,
     previews,
+    arePhotosValidating,
     handlePickYearChange,
     handleClassNameChange,
     handleFolderColorChange,
@@ -264,30 +265,32 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
             handlePhotosUpload={handlePhotosUpload}
           />
           {
-            clazzData.studentsWithPhotos.length > 0 ? (
-              <Fancybox
-                options={{
-                  Carousel: {
-                    infinite: false,
-                  },
-                }}
-              >
-                <Grid mt={rem(48)}>
-                  {
-                    clazzData.studentsWithPhotos.map((s) => (
-                      <Grid.Col span={{ base: 6, xs: 3, sm: 2.4, md: 2, lg: 1.5 }} key={uuid()}>
-                        {
-                          s.preview
-                        }
-                      </Grid.Col>
-                    ))
-                  }
-                </Grid>
-              </Fancybox>
-            ) : (
+            arePhotosValidating === true ? (
               <Center>
-                {/* <Loader color={theme.colors.pslib[6]} /> */}
+                <Loader color={theme.colors.pslib[6]} type="dots" size="md" />
               </Center>
+            ) : (
+              clazzData.photos.length > 0 && (
+                <Fancybox
+                  options={{
+                    Carousel: {
+                      infinite: false,
+                    },
+                  }}
+                >
+                  <Grid mt={rem(48)}>
+                    {
+                      clazzData.studentsWithPhotos.map((s) => (
+                        <Grid.Col span={{ base: 6, xs: 3, sm: 2.4, md: 2, lg: 1.5 }} key={uuid()}>
+                          {
+                            s.preview
+                          }
+                        </Grid.Col>
+                      ))
+                    }
+                  </Grid>
+                </Fancybox>
+              )
             )
           }
         </StepperMantine.Step>

@@ -36,9 +36,9 @@ export default function ClassesPage({ params }: { params: { schoolYear: number }
   const t = useTranslations("ClassesPage");
   const p = useTranslations("Pathnames");
   const theme = useMantineTheme();
-  const [year, setYear] = useState<Year>();
-  const [classes, setClasses] = useState<Class[]>([]);
-  const [filteredClasses, setFilteredClasses] = useState<Class[]>([]);
+  const [year, setYear] = useState<SchoolYear>();
+  const [classes, setClasses] = useState<Array<Clazz>>([]);
+  const [filteredClasses, setFilteredClasses] = useState<Array<Clazz>>([]);
   const [query, setQuery] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -55,7 +55,7 @@ export default function ClassesPage({ params }: { params: { schoolYear: number }
   ));
 
   useEffect(() => {
-    const dataPromise = axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/schoolYears/${params.schoolYear}`)
+    const dataPromise = axios.get(`${process.env.NEXT_PUBLIC_API_URL}/cs/api/schoolYears/${params.schoolYear}`)
     .then((res) => {
       const data = res.data;
       setYear(data);
@@ -79,12 +79,12 @@ export default function ClassesPage({ params }: { params: { schoolYear: number }
 
   const handleDeleteSchoolYear = async () => {
     try {
-      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/photos`, {
+      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/cs/api/photos`, {
         params: {
           year: params.schoolYear
         }
       });
-      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/schoolYears/${params.schoolYear}`);
+      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/cs/api/schoolYears/${params.schoolYear}`);
 
       router.push(`/${locale}/schoolYears`);
       notifications.show({

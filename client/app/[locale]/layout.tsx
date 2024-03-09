@@ -39,7 +39,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   };
 
   useEffect(() => {
-    axios.get(`${process.env.NEXT_PUBLIC_API_URL}/cs/api/scheduleSchoolYearCleanup`)
+    axios.get(`${process.env.NEXT_PUBLIC_API_URL}/cs/api/scheduleClazzesCleanup`)
       .then((res) => {
         console.log(res.data.message);
       })

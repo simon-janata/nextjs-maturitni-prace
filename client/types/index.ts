@@ -1,22 +1,22 @@
-type Year = {
+type SchoolYear = {
   id: string;
   year: number;
-  classes: string;
+  clazzes: string;
 }
 
-type Class = {
+type Clazz = {
   id: string;
   name: string;
   folderColor: string;
-  year: Year;
-  yearId: String;
+  schoolYear: SchoolYear;
+  schoolYearId: String;
   students: Student[];
 }
 
 type Student = {
   id: string;
-  class: Class;
-  classId: string;
+  clazz: Clazz;
+  clazzId: string;
   firstname: string;
   middlename: string;
   lastname: string;

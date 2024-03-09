@@ -49,6 +49,8 @@ export default function AddPage() {
   const [clazzData, setClazzData] = useState<ClazzData>(initialClazzData);
   const [classesInSelectedYear, setClassesInSelectedYear] = useState<string[]>([]);
   const [previews, setPreviews] = useState<React.ReactNode[]>([]);
+
+  const [arePhotosValidating, setArePhotosValidating] = useState<boolean>(false);
   const [uploading, setUploading] = useState<boolean>(false);
 
   const [schoolYearProgress, setSchoolYearProgress] = useState<number>(0);
@@ -57,7 +59,7 @@ export default function AddPage() {
   const [photosProgress, setPhotosProgress] = useState<number>(0);
 
   useEffect(() => {
-    axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/schoolYears`)
+    axios.get(`${process.env.NEXT_PUBLIC_API_URL}/cs/api/schoolYears`)
       .then((res) => {
         const existingSchoolYearsArray: Array<number> = [];
         res.data.forEach((element: any) => {
@@ -66,10 +68,10 @@ export default function AddPage() {
         setExistingSchoolYears(existingSchoolYearsArray);
       });
 
-    axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/schoolYears/${clazzData.schoolYear?.getFullYear()}`)
+    axios.get(`${process.env.NEXT_PUBLIC_API_URL}/cs/api/schoolYears/${clazzData.schoolYear?.getFullYear()}`)
       .then((res) => {
         if (res.data) {
-          setClassesInSelectedYear(res.data.clazzes.map((c: Class) => (
+          setClassesInSelectedYear(res.data.clazzes.map((c: Clazz) => (
             c.name
           )));
         } 
@@ -81,10 +83,10 @@ export default function AddPage() {
     setClazzData({ ...clazzData, schoolYear: date });
 
     if (year) {
-      axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/schoolYears/${year}`)
+      axios.get(`${process.env.NEXT_PUBLIC_API_URL}/cs/api/schoolYears/${year}`)
         .then((res) => {
           if (res.data) {
-            setClassesInSelectedYear(res.data.clazzes.map((c: Class) => (
+            setClassesInSelectedYear(res.data.clazzes.map((c: Clazz) => (
               c.name
             )));
           } else {
@@ -113,9 +115,11 @@ export default function AddPage() {
 
   const handleCSVUpload = (file: File) => {
     Papa.parse(file, {
-      delimiter: ";",
-      complete: (results) => {
-        const studentsNames = results.data[0] as Array<string>;
+      // delimiter: "\r\n",
+      // newline: "\n",
+      complete: (results: Papa.ParseResult<string>) => {
+        // const studentsNames = results.data[0] as Array<string>;
+        const studentsNames = results.data.map(row => row[0]);
         const namesWithPhotos: Array<{ name: string, photo: File, isPhotoValid: boolean, preview: React.ReactElement }> = [];
         studentsNames.forEach((name, index) => {
           namesWithPhotos.push({ name: name, photo: new File([], ""), isPhotoValid: false, preview: <></> });
@@ -126,6 +130,8 @@ export default function AddPage() {
   }
 
   const handlePhotosUpload = async (files: FileWithPath[]) => {
+    setArePhotosValidating(true);
+
     const formData = new FormData();
 
     const photos = files.slice(0, clazzData.students.length);
@@ -143,7 +149,7 @@ export default function AddPage() {
         formData.set("photo", photos[i]);
 
         // try {
-        await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/photos/validate-and-resize`, formData, {
+        await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/cs/api/photos/validate-and-resize`, formData, {
           headers: {
             "content-type": "multipart/form-data"
           }
@@ -186,6 +192,7 @@ export default function AddPage() {
     const updatedStudentsWithPhotos = await Promise.all(updatedStudentsWithPhotosPromises);
 
     setClazzData({ ...clazzData, photos: photos, studentsWithPhotos: updatedStudentsWithPhotos });
+    setArePhotosValidating(false);
   }
 
   const handleDeleteStudent = (index: number) => {
@@ -202,7 +209,7 @@ export default function AddPage() {
 
       // POST new year if it does not exist
       if (!existingSchoolYears.includes(clazzData.schoolYear?.getFullYear() ?? 0)) {
-        await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/schoolYears`, {
+        await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/cs/api/schoolYears`, {
           schoolYear: clazzData.schoolYear?.getFullYear(),
         })
         .then((res) => {
@@ -217,7 +224,7 @@ export default function AddPage() {
 
       // POST new class if it does not exist
       if (!classesInSelectedYear.includes(clazzData.clazzName)) {
-        await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/clazzes`, {
+        await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/cs/api/clazzes`, {
           name: clazzData.clazzName,
           folderColor: clazzData.folderColor,
         }, {
@@ -239,7 +246,7 @@ export default function AddPage() {
       for (let i = 0; i < clazzData.students.length; i++) {
         const studentNameParts = clazzData.students[i].split(" ");
 
-        await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/students`, {
+        await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/cs/api/students`, {
           lastname: studentNameParts[0],
           middlename: studentNameParts.length > 2 ? studentNameParts[1] : "",
           firstname: studentNameParts.length > 2 ? studentNameParts[2] : studentNameParts[1],
@@ -266,7 +273,7 @@ export default function AddPage() {
         formData.set("photo", clazzData.studentsWithPhotos[i].photo);
         const studentNameParts = clazzData.students[i].split(" ");
 
-        await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/photos`, formData, {
+        await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/cs/api/photos`, formData, {
           params: {
             year: clazzData.schoolYear?.getFullYear(),
             clazz: clazzData.clazzName.toLowerCase(),
@@ -291,8 +298,8 @@ export default function AddPage() {
     }
   }
   
-  console.log(clazzData.photos);
-  console.log(classesInSelectedYear);
+  console.log(clazzData);
+  // console.log(classesInSelectedYear);
   // console.log(existingSchoolYears);
 
   const stateAndHandlers = {
@@ -304,6 +311,7 @@ export default function AddPage() {
     setClazzData: setClazzData,
     classesInSelectedYear: classesInSelectedYear,
     previews: previews,
+    arePhotosValidating: arePhotosValidating,
     handlePickYearChange: handlePickYearChange,
     handleClassNameChange: handleClassNameChange,
     handleFolderColorChange: handleFolderColorChange,

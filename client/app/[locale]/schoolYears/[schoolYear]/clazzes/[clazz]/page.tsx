@@ -45,14 +45,14 @@ import { notifications } from "@mantine/notifications";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
 
-export default function StudentsPage({ params }: { params: { schoolYear: number, clazz: string } }) {
+export default function ClazzPage({ params }: { params: { schoolYear: number, clazz: string } }) {
   useDocumentTitle("Year");
   const router = useRouter();
   const locale = useLocale();
   const t = useTranslations("StudentsPage");
   const p = useTranslations("Pathnames");
   const theme = useMantineTheme();
-  const [classData, setClassData] = useState<Class>();
+  const [classData, setClassData] = useState<Clazz>();
   const [students, setStudents] = useState<StudentWithPhoto[]>([]);
   const [filteredStudents, setFilteredStudents] = useState<StudentWithPhoto[]>([]);
   const [base64Photos, setBase64Photos] = useState<Array<string>>([]);
@@ -73,7 +73,7 @@ export default function StudentsPage({ params }: { params: { schoolYear: number,
   ));
 
   useEffect(() => {
-    const dataPromise = axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/clazzes/${params.clazz}`, {
+    const dataPromise = axios.get(`${process.env.NEXT_PUBLIC_API_URL}/cs/api/clazzes/${params.clazz}`, {
       params: {
         schoolYear: params.schoolYear
       }
@@ -83,7 +83,7 @@ export default function StudentsPage({ params }: { params: { schoolYear: number,
         const students: Array<StudentWithPhoto> = data.students;
 
         return Promise.all(students.map(s => 
-          axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/photos`, {
+          axios.get(`${process.env.NEXT_PUBLIC_API_URL}/cs/api/photos`, {
             params: {
               year: params.schoolYear,
               clazz: params.clazz,
@@ -136,13 +136,13 @@ export default function StudentsPage({ params }: { params: { schoolYear: number,
 
   const handleDeleteClass = async () => {
     try {
-      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/photos`, {
+      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/cs/api/photos`, {
         params: {
           year: params.schoolYear,
           clazz: params.clazz
         }
       });
-      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_LOCALE}/api/clazzes/${params.clazz}`, {
+      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/cs/api/clazzes/${params.clazz}`, {
         params: {
           schoolYear: params.schoolYear
         }
