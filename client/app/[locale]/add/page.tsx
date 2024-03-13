@@ -7,7 +7,7 @@ import Papa from "papaparse";
 import { useEffect, useState } from "react";
 import { Image, ActionIcon, RingProgress as RingProgressMantine, Text, Center, rem, Flex, Button, Title, Loader, Container, Blockquote } from "@mantine/core";
 import { FileWithPath } from "@mantine/dropzone";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { v4 as uuid } from "uuid";
 import { useRouter } from "next/navigation";
 import axios from "axios";
@@ -18,7 +18,8 @@ import Dots from "@/components/MainBanner/Dots";
 import classes from "@/components/MainBanner/MainBanner.module.css";
 
 export default function AddPage() {
-  useDocumentTitle("Add");
+  const t = useTranslations("AddPage");
+  useDocumentTitle(`${t("tabTitle")}`);
   const router = useRouter();
   const locale = useLocale();
 
@@ -275,9 +276,9 @@ export default function AddPage() {
 
         await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/cs/api/photos`, formData, {
           params: {
-            year: clazzData.schoolYear?.getFullYear(),
-            clazz: clazzData.clazzName.toLowerCase(),
-            name: `${studentNameParts[0]}${studentNameParts.length > 2 ? `_${studentNameParts[1]}` : ""}_${studentNameParts.length > 2 ? studentNameParts[2] : studentNameParts[1]}`
+            schoolYear: clazzData.schoolYear?.getFullYear(),
+            clazzName: clazzData.clazzName.toLowerCase(),
+            studentName: `${studentNameParts[0]}${studentNameParts.length > 2 ? `_${studentNameParts[1]}` : ""}_${studentNameParts.length > 2 ? studentNameParts[2] : studentNameParts[1]}`
           },
           headers: {
             "content-type": "multipart/form-data"

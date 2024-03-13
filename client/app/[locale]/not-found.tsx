@@ -5,9 +5,9 @@ import { useDocumentTitle } from "@mantine/hooks";
 import { useLocale, useTranslations } from "next-intl";
 
 export default function NotFoundPage() {
-  useDocumentTitle("Not found");
-  const locale = useLocale();
   const t = useTranslations("NotFoundPage");
+  useDocumentTitle(`${t("tabTitle")}`);
+  const locale = useLocale();
   
   return (
     <NotFound

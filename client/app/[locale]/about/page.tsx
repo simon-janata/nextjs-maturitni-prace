@@ -7,10 +7,11 @@ import { GithubIcon } from "@mantinex/dev-icons";
 import Link from "next/link";
 import axios from "axios";
 import { useEffect } from "react";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 export default function AboutPage() {
-  useDocumentTitle("About");
+  const t = useTranslations("AboutPage");
+  useDocumentTitle(`${t("tabTitle")}`);
   const locale = useLocale();
   
   return (

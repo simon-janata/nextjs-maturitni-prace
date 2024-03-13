@@ -30,10 +30,11 @@ import { IconCheck, IconSettings, IconTrash, IconShare, IconDotsVertical, IconX 
 import { useRouter } from "next/navigation";
 
 export default function ClassesPage({ params }: { params: { schoolYear: number } }) {
+  const t = useTranslations("ClassesPage");
   useDocumentTitle(`School year ${params.schoolYear}`);
+  useDocumentTitle(`${t("tabTitle")} (${params.schoolYear})`);
   const router = useRouter();
   const locale = useLocale();
-  const t = useTranslations("ClassesPage");
   const p = useTranslations("Pathnames");
   const theme = useMantineTheme();
   const [year, setYear] = useState<SchoolYear>();
@@ -81,7 +82,7 @@ export default function ClassesPage({ params }: { params: { schoolYear: number }
     try {
       await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/cs/api/photos`, {
         params: {
-          year: params.schoolYear
+          schoolYear: params.schoolYear
         }
       });
       await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/cs/api/schoolYears/${params.schoolYear}`);

@@ -14,9 +14,9 @@ import { v4 as uuid } from "uuid";
 import { error } from "console";
 
 export default function SchoolYearsPage() {
-  useDocumentTitle("School years");
-  const locale = useLocale();
   const t = useTranslations("SchoolYearsPage");
+  useDocumentTitle(`${t("tabTitle")}`);
+  const locale = useLocale();
   const p = useTranslations("Pathnames");
   const theme = useMantineTheme();
   const [years, setYears] = useState<Array<SchoolYear>>([]);

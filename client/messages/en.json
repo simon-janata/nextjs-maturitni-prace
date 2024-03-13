@@ -5,8 +5,21 @@
     "clazzes": "classes",
     "about": "about"
   },
+
+  "MainPage": {
+    "tabTitle": "Photos – Home"
+  },
+
+  "AboutPage": {
+    "tabTitle": "Photos – About"
+  },
+
+  "AddPage": {
+    "tabTitle": "Photos – Add"
+  },
   
   "SchoolYearsPage": {
+    "tabTitle": "Photos – School years",
     "breadcrumbs": {
       "home": "Home",
       "schoolYears": "School years"
@@ -17,6 +30,7 @@
   },
 
   "ClassesPage": {
+    "tabTitle": "Photos – Classes",
     "breadcrumbs": {
       "home": "Home",
       "schoolYears": "School years"
@@ -27,6 +41,7 @@
   },
 
   "StudentsPage": {
+    "tabTitle": "Photos – Class",
     "breadcrumbs": {
       "home": "Home",
       "schoolYears": "School years"
@@ -37,6 +52,7 @@
   },
 
   "NotFoundPage": {
+    "tabTitle": "404 – Page not found",
     "title": "Nothing to see here",
     "text": "Page you are trying to open does not exist. You may have mistyped the address, or the page has been moved to another URL. If you think this is an error contact support.",
     "buttonText": "Take me back to home page"

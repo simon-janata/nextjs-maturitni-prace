@@ -6,7 +6,23 @@
     "about": "o-aplikaci"
   },
 
+  "MainPage": {
+    "tabTitle": "Fotky – Úvodní stránka",
+    "title": "Vítejte v aplikaci pro správu studentských fotografií",
+    "description": "Tato aplikace vám umožní spravovat studentské fotografie pro jednotlivé školní roky a třídy. Můžete nahrát soubor CSV s informacemi o studentech a následně nahrát fotografie studentů. Aplikace vám umožní jednoduše ořezat, pojmenovat a uložit fotografie do složky, kterou si sami zvolíte.",
+    "buttonText": "Vyzkoušet zdarma"
+  },
+
+  "AboutPage": {
+    "tabTitle": "Fotky – O aplikaci"
+  },
+
+  "AddPage": {
+    "tabTitle": "Fotky – Přidat"
+  },
+
   "SchoolYearsPage": {
+    "tabTitle": "Fotky – Školní roky",
     "breadcrumbs": {
       "home": "Úvod",
       "schoolYears": "Školní roky"
@@ -17,6 +33,7 @@
   },
 
   "ClassesPage": {
+    "tabTitle": "Fotky – Třídy",
     "breadcrumbs": {
       "home": "Úvod",
       "schoolYears": "Školní roky"
@@ -27,6 +44,7 @@
   },
 
   "StudentsPage": {
+    "tabTitle": "Fotky – Třída",
     "breadcrumbs": {
       "home": "Úvod",
       "schoolYears": "Školní roky"
@@ -37,6 +55,7 @@
   },
 
   "NotFoundPage": {
+    "tabTitle": "404 – Stránka nebyla nalezena",
     "title": "Stránka nebyla nalezena",
     "text": "Stránka, kterou se snažíte otevřít, neexistuje. Možná jste špatně zadali adresu nebo byla stránka přesunuta na jinou adresu URL. Pokud se domníváte, že se jedná o chybu, kontaktujte podporu.",
     "buttonText": "Zpět na úvodní stránku"

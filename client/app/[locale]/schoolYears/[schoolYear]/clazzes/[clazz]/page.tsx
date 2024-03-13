@@ -46,10 +46,10 @@ import JSZip from "jszip";
 import { saveAs } from "file-saver";
 
 export default function ClazzPage({ params }: { params: { schoolYear: number, clazz: string } }) {
-  useDocumentTitle("Year");
+  const t = useTranslations("StudentsPage");
+  useDocumentTitle(`${t("tabTitle")} ${params.clazz.toUpperCase()} (${params.schoolYear})`);
   const router = useRouter();
   const locale = useLocale();
-  const t = useTranslations("StudentsPage");
   const p = useTranslations("Pathnames");
   const theme = useMantineTheme();
   const [classData, setClassData] = useState<Clazz>();
@@ -85,9 +85,9 @@ export default function ClazzPage({ params }: { params: { schoolYear: number, cl
         return Promise.all(students.map(s => 
           axios.get(`${process.env.NEXT_PUBLIC_API_URL}/cs/api/photos`, {
             params: {
-              year: params.schoolYear,
-              clazz: params.clazz,
-              name: `${s.lastname}${s.middlename ? `_${s.middlename}` : ""}_${s.firstname}`
+              schoolYear: params.schoolYear,
+              clazzName: params.clazz,
+              studentName: `${s.lastname}${s.middlename ? `_${s.middlename}` : ""}_${s.firstname}`
             }
           })
             .then(res => ({ ...s, photo: res.data.image }))
@@ -138,8 +138,8 @@ export default function ClazzPage({ params }: { params: { schoolYear: number, cl
     try {
       await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/cs/api/photos`, {
         params: {
-          year: params.schoolYear,
-          clazz: params.clazz
+          schoolYear: params.schoolYear,
+          clazzName: params.clazz
         }
       });
       await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/cs/api/clazzes/${params.clazz}`, {
