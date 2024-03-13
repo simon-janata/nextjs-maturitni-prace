@@ -30,7 +30,7 @@ else:
     # Load the pre-trained Haar cascade classifier for face and eye detection
     face_cascade = cv2.CascadeClassifier(os.path.join(path_to_current_folder, 'haarcascade_frontalface_default.xml'))
     eye_cascade = cv2.CascadeClassifier(os.path.join(path_to_current_folder, 'haarcascade_eye.xml'))
-    nose_cascade = cv2.CascadeClassifier(os.path.join(path_to_current_folder, 'haarcascade_mcs_nose.xml'))
+    # nose_cascade = cv2.CascadeClassifier(os.path.join(path_to_current_folder, 'haarcascade_mcs_nose.xml'))
 
     # Detect faces in the image
     # faces = face_cascade.detectMultiScale(gray, 1.3, 5)
@@ -45,6 +45,8 @@ else:
         cv2.rectangle(img, (x, y), (x + w, y + h), (255, 0, 0), 2)
         roi_gray = gray[y:y + h, x:x + w]
         roi_color = img[y:y + h, x:x + w]
+        # Calculate the center of the face
+        face_center_x = x + w // 2
         eyes = eye_cascade.detectMultiScale(roi_gray, minSize=(50, 50))
         for (ex, ey, ew, eh) in eyes:
             cv2.rectangle(roi_color, (ex, ey), (ex + ew, ey + eh), (0, 255, 0), 2)
@@ -66,15 +68,17 @@ else:
     average_eye_x = sum(eye_centers) // len(eye_centers) if eye_centers else 0
 
     # Draw a vertical line at the average x-coordinate of the eyes
-    cv2.line(img, (average_eye_x, 0), (average_eye_x, img.shape[0]), (0, 255, 0), 2)
+    cv2.line(img, (face_center_x, 0), (face_center_x, img.shape[0]), (0, 255, 0), 2)
 
     # Calculate the height and width for the cropped image
     crop_height = int(3 * average_distance)
     crop_width = int(crop_height * (3 / 4))
 
     # Calculate the starting x coordinate for the crop to center the image
-    # start_x = int((img.shape[1] - crop_width) / 2)
-    start_x = int(average_eye_x - (crop_width / 2))
+    # # start_x = int((img.shape[1] - crop_width) / 2)
+    # start_x = int(average_eye_x - (crop_width / 2))
+    # Calculate the starting x coordinate for the crop to center the image
+    start_x = int(face_center_x - (crop_width / 2))
 
     if start_x < 0:
         start_x = 0

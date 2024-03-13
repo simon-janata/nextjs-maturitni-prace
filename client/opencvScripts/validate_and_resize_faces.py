@@ -62,18 +62,20 @@ else:
     # desired_width = 750   # New width in pixels
     # desired_height = 3080  # New height in pixels
     # desired_width = 2320   # New width in pixels
-    desired_height = 1540  # New height in pixels
-    desired_width = 1160   # New width in pixels
+    # desired_height = 1540  # New height in pixels
+    # desired_width = 1160   # New width in pixels
+    # desired_height = original_image.shape[0] * (1 / 4)  # New height in pixels
+    # desired_width = original_image.shape[1] * (1 / 4)  # New width in pixels
 
     # Calculate the scaling factors for resizing
-    scaling_factor_height = desired_height / original_image.shape[0]
-    scaling_factor_width = desired_width / original_image.shape[1]
+    # scaling_factor_height = desired_height / original_image.shape[0]
+    # scaling_factor_width = desired_width / original_image.shape[1]
 
     # Choose the smallest scaling factor to maintain aspect ratio
-    scaling_factor = min(scaling_factor_height, scaling_factor_width)
+    # scaling_factor = min(scaling_factor_height, scaling_factor_width)
 
     # Resize the image using the chosen scaling factor
-    resized_image = cv2.resize(original_image, None, fx=scaling_factor, fy=scaling_factor, interpolation=cv2.INTER_AREA)
+    resized_image = cv2.resize(original_image, None, fx=(1 / 4), fy=(1 / 4), interpolation=cv2.INTER_AREA)
 
 
 
