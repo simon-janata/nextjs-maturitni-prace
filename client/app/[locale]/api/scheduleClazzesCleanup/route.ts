@@ -22,7 +22,7 @@ export async function GET(req: Request, res: Response) {
 							await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/cs/api/photos`, {
 							  params: {
 							    schoolYear: clazz.schoolYear.year,
-									clazzName: clazz.name
+									clazzName: clazz.name.tolowerCase(),
 							  }
 							});
 							await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/cs/api/clazzes/${clazz.name.tolowerCase()}`);

@@ -7,11 +7,11 @@ import { spawnSync } from "child_process";
 export async function GET(req: Request, res: Response) {
   try {
     const { searchParams } = new URL(req.url);
-    const year = searchParams.get("year") || "";
-    const clazz = searchParams.get("clazz") || "";
-    const name = searchParams.get("name") || "";
+    const schoolYearParam = searchParams.get("schoolYear") || "";
+    const clazzNameParam = searchParams.get("clazzName")?.toUpperCase() || "";
+    const studentNameParam = searchParams.get("studentName") || "";
 
-    const imagePath = join(process.cwd(), "photos", year, clazz, `${name}.jpeg`);
+    const imagePath = join(process.cwd(), "photos", schoolYearParam, clazzNameParam, `${studentNameParam}.jpeg`);
 
     if (!existsSync(imagePath)) {
       return new Response(
@@ -78,7 +78,7 @@ export async function POST(req: Request, res: Response) {
     if (!photo) {
       return new Response(
         JSON.stringify({
-          message: "Photo must be provided",
+          message: "photo must be provided",
         }),
         {
           status: 400,
@@ -92,26 +92,23 @@ export async function POST(req: Request, res: Response) {
     const bytes = await photo.arrayBuffer();
     const buffer = Buffer.from(bytes);
   
-    console.log(`Running Python script at: ${opencvScriptPath}`);
     const pythonProcess = spawnSync("python", [opencvScriptPath], { input: buffer });
 
     const croppedImageBuffer = pythonProcess.stdout as Buffer;
 
     const { searchParams } = new URL(req.url);
-    const year = searchParams.get("year") || "";
-    const clazz = searchParams.get("clazz")?.toUpperCase() || "";
-    const name = searchParams.get("name") || "";
+    const schoolYearParam = searchParams.get("schoolYear") || "";
+    const clazzNameParam = searchParams.get("clazzName")?.toUpperCase() || "";
+    const studentName = searchParams.get("studentName") || "";
   
-    const dirPath = join(process.cwd(), "photos", year, clazz);
+    const dirPath = join(process.cwd(), "photos", schoolYearParam, clazzNameParam);
   
     if (!existsSync(dirPath)){
       mkdirSync(dirPath, { recursive: true });
     }
   
-    const path = join(dirPath, `${name}.jpeg`);
+    const path = join(dirPath, `${studentName}.jpeg`);
     await writeFile(path, croppedImageBuffer);
-
-    console.log(`Succcessfully uploaded file to ${path}`);
 
     return new Response(
       JSON.stringify({
@@ -162,8 +159,6 @@ export async function DELETE(req: Request, res: Response) {
     }
 
     rmSync(directoryPath, { recursive: true, force: true });
-
-    console.log(`Succcessfully deleted photos at: ${directoryPath}`);
     
     return new Response(
       JSON.stringify({
