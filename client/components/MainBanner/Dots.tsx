@@ -43,6 +43,6 @@ const Dots = ({ size = 85, radius = 2.5, ...others }: DotsProps) => {
       <rect width="5" height="5" x="80" y="80" rx={radius} />
     </svg>
   );
-}
+};
 
 export default Dots;

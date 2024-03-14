@@ -1,13 +1,19 @@
 "use client";
 
-import Link from 'next/link';
-import { Table, Progress, Anchor, Text, Group, Avatar, UnstyledButton } from '@mantine/core';
-import { FileWithPath } from "@mantine/dropzone";
-import { IconCheck, IconX, IconTrash } from '@tabler/icons-react';
+import Link from "next/link";
+
+import { Avatar, Table, UnstyledButton } from "@mantine/core";
+import { IconCheck, IconTrash, IconX } from "@tabler/icons-react";
+
 import Fancybox from "../Fancybox";
 
 interface SummaryTableProps {
-  studentsWithPhotos: Array<{ name: string, photo: File, isPhotoValid: boolean, preview: React.ReactElement }>;
+  studentsWithPhotos: Array<{
+    name: string;
+    photo: File;
+    isPhotoValid: boolean;
+    preview: React.ReactElement;
+  }>;
   handleDeleteStudent: (index: number) => void;
 }
 
@@ -24,24 +30,21 @@ const SummaryTable: React.FC<SummaryTableProps> = ({ studentsWithPhotos, handleD
             <Avatar size={60} src={row.preview.props.href || ""} />
           </Link>
         </Table.Td>
-        <Table.Td>
-            {row.name}
-        </Table.Td>
-        <Table.Td>
-          {row.photo.name ? row.photo.name : "..."}
-        </Table.Td>
+        <Table.Td>{row.name}</Table.Td>
+        <Table.Td>{row.photo.name ? row.photo.name : "..."}</Table.Td>
         <Table.Td ta="center">
-            {
-              row.isPhotoValid ? (
-                <IconCheck stroke={1.5} color="green" />
-              ) : (
-                <IconX stroke={1.5} color="red" />
-              )
-            }
+          {row.isPhotoValid ? (
+            <IconCheck stroke={1.5} color="green" />
+          ) : (
+            <IconX stroke={1.5} color="red" />
+          )}
         </Table.Td>
         <Table.Td ta="center">
           <UnstyledButton>
-            <IconTrash stroke={1.5} onClick={() => handleDeleteStudent(index)} />
+            <IconTrash
+              stroke={1.5}
+              onClick={() => handleDeleteStudent(index)}
+            />
           </UnstyledButton>
         </Table.Td>
       </Table.Tr>
@@ -56,7 +59,6 @@ const SummaryTable: React.FC<SummaryTableProps> = ({ studentsWithPhotos, handleD
         },
       }}
     >
-      
       <Table.ScrollContainer minWidth={800}>
         <Table verticalSpacing="xs">
           <Table.Thead>
@@ -73,6 +75,6 @@ const SummaryTable: React.FC<SummaryTableProps> = ({ studentsWithPhotos, handleD
       </Table.ScrollContainer>
     </Fancybox>
   );
-}
+};
 
 export default SummaryTable;

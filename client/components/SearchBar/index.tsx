@@ -5,7 +5,12 @@ import { useRef } from "react";
 import { ActionIcon, rem, TextInput, useMantineTheme } from "@mantine/core";
 import { IconSearch, IconX } from "@tabler/icons-react";
 
-const SearchBar = ({ placeholder, handleSearch }: { placeholder: string, handleSearch: (query: string) => void }) => {
+interface SearchBarProps {
+  placeholder: string;
+  handleSearch: (query: string) => void;
+}
+
+const SearchBar: React.FC<SearchBarProps> = ({ placeholder, handleSearch }) => {
   const theme = useMantineTheme();
   const refInput = useRef<HTMLInputElement>(null);
 
@@ -18,7 +23,9 @@ const SearchBar = ({ placeholder, handleSearch }: { placeholder: string, handleS
       mb="xl"
       placeholder={placeholder}
       rightSectionWidth={42}
-      leftSection={<IconSearch style={{ width: rem(18), height: rem(18) }} stroke={1.5} />}
+      leftSection={
+        <IconSearch style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
+      }
       onChange={(e) => {
         handleSearch(e.currentTarget.value);
       }}
@@ -40,6 +47,6 @@ const SearchBar = ({ placeholder, handleSearch }: { placeholder: string, handleS
       }
     />
   );
-}
+};
 
 export default SearchBar;

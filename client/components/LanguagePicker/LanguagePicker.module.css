@@ -5,7 +5,8 @@
   align-items: center;
   padding: var(--mantine-spacing-xs) var(--mantine-spacing-md);
   border-radius: var(--mantine-radius-md);
-  border: rem(1px) solid light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-5));
+  border: rem(1px) solid
+    light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-5));
   transition: background-color 150ms ease;
 
   @mixin light {
@@ -17,7 +18,10 @@
   }
 
   @mixin hover {
-    background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-5));
+    background-color: light-dark(
+      var(--mantine-color-gray-1),
+      var(--mantine-color-dark-5)
+    );
   }
 
   @media (max-width: $mantine-breakpoint-sm) {
@@ -25,7 +29,10 @@
   }
 
   &[data-expanded] {
-    background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-5));
+    background-color: light-dark(
+      var(--mantine-color-gray-1),
+      var(--mantine-color-dark-5)
+    );
   }
 }
 
@@ -44,6 +51,9 @@
 }
 
 .dropdown {
-  background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6));
+  background-color: light-dark(
+    var(--mantine-color-gray-0),
+    var(--mantine-color-dark-6)
+  );
   z-index: 10100 !important;
 }

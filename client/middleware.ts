@@ -1,6 +1,7 @@
 import createMiddleware from "next-intl/middleware";
-import { locales, localePrefix } from "./navigation";
- 
+
+import { localePrefix, locales } from "./navigation";
+
 export default createMiddleware({
   defaultLocale: "cs",
   localePrefix,
@@ -12,35 +13,35 @@ export default createMiddleware({
     "/add": {
       cs: "/pridat",
       en: "/add",
-      de: "/hinzufuegen"
+      de: "/hinzufuegen",
     },
 
     "/schoolYears": {
       cs: "/skolni-roky",
       en: "/school-years",
-      de: "/schuljahre"
+      de: "/schuljahre",
     },
 
     "/schoolYears/[schoolYear]": {
       cs: "/skolni-roky/[schoolYear]",
       en: "/school-years/[schoolYear]",
-      de: "/schuljahre/[schoolYear]"
+      de: "/schuljahre/[schoolYear]",
     },
 
     "/schoolYears/[schoolYear]/clazzes/[clazz]": {
       cs: "/skolni-roky/[schoolYear]/tridy/[clazz]",
       en: "/school-years/[schoolYear]/classes/[clazz]",
-      de: "/schuljahre/[schoolYear]/klassen/[clazz]"
+      de: "/schuljahre/[schoolYear]/klassen/[clazz]",
     },
 
     "/about": {
       cs: "/o-aplikaci",
       en: "/about",
-      de: "/uber"
+      de: "/uber",
     },
-  }
+  },
 });
 
 export const config = {
-  matcher: ["/", "/(cs|en|de)/:path*"]
+  matcher: ["/", "/(cs|en|de)/:path*"],
 };

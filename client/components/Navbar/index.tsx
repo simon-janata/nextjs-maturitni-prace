@@ -1,15 +1,19 @@
 "use client";
 
+import { useLocale, useTranslations } from "next-intl";
 import Link from "next/link";
 
 import {
-  Box, Burger,
-  Divider, Drawer, Group,
-  Image, rem,
-  ScrollArea
+  Box,
+  Burger,
+  Divider,
+  Drawer,
+  Group,
+  Image,
+  rem,
+  ScrollArea,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { useLocale, useTranslations } from "next-intl";
 
 import ColorSchemeToggle from "../ColorSchemeToggle";
 import LanguagePicker from "../LanguagePicker";
@@ -26,8 +30,16 @@ const Navbar = () => {
       <header className={classes.header}>
         <Group justify="space-between" h="100%">
           <Link href={`/${locale}`} className={classes.linkLogo}>
-            <Image src="/pslib-logo-dark.svg" className={classes.imgLogo} darkHidden />
-            <Image src="/pslib-logo-light.svg" className={classes.imgLogo} lightHidden />
+            <Image
+              src="/pslib-logo-dark.svg"
+              className={classes.imgLogo}
+              darkHidden
+            />
+            <Image
+              src="/pslib-logo-light.svg"
+              className={classes.imgLogo}
+              lightHidden
+            />
           </Link>
 
           <Group h="100%" gap={0} visibleFrom="sm">
@@ -37,7 +49,10 @@ const Navbar = () => {
             <Link href={`/${locale}/${p("add")}`} className={classes.link}>
               {t("addPage")}
             </Link>
-            <Link href={`/${locale}/${p("schoolYears")}`} className={classes.link}>
+            <Link
+              href={`/${locale}/${p("schoolYears")}`}
+              className={classes.link}
+            >
               {t("yearsPage")}
             </Link>
             <Link href={`/${locale}/${p("about")}`} className={classes.link}>
@@ -70,16 +85,32 @@ const Navbar = () => {
         <ScrollArea h={`calc(100vh - ${rem(80)})`} mx="-md">
           <Divider my="sm" />
 
-          <Link href={`/${locale}`} className={classes.link} onClick={closeDrawer}>
+          <Link
+            href={`/${locale}`}
+            className={classes.link}
+            onClick={closeDrawer}
+          >
             {t("homePage")}
           </Link>
-          <Link href={`/${locale}/${p("add")}`} className={classes.link} onClick={closeDrawer}>
+          <Link
+            href={`/${locale}/${p("add")}`}
+            className={classes.link}
+            onClick={closeDrawer}
+          >
             {t("addPage")}
           </Link>
-          <Link href={`/${locale}/${p("schoolYears")}`} className={classes.link} onClick={closeDrawer}>
+          <Link
+            href={`/${locale}/${p("schoolYears")}`}
+            className={classes.link}
+            onClick={closeDrawer}
+          >
             {t("yearsPage")}
           </Link>
-          <Link href={`/${locale}/${p("about")}`} className={classes.link} onClick={closeDrawer}>
+          <Link
+            href={`/${locale}/${p("about")}`}
+            className={classes.link}
+            onClick={closeDrawer}
+          >
             {t("aboutPage")}
           </Link>
 
@@ -93,6 +124,6 @@ const Navbar = () => {
       </Drawer>
     </Box>
   );
-}
+};
 
 export default Navbar;

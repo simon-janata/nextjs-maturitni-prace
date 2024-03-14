@@ -1,5 +1,7 @@
-import { notFound } from "next/navigation";
- 
+"use client";
+
+import { notFound } from 'next/navigation';
+
 export default function CatchAllPage() {
   notFound();
 }

@@ -1,9 +1,9 @@
 "use client";
 
-import { Breadcrumbs as BreadcrumbsMantine, rem } from "@mantine/core";
-import { IconSlash } from "@tabler/icons-react";
+import { Breadcrumbs as BreadcrumbsMantine, rem } from '@mantine/core';
+import { IconSlash } from '@tabler/icons-react';
 
-import classes from "./Breadcrumbs.module.css";
+import classes from './Breadcrumbs.module.css';
 
 const Breadcrumbs = ({ items }: { items: JSX.Element[] }) => {
   return (
@@ -14,6 +14,6 @@ const Breadcrumbs = ({ items }: { items: JSX.Element[] }) => {
       {items}
     </BreadcrumbsMantine>
   );
-}
+};
 
 export default Breadcrumbs;

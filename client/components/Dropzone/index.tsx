@@ -1,11 +1,22 @@
 "use client";
 
 import { useRef } from "react";
-
-import { Button, Center, Group, rem, Text, useMantineTheme } from "@mantine/core";
-import { Dropzone as DropzoneMantine, FileWithPath, MIME_TYPES } from "@mantine/dropzone";
-import { IconCloudUpload, IconDownload, IconX } from "@tabler/icons-react";
 import { v4 as uuid } from "uuid";
+
+import {
+  Button,
+  Center,
+  Group,
+  rem,
+  Text,
+  useMantineTheme,
+} from "@mantine/core";
+import {
+  Dropzone as DropzoneMantine,
+  FileWithPath,
+  MIME_TYPES,
+} from "@mantine/dropzone";
+import { IconCloudUpload, IconDownload, IconX } from "@tabler/icons-react";
 
 import classes from "./Dropzone.module.css";
 
@@ -29,10 +40,10 @@ const Dropzone: React.FC<DropzoneProps> = ({ acceptedMimeTypes, maxSize, multipl
         openRef={openRef}
         onDrop={(e) => {
           if (acceptedMimeTypes.includes(MIME_TYPES.csv)) {
-            handleCSVUpload && handleCSVUpload(e[0])
+            handleCSVUpload && handleCSVUpload(e[0]);
           } else {
             e.sort((a, b) => a.name.localeCompare(b.name));
-            handlePhotosUpload && handlePhotosUpload(e)
+            handlePhotosUpload && handlePhotosUpload(e);
           }
         }}
         className={classes.dropzone}
@@ -59,7 +70,11 @@ const Dropzone: React.FC<DropzoneProps> = ({ acceptedMimeTypes, maxSize, multipl
               />
             </DropzoneMantine.Reject>
             <DropzoneMantine.Idle>
-              <IconCloudUpload className={classes.icon} style={{ width: rem(70), height: rem(70) }} stroke={1.5} />
+              <IconCloudUpload
+                className={classes.icon}
+                style={{ width: rem(70), height: rem(70) }}
+                stroke={1.5}
+              />
             </DropzoneMantine.Idle>
           </Group>
 
@@ -67,41 +82,45 @@ const Dropzone: React.FC<DropzoneProps> = ({ acceptedMimeTypes, maxSize, multipl
             <DropzoneMantine.Accept>Drop files here</DropzoneMantine.Accept>
             <DropzoneMantine.Reject>
               only{" "}
-              {
-                typesString.map((type, i) => (
-                  <span key={uuid()}>
-                    {i > 0 && i < typesString.length - 1 && ", "}
-                    {i === typesString.length - 1 && typesString.length > 1 && " or "}
-                    <>{type}</>
-                  </span>
-                ))
-              }
-              {" "}file less than {maxSize}mb
+              {typesString.map((type, i) => (
+                <span key={uuid()}>
+                  {i > 0 && i < typesString.length - 1 && ", "}
+                  {i === typesString.length - 1 &&
+                    typesString.length > 1 &&
+                    " or "}
+                  <>{type}</>
+                </span>
+              ))}{" "}
+              file less than {maxSize}mb
             </DropzoneMantine.Reject>
             <DropzoneMantine.Idle>{idle}</DropzoneMantine.Idle>
           </Text>
           <Text ta="center" fz="sm" mt="xs" c="dimmed">
             Drag&apos;n&apos;drop files here to upload. We can accept only{" "}
-            {
-              typesString.map((type, i) => (
-                <span key={uuid()}>
-                  {i > 0 && i < typesString.length - 1 && ", "}
-                  {i === typesString.length - 1 && typesString.length > 1 && " or "}
-                  <>{type}</>
-                </span>
-              ))
-            }
-            {" "}files that
-            are less than {maxSize}mb in size.
+            {typesString.map((type, i) => (
+              <span key={uuid()}>
+                {i > 0 && i < typesString.length - 1 && ", "}
+                {i === typesString.length - 1 &&
+                  typesString.length > 1 &&
+                  " or "}
+                <>{type}</>
+              </span>
+            ))}{" "}
+            files that are less than {maxSize}mb in size.
           </Text>
         </div>
       </DropzoneMantine>
 
-      <Button className={classes.control} size="md" radius="xl" onClick={() => openRef.current?.()}>
+      <Button
+        className={classes.control}
+        size="md"
+        radius="xl"
+        onClick={() => openRef.current?.()}
+      >
         Select files
       </Button>
     </Center>
   );
-}
+};
 
 export default Dropzone;

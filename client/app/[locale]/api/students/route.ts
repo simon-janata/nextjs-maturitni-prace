@@ -1,4 +1,4 @@
-import prisma from "@/lib/prismaHelper";
+import prisma from '@/lib/prismaHelper';
 
 export async function POST(req: Request, res: Response) {
   try {

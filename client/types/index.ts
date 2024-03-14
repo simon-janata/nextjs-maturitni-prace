@@ -2,7 +2,7 @@ type SchoolYear = {
   id: string;
   year: number;
   clazzes: string;
-}
+};
 
 type Clazz = {
   id: string;
@@ -11,7 +11,7 @@ type Clazz = {
   schoolYear: SchoolYear;
   schoolYearId: String;
   students: Student[];
-}
+};
 
 type Student = {
   id: string;
@@ -20,6 +20,6 @@ type Student = {
   firstname: string;
   middlename: string;
   lastname: string;
-}
+};
 
 type StudentWithPhoto = Student & { photo: string };

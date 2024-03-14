@@ -7,16 +7,19 @@ import { Button, Container, Group, Text, Title } from "@mantine/core";
 
 import classes from "./NotFound.module.css";
 
-const NotFound = (props: { title: string, text: string, buttonAddress: string, buttonText: string }) => {
+const NotFound = (props: { title: string; text: string; buttonAddress: string; buttonText: string; }) => {
   return (
     <Container className={classes.root}>
       <div className={classes.inner}>
         <NotFoundSvg className={classes.image} />
         <div className={classes.content}>
-          <Title className={classes.title}>
-            {props.title}
-          </Title>
-          <Text c="dimmed" size="lg" ta="center" className={classes.description}>
+          <Title className={classes.title}>{props.title}</Title>
+          <Text
+            c="dimmed"
+            size="lg"
+            ta="center"
+            className={classes.description}
+          >
             {props.text}
           </Text>
           <Group justify="center">
@@ -28,6 +31,6 @@ const NotFound = (props: { title: string, text: string, buttonAddress: string, b
       </div>
     </Container>
   );
-}
+};
 
 export default NotFound;

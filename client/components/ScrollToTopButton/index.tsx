@@ -10,10 +10,13 @@ const ScrollToTopButton = () => {
 
   return (
     <Affix position={{ bottom: rem(16), right: rem(16) }}>
-      <Transition transition="slide-up" mounted={scroll.y > (height / 2)}>
+      <Transition transition="slide-up" mounted={scroll.y > height / 2}>
         {(transitionStyles) => (
           <Button
-            style={[transitionStyles, { "height": rem(40), "width": rem(40), "padding": 0 }]}
+            style={[
+              transitionStyles,
+              { height: rem(40), width: rem(40), padding: 0 },
+            ]}
             onClick={() => scrollTo({ y: 0 })}
           >
             <IconChevronUp />
@@ -22,6 +25,6 @@ const ScrollToTopButton = () => {
       </Transition>
     </Affix>
   );
-}
+};
 
 export default ScrollToTopButton;

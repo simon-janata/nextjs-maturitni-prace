@@ -1,15 +1,15 @@
 "use client";
 
-import { usePathname, useRouter } from "@/navigation";
 import { useLocale } from "next-intl";
 import { FormEvent, useEffect, useState, useTransition } from "react";
+import { v4 as uuid } from "uuid";
 
 import CzechFlag from "@/assets/cz-circle.png";
 import GermanFlag from "@/assets/de-circle.png";
 import EnglishFlag from "@/assets/uk-circle.png";
+import { usePathname, useRouter } from "@/navigation";
 import { Group, Image, Menu, UnstyledButton } from "@mantine/core";
 import { IconChevronDown } from "@tabler/icons-react";
-import { v4 as uuid } from "uuid";
 
 import classes from "./LanguagePicker.module.css";
 
@@ -46,7 +46,7 @@ const LanguagePicker = () => {
     startTransition(() => {
       router.replace(pathname, { locale: nextLocale });
     });
-  }
+  };
 
   const items = data.map((item) => (
     <Menu.Item
@@ -72,7 +72,10 @@ const LanguagePicker = () => {
       disabled={isPending}
     >
       <Menu.Target>
-        <UnstyledButton className={classes.control} data-expanded={opened || undefined}>
+        <UnstyledButton
+          className={classes.control}
+          data-expanded={opened || undefined}
+        >
           <Group gap="xs">
             <Image src={selected.image} width={22} height={22} />
             <span className={classes.label}>{selected.label}</span>
@@ -80,11 +83,9 @@ const LanguagePicker = () => {
           <IconChevronDown size="1rem" className={classes.icon} stroke={1.5} />
         </UnstyledButton>
       </Menu.Target>
-      <Menu.Dropdown className={classes.dropdown}>
-        {items}
-      </Menu.Dropdown>
+      <Menu.Dropdown className={classes.dropdown}>{items}</Menu.Dropdown>
     </Menu>
   );
-}
+};
 
 export default LanguagePicker;

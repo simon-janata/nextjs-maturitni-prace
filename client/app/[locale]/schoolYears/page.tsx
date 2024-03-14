@@ -1,17 +1,23 @@
 "use client";
 
+import axios from "axios";
+import { useLocale, useTranslations } from "next-intl";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { useLocale, useTranslations } from "next-intl";
-import axios from "axios";
+import { v4 as uuid } from "uuid";
 
 import Breadcrumbs from "@/components/Breadcrumbs";
 import DirectoryCard from "@/components/DirectoryCard";
 import SearchBar from "@/components/SearchBar";
-import { Anchor, Center, Grid, Loader, Title, useMantineTheme } from "@mantine/core";
+import {
+  Anchor,
+  Center,
+  Grid,
+  Loader,
+  Title,
+  useMantineTheme,
+} from "@mantine/core";
 import { useDocumentTitle } from "@mantine/hooks";
-import { v4 as uuid } from "uuid";
-import { error } from "console";
 
 export default function SchoolYearsPage() {
   const t = useTranslations("SchoolYearsPage");
@@ -19,44 +25,53 @@ export default function SchoolYearsPage() {
   const locale = useLocale();
   const p = useTranslations("Pathnames");
   const theme = useMantineTheme();
-  const [years, setYears] = useState<Array<SchoolYear>>([]);
-  const [filteredYears, setFilteredYears] = useState<Array<SchoolYear>>([]);
+  const [schoolYears, setSchoolYears] = useState<Array<SchoolYear>>([]);
+  const [filteredSchoolYears, setFilteredSchoolYears] = useState<Array<SchoolYear>>([]);
   const [query, setQuery] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
-  
+
   const breadcrumbsItems = [
     { title: t("breadcrumbs.home"), href: `/${locale}` },
-    { title: t("breadcrumbs.schoolYears"), href: `/${locale}/${p("schoolYears")}` },
-  ].map((item, index) => (
-    <Anchor component={Link} href={item.href} key={uuid()} c={theme.colors.pslib[6]}>
+    {
+      title: t("breadcrumbs.schoolYears"),
+      href: `/${locale}/${p("schoolYears")}`,
+    },
+  ].map((item) => (
+    <Anchor
+      component={Link}
+      href={item.href}
+      key={uuid()}
+      c={theme.colors.pslib[6]}
+    >
       {item.title}
     </Anchor>
   ));
 
   useEffect(() => {
-    const dataPromise = axios.get(`${process.env.NEXT_PUBLIC_API_URL}/cs/api/schoolYears`)
+    const dataPromise = axios
+      .get(`${process.env.NEXT_PUBLIC_API_URL}/cs/api/schoolYears`)
       .then((res) => {
         const data = res.data;
-        setYears(data);
-        setFilteredYears(data);
+        setSchoolYears(data);
+        setFilteredSchoolYears(data);
       })
       .catch((err) => {
         console.error(err);
       });
 
-    const timeoutPromise = new Promise(resolve => setTimeout(resolve, 1000));
+    const timeoutPromise = new Promise((resolve) => setTimeout(resolve, 1000));
 
     Promise.all([dataPromise, timeoutPromise]).then(() => setLoading(false));
   }, []);
 
   const handleSearch = (searchQuery: string) => {
     setQuery(searchQuery);
-    const filteredResults = years.filter((y) =>
+    const filteredResults = schoolYears.filter((y) =>
       y.year.toString().includes(searchQuery)
     );
 
-    setFilteredYears(filteredResults);
-  }
+    setFilteredSchoolYears(filteredResults);
+  };
 
   return (
     <>
@@ -66,29 +81,27 @@ export default function SchoolYearsPage() {
         handleSearch={handleSearch}
       />
 
-      {
-        loading === true ? (
-          <Center>
-            <Loader color={theme.colors.pslib[6]} />
-          </Center>
-        ) : (
-          filteredYears.length === 0 ? (
-            <Center>
-              <Title order={1}>No years found</Title>
-            </Center>
-          ) : (
-            <Grid>
-              {
-                filteredYears.map((y) => (
-                  <Grid.Col span={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={uuid()}>
-                    <DirectoryCard entity={y} type="year" textToHighlight={query} />
-                  </Grid.Col>
-                ))
-              }
-            </Grid>
-          )
-        )
-      }
+      {loading === true ? (
+        <Center>
+          <Loader color={theme.colors.pslib[6]} />
+        </Center>
+      ) : filteredSchoolYears.length === 0 ? (
+        <Center>
+          <Title order={1}>No years found</Title>
+        </Center>
+      ) : (
+        <Grid>
+          {filteredSchoolYears.map((y) => (
+            <Grid.Col span={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={uuid()}>
+              <DirectoryCard
+                entity={y}
+                model="schoolYear"
+                textToHighlight={query}
+              />
+            </Grid.Col>
+          ))}
+        </Grid>
+      )}
     </>
   );
 }

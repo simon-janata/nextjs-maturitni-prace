@@ -1,7 +1,12 @@
 "use client";
 
-import { Text, SimpleGrid, Container, rem } from "@mantine/core";
-import { IconTruck, IconCertificate, IconCoin, IconCameraCog, IconCrop, IconHeartHandshake } from "@tabler/icons-react";
+import { Container, rem, SimpleGrid, Text } from "@mantine/core";
+import {
+  IconCameraCog,
+  IconCrop,
+  IconHeartHandshake,
+} from "@tabler/icons-react";
+
 import classes from "./Features.module.css";
 
 interface FeatureProps extends React.ComponentPropsWithoutRef<"div"> {
@@ -16,7 +21,11 @@ const Feature = ({ icon: Icon, title, description, className, ...others }: Featu
       <div className={classes.overlay} />
 
       <div className={classes.content}>
-        <Icon style={{ width: rem(38), height: rem(38) }} className={classes.icon} stroke={1.5} />
+        <Icon
+          style={{ width: rem(38), height: rem(38) }}
+          className={classes.icon}
+          stroke={1.5}
+        />
         <Text fw={700} fz="lg" mb="xs" mt={5} className={classes.title}>
           {title}
         </Text>
@@ -26,7 +35,7 @@ const Feature = ({ icon: Icon, title, description, className, ...others }: Featu
       </div>
     </div>
   );
-}
+};
 
 const mockdata = [
   {
@@ -59,6 +68,6 @@ const Features = () => {
       </SimpleGrid>
     </Container>
   );
-}
+};
 
 export default Features;

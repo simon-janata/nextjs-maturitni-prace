@@ -1,4 +1,4 @@
-import { createSharedPathnamesNavigation } from "next-intl/navigation";                  
+import { createSharedPathnamesNavigation } from "next-intl/navigation";
 
 export const locales = ["cs", "en", "de"] as const;
 export const localePrefix = "always";
