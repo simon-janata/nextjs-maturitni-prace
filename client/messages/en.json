@@ -7,47 +7,95 @@
   },
 
   "MainPage": {
-    "tabTitle": "Photos – Home"
+    "tabTitle": "PSLIB Photos – Home"
   },
 
   "AboutPage": {
-    "tabTitle": "Photos – About"
+    "tabTitle": "PSLIB Photos – About",
+    "githubButton": "View Source Code"
   },
 
   "AddPage": {
-    "tabTitle": "Photos – Add"
+    "tabTitle": "PSLIB Photos – Add",
+    "schoolYearProgress": "School year",
+    "clazzProgress": "Class",
+    "studentsProgress": "Students",
+    "photosProgress": "Photos"
   },
-  
+
   "SchoolYearsPage": {
-    "tabTitle": "Photos – School years",
+    "tabTitle": "PSLIB Photos – School years",
     "breadcrumbs": {
       "home": "Home",
       "schoolYears": "School years"
     },
     "searchBar": {
       "placeholder": "Search by school year..."
-    }
+    },
+    "title": "No school years found"
   },
 
   "ClassesPage": {
-    "tabTitle": "Photos – Classes",
+    "tabTitle": "PSLIB Photos – Classes",
     "breadcrumbs": {
       "home": "Home",
       "schoolYears": "School years"
     },
     "searchBar": {
       "placeholder": "Search by class name..."
+    },
+    "nottification": {
+      "success": {
+        "title": "School Year Deleted",
+        "message": "The school year {schoolYear}, along with all its classes, students, and their photos, has been successfully deleted."
+      },
+      "error": {
+        "title": "School Year Deletion Failed",
+        "message": "Failed to delete the school year {schoolYear}, along with all its classes, students, and their photos. Please try again."
+      }
+    },
+    "title": "No classes found",
+    "modal": {
+      "title": "Delete School Year Confirmation",
+      "text": "Are you sure you want to delete this school year? Deleting this school year will also delete all associated classes, students, and their photos. This action cannot be undone. Please confirm your decision.",
+      "leftButton": "Delete",
+      "rightButton": "Cancel"
     }
   },
 
   "StudentsPage": {
-    "tabTitle": "Photos – Class",
+    "tabTitle": "PSLIB Photos – Class",
     "breadcrumbs": {
       "home": "Home",
       "schoolYears": "School years"
     },
     "searchBar": {
       "placeholder": "Search by student name..."
+    },
+    "nottification": {
+      "zipDownloadFailed": {
+        "title": "Zip Download Failed",
+        "message": "The zip file could not be downloaded. Please try again."
+      },
+      "deleteSuccess": {
+        "title": "Class Deleted",
+        "message": "The class {clazz} for the school year {schoolYear} and its photos have been successfully deleted."
+      },
+      "deleteError": {
+        "title": "Class Deletion Failed",
+        "message": "Failed to delete the class {clazz} for the school year {schoolYear}. Please try again."
+      }
+    },
+    "dropdown": {
+      "downloadZip": "Download all photos (.zip)",
+      "deleteClass": "Delete this class"
+    },
+    "title": "No students found",
+    "modal": {
+      "title": "Delete Class Confirmation",
+      "text": "Are you sure you want to delete this class? Deleting this class will also delete all associated students and their photos. This action cannot be undone. Please confirm your decision.",
+      "leftButton": "Delete",
+      "rightButton": "Cancel"
     }
   },
 
@@ -58,6 +106,36 @@
     "buttonText": "Take me back to home page"
   },
 
+  "Dropzone": {
+    "accept": "Drop files here",
+    "reject": {
+      "only": "only",
+      "or": "or",
+      "size": "file less than {maxSize} MB"
+    },
+    "label": {
+      "dragAndDrop": "Drag'n'drop files here to upload. We can accept only",
+      "or": "or",
+      "size": "files that are less than {maxSize} MB in size"
+    },
+    "selectButton": "Select files"
+  },
+
+  "Features": {
+    "first": {
+      "title": "Automated Photo Processing",
+      "description": "Automatically crops and names photographs of new students, saving teachers from having to do this manually."
+    },
+    "second": {
+      "title": "Standardized Profile Pictures",
+      "description": "Applies a standard set of edits to each photo, ensuring that all profile pictures have a consistent appearance."
+    },
+    "third": {
+      "title": "User-Friendly Interface",
+      "description": "Provides a simple, intuitive interface that makes it easy for teachers to upload photos, view the processed results, and make any necessary adjustments."
+    }
+  },
+
   "MainBanner": {
     "title": {
       "firstPart": "Streamline Your",
@@ -66,7 +144,7 @@
     },
     "description": "Simplify the process of cropping, naming, and editing new student photos with our web-based application. Designed to increase efficiency, unify the look of profile photos, and ease administrative procedures.",
     "leftButton": "More information",
-    "rightButton": "Try for free"
+    "rightButton": "Try it now"
   },
 
   "Navbar": {
@@ -78,21 +156,80 @@
   },
 
   "Stepper": {
+    "form": {
+      "schoolYear": {
+        "errorMessage": "School year must be filled in and cannot be in the future."
+      },
+      "clazzName": {
+        "errorMessage": "Class name must be filled in."
+      }
+    },
     "firstStep": {
       "label": "First step",
-      "description": "Select a school year"
+      "description": "Select a school year",
+      "input": {
+        "label": "Pick a school year"
+      }
     },
     "secondStep": {
       "label": "Second step",
-      "description": "Select a class"
+      "description": "Select a class",
+      "input": {
+        "label": "Enter a class name",
+        "placeholder": "Enter a class name"
+      },
+      "colorInput": {
+        "label": "Pick a folder colour"
+      }
     },
     "thirdStep": {
       "label": "Third step",
-      "description": "Upload an CSV file"
+      "description": "Upload an CSV file",
+      "dropzone": {
+        "idle": "Upload CSV file of students"
+      }
     },
     "fourthStep": {
       "label": "Fourth step",
-      "description": "Upload photos"
+      "description": "Upload photos",
+      "dropzone": {
+        "idle": "Upload photos of students"
+      }
+    },
+    "completed": {
+      "title": "Summary"
+    },
+    "navigation": {
+      "back": "Back",
+      "next": "Next Step",
+      "submit": "Submit"
+    },
+    "modal": {
+      "valid": {
+        "title": "Confirm Upload",
+        "text": "All data has been validated and is ready for upload. Are you sure you want to proceed?",
+        "leftButton": "Cancel",
+        "rightButton": "Upload"
+      },
+      "error": {
+        "title": "Data Validation Error",
+        "text": "The data is not valid. This could be due to the number of names not matching the number of photos, or because no face was found in some photos. Please check your data and try again.",
+        "tryAgainButton": "Try Again"
+      }
     }
+  },
+
+  "StudentCard": {
+    "notification": {
+      "title": "Photo Download Failed",
+      "message": "The photo could not be downloaded. Please try again."
+    },
+    "photoNotFound": "Not+Found"
+  },
+  
+  "SummaryTable": {
+    "secondColumn": "Student Name",
+    "thirdColumn": "Uploaded Photo Name",
+    "fourthColumn": "Photo Validity (One Face)"
   }
 }

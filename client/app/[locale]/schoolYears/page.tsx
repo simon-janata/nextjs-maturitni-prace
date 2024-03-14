@@ -87,7 +87,7 @@ export default function SchoolYearsPage() {
         </Center>
       ) : filteredSchoolYears.length === 0 ? (
         <Center>
-          <Title order={1}>No years found</Title>
+          <Title order={1}>{t("title")}</Title>
         </Center>
       ) : (
         <Grid>

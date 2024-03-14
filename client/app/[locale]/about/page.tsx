@@ -31,7 +31,7 @@ export default function AboutPage() {
             color: "#fff",
           }}
         >
-          View Source Code
+          {t("githubButton")}
         </Button>
       </Center>
     </>

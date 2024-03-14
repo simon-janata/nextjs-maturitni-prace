@@ -6,24 +6,136 @@
     "about": "uber"
   },
 
+  "MainPage": {
+    "tabTitle": "PSLIB Fotos – Startseite"
+  },
+
+  "AboutPage": {
+    "tabTitle": "PSLIB Fotos – Über",
+    "githubButton": "Quellcode anzeigen"
+  },
+
+  "AddPage": {
+    "tabTitle": "PSLIB Fotos – Hinzufügen",
+    "schoolYearProgress": "Schuljahr",
+    "clazzProgress": "Klasse",
+    "studentsProgress": "Schüler",
+    "photosProgress": "Fotos"
+  },
+
   "SchoolYearsPage": {
+    "tabTitle": "PSLIB Fotos – Schuljahre",
     "breadcrumbs": {
       "home": "Startseite",
       "schoolYears": "Schuljahre"
-    }
+    },
+    "searchBar": {
+      "placeholder": "Suche nach Schuljahr..."
+    },
+    "title": "Keine Schuljahre gefunden"
   },
+
   "ClassesPage": {
+    "tabTitle": "PSLIB Fotos – Klassen",
     "breadcrumbs": {
       "home": "Startseite",
       "schoolYears": "Schuljahre"
+    },
+    "searchBar": {
+      "placeholder": "Suche nach Klassenname..."
+    },
+    "nottification": {
+      "success": {
+        "title": "Schuljahr gelöscht",
+        "message": "Das Schuljahr {schoolYear}, zusammen mit allen seinen Klassen, Schülern und ihren Fotos, wurde erfolgreich gelöscht."
+      },
+      "error": {
+        "title": "Löschen des Schuljahres fehlgeschlagen",
+        "message": "Das Schuljahr {schoolYear}, zusammen mit allen seinen Klassen, Schülern und ihren Fotos, konnte nicht gelöscht werden. Bitte versuchen Sie es erneut."
+      }
+    },
+    "title": "Keine Klassen gefunden",
+    "modal": {
+      "title": "Bestätigung zur Löschung des Schuljahres",
+      "text": "Sind Sie sicher, dass Sie dieses Schuljahr löschen möchten? Durch das Löschen dieses Schuljahres werden auch alle zugehörigen Klassen, Schüler und ihre Fotos gelöscht. Diese Aktion kann nicht rückgängig gemacht werden. Bitte bestätigen Sie Ihre Entscheidung.",
+      "leftButton": "Löschen",
+      "rightButton": "Abbrechen"
     }
   },
+
   "StudentsPage": {
+    "tabTitle": "PSLIB Fotos – Klasse",
     "breadcrumbs": {
       "home": "Startseite",
       "schoolYears": "Schuljahre"
+    },
+    "searchBar": {
+      "placeholder": "Suche nach Schülernamen..."
+    },
+    "nottification": {
+      "zipDownloadFailed": {
+        "title": "Zip-Download fehlgeschlagen",
+        "message": "Die Zip-Datei konnte nicht heruntergeladen werden. Bitte versuchen Sie es erneut."
+      },
+      "deleteSuccess": {
+        "title": "Klasse gelöscht",
+        "message": "Die Klasse {clazz} für das Schuljahr {schoolYear} und ihre Fotos wurden erfolgreich gelöscht."
+      },
+      "deleteError": {
+        "title": "Löschen der Klasse fehlgeschlagen",
+        "message": "Die Klasse {clazz} für das Schuljahr {schoolYear} konnte nicht gelöscht werden. Bitte versuchen Sie es erneut."
+      }
+    },
+    "dropdown": {
+      "downloadZip": "Alle Fotos herunterladen (.zip)",
+      "deleteClass": "Diese Klasse löschen"
+    },
+    "title": "Keine Schüler gefunden",
+    "modal": {
+      "title": "Bestätigung zur Löschung der Klasse",
+      "text": "Sind Sie sicher, dass Sie diese Klasse löschen möchten? Durch das Löschen dieser Klasse werden auch alle zugehörigen Schüler und ihre Fotos gelöscht. Diese Aktion kann nicht rückgängig gemacht werden. Bitte bestätigen Sie Ihre Entscheidung.",
+      "leftButton": "Löschen",
+      "rightButton": "Abbrechen"
     }
   },
+
+  "NotFoundPage": {
+    "tabTitle": "404 – Seite nicht gefunden",
+    "title": "Hier gibt es nichts zu sehen",
+    "text": "Die Seite, die Sie zu öffnen versuchen, existiert nicht. Sie haben möglicherweise die Adresse falsch eingegeben, oder die Seite wurde an eine andere URL verschoben. Wenn Sie denken, dass dies ein Fehler ist, kontaktieren Sie bitte den Support.",
+    "buttonText": "Bring mich zurück zur Startseite"
+  },
+
+  "Dropzone": {
+    "accept": "Dateien hier ablegen",
+    "reject": {
+      "only": "nur",
+      "or": "oder",
+      "size": "Datei kleiner als {maxSize} MB"
+    },
+    "label": {
+      "dragAndDrop": "Ziehen Sie Dateien hierher, um sie hochzuladen. Wir können nur",
+      "or": "oder",
+      "size": "Dateien, die kleiner als {maxSize} MB sind, akzeptieren"
+    },
+    "selectButton": "Dateien auswählen"
+  },
+
+  "Features": {
+    "first": {
+      "title": "Automatisierte Fotobearbeitung",
+      "description": "Schneidet automatisch Fotos von neuen Schülern zu und benennt sie, um Lehrern diese Arbeit zu ersparen."
+    },
+    "second": {
+      "title": "Standardisierte Profilbilder",
+      "description": "Wendet einen standardisierten Satz von Bearbeitungen auf jedes Foto an, um sicherzustellen, dass alle Profilbilder einheitlich aussehen."
+    },
+    "third": {
+      "title": "Benutzerfreundliche Oberfläche",
+      "description": "Bietet eine einfache, intuitive Oberfläche, die es Lehrern erleichtert, Fotos hochzuladen, die bearbeiteten Ergebnisse anzusehen und notwendige Anpassungen vorzunehmen."
+    }
+  },
+
   "MainBanner": {
     "title": {
       "firstPart": "Optimieren Sie",
@@ -32,8 +144,9 @@
     },
     "description": "Unsere Web-App optimiert das Zuschneiden, Benennen und Bearbeiten von Schülerfotos, vereinheitlicht das Aussehen und vereinfacht die Verwaltung.",
     "leftButton": "Mehr Informationen",
-    "rightButton": "Kostenlos ausprobieren"
+    "rightButton": "Auschecken"
   },
+
   "Navbar": {
     "homePage": "Startseite",
     "addPage": "Hinzufügen",
@@ -41,24 +154,82 @@
     "aboutPage": "Über",
     "drawerTitle": "Navigation"
   },
+
   "Stepper": {
-    "steps": {
-      "first": {
-        "label": "First step",
-        "description": "Select a school year"
+    "form": {
+      "schoolYear": {
+        "errorMessage": "Das Schuljahr muss ausgefüllt sein und darf nicht in der Zukunft liegen."
       },
-      "second": {
-        "label": "Second step",
-        "description": "Select a class"
+      "clazzName": {
+        "errorMessage": "Der Klassenname muss ausgefüllt sein."
+      }
+    },
+    "firstStep": {
+      "label": "Erster Schritt",
+      "description": "Wählen Sie ein Schuljahr",
+      "input": {
+        "label": "Wählen Sie ein Schuljahr"
+      }
+    },
+    "secondStep": {
+      "label": "Zweiter Schritt",
+      "description": "Wählen Sie eine Klasse",
+      "input": {
+        "label": "Geben Sie einen Klassennamen ein",
+        "placeholder": "Geben Sie einen Klassennamen ein"
       },
-      "third": {
-        "label": "Third step",
-        "description": "Upload an CSV file"
+      "colorInput": {
+        "label": "Wählen Sie eine Ordnerfarbe"
+      }
+    },
+    "thirdStep": {
+      "label": "Dritter Schritt",
+      "description": "Laden Sie eine CSV-Datei hoch",
+      "dropzone": {
+        "idle": "CSV-Datei der Schüler hochladen"
+      }
+    },
+    "fourthStep": {
+      "label": "Vierter Schritt",
+      "description": "Fotos hochladen",
+      "dropzone": {
+        "idle": "Fotos der Schüler hochladen"
+      }
+    },
+    "completed": {
+      "title": "Zusammenfassung"
+    },
+    "navigation": {
+      "back": "Zurück",
+      "next": "Nächster Schritt",
+      "submit": "Absenden"
+    },
+    "modal": {
+      "valid": {
+        "title": "Upload bestätigen",
+        "text": "Alle Daten wurden validiert und sind bereit zum Hochladen. Sind Sie sicher, dass Sie fortfahren möchten?",
+        "leftButton": "Abbrechen",
+        "rightButton": "Hochladen"
       },
-      "fourth": {
-        "label": "Fourth step",
-        "description": "Upload photos"
+      "error": {
+        "title": "Fehler bei der Datenvalidierung",
+        "text": "Die Daten sind nicht gültig. Dies könnte daran liegen, dass die Anzahl der Namen nicht mit der Anzahl der Fotos übereinstimmt, oder weil auf einigen Fotos kein Gesicht gefunden wurde. Bitte überprüfen Sie Ihre Daten und versuchen Sie es erneut.",
+        "tryAgainButton": "Erneut versuchen"
       }
     }
+  },
+
+  "StudentCard": {
+    "notification": {
+      "title": "Fehler beim Herunterladen des Fotos",
+      "message": "Das Foto konnte nicht heruntergeladen werden. Bitte versuchen Sie es erneut."
+    },
+    "photoNotFound": "Nicht+gefunden"
+  },
+  
+  "SummaryTable": {
+    "secondColumn": "Name des Schülers",
+    "thirdColumn": "Hochgeladener Fototitel",
+    "fourthColumn": "Gültigkeit des Fotos (Ein Gesicht)"
   }
 }

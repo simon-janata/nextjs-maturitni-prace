@@ -115,9 +115,9 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
       schoolYear: (value) =>
         value && value.getFullYear() <= new Date().getFullYear()
           ? null
-          : "School year must be filled in and cannot be in the future.",
+          : t("form.schoolYear.errorMessage"),
       clazzName: (value) =>
-        value.trim() ? null : "Class name must be filled in",
+        value.trim() ? null : t("form.clazzName.errorMessage"),
     },
     validateInputOnChange: true,
   });
@@ -191,7 +191,7 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
           description={t("firstStep.description")}
         >
           <YearPickerInput
-            label="Pick year"
+            label={t("firstStep.input.label")}
             value={clazzData.schoolYear}
             onChange={(e) => {
               handlePickYearChange(e);
@@ -209,8 +209,8 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
         >
           <TextInput
             mb={rem(16)}
-            label="Enter class name"
-            placeholder="Enter class name"
+            label={t("secondStep.input.label")}
+            placeholder={t("secondStep.input.placeholder")}
             value={clazzData.clazzName}
             onChange={(e) => {
               handleClazzNameChange(e.target.value);
@@ -221,7 +221,7 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
           />
           {!clazzesInSelectedSchoolYear.includes(clazzData.clazzName) && (
             <ColorInput
-              label="Pick folder colour"
+              label={t("secondStep.colorInput.label")}
               format="hex"
               swatches={[
                 "#fcbc19",
@@ -251,7 +251,7 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
             acceptedMimeTypes={mimeTypesCSV}
             maxSize={2}
             multiple={false}
-            idle="Upload CSV file of students"
+            idle={t("thirdStep.dropzone.idle")}
             typesString={[".csv"]}
             handleCSVUpload={handleCSVUpload}
           />
@@ -277,7 +277,7 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
             acceptedMimeTypes={mimeTypesPhotos}
             maxSize={300}
             multiple={true}
-            idle="Upload photos of students"
+            idle={t("fourthStep.dropzone.idle")}
             typesString={[".png", ".jpeg", ".webp"]}
             handlePhotosUpload={handlePhotosUpload}
           />
@@ -310,7 +310,7 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
         </StepperMantine.Step>
         <StepperMantine.Completed>
           <Title order={1} ta="center">
-            Summary
+            {t("completed.title")}
           </Title>
           <Text
             ta="center"
@@ -327,13 +327,13 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
 
       <Group justify="center" mt="xl">
         <Button variant="default" onClick={prevStep}>
-          Back
+          {t("navigation.back")}
         </Button>
         {active === 4 ? (
-          <Button onClick={openModal}>Submit</Button>
+          <Button onClick={openModal}>{t("navigation.submit")}</Button>
         ) : (
           <Button ref={nextStepButtonRef} onClick={nextStep}>
-            Next step
+            {t("navigation.next")}
           </Button>
         )}
       </Group>
@@ -343,8 +343,8 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
         onClose={close}
         title={
           modalType === ModalType.ConfirmUpload
-            ? "Confirm Upload"
-            : "Data Validation Error"
+            ? t("modal.valid.title")
+            : t("modal.error.title")
         }
         centered
         radius="md"
@@ -352,23 +352,20 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
       >
         {modalType === ModalType.ConfirmUpload ? (
           <>
-            All data has been validated and is ready for upload. Are you sure
-            you want to proceed?
+            {t("modal.valid.text")}
             <Group justify="center" mt="xl">
               <Button variant="default" onClick={close}>
-                Cancel
+                {t("modal.valid.leftButton")}
               </Button>
-              <Button onClick={handleClazzDataSubmission}>Upload</Button>
+              <Button onClick={handleClazzDataSubmission}>{t("modal.valid.rightButton")}</Button>
             </Group>
           </>
         ) : (
           <>
-            The data is not valid. This could be due to the number of names not
-            matching the number of photos, or because no face was found in some
-            photos. Please check your data and try again.
+            {t("modal.error.text")}
             <Group justify="center" mt="xl">
               <Button color="red" onClick={close}>
-                Try Again
+                {t("modal.error.tryAgainButton")}
               </Button>
             </Group>
           </>

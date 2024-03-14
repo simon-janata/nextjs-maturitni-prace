@@ -105,8 +105,8 @@ export default function ClassesPage({ params }: { params: { schoolYear: number }
       notifications.show({
         color: "teal",
         icon: <IconCheck style={{ width: rem(18), height: rem(18) }} />,
-        title: "School Year Deleted",
-        message: `The school year ${params.schoolYear}, along with all its classes, students, and their photos, has been successfully deleted.`,
+        title: t("notification.success.title"),
+        message: t("notification.success.message", { schoolYear: params.schoolYear }),
         autoClose: 4000,
       });
     } catch (err) {
@@ -114,8 +114,8 @@ export default function ClassesPage({ params }: { params: { schoolYear: number }
       notifications.show({
         color: "red",
         icon: <IconX style={{ width: rem(18), height: rem(18) }} />,
-        title: "School Year Deletion Failed",
-        message: `Failed to delete the school year ${params.schoolYear}, along with all its classes, students, and their photos. Please try again.`,
+        title: t("notification.error.title"),
+        message: t("notification.error.message", { schoolYear: params.schoolYear }),
         autoClose: 4000,
       });
     }
@@ -141,7 +141,7 @@ export default function ClassesPage({ params }: { params: { schoolYear: number }
         </Center>
       ) : filteredClazzes.length === 0 ? (
         <Center>
-          <Title order={1}>No classes found</Title>
+          <Title order={1}>{t("title")}</Title>
         </Center>
       ) : (
         <Grid>
@@ -161,20 +161,18 @@ export default function ClassesPage({ params }: { params: { schoolYear: number }
       <Modal
         opened={opened}
         onClose={close}
-        title="Delete School Year Confirmation"
+        title={t("modal.title")}
         centered
         radius="md"
         zIndex={1000}
       >
-        Are you sure you want to delete this school year? Deleting this school
-        year will also delete all associated classes, students, and their
-        photos. This action cannot be undone. Please confirm your decision.
+        {t("modal.text")}
         <Group justify="center" mt="xl">
           <Button color="red" onClick={handleDeleteSchoolYear}>
-            Delete
+            {t("modal.leftButton")}
           </Button>
           <Button variant="default" onClick={close}>
-            Cancel
+            {t("modal.rightButton")}
           </Button>
         </Group>
       </Modal>

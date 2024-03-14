@@ -1,23 +1,23 @@
 "use client";
 
-import Link from "next/link";
-import Base64Downloader from "react-base64-downloader";
+import { useTranslations } from 'next-intl';
+import Link from 'next/link';
+import Base64Downloader from 'react-base64-downloader';
 
-import { Highlight, Image, Paper, rem, UnstyledButton } from "@mantine/core";
-import { notifications } from "@mantine/notifications";
-import { IconDownload, IconX } from "@tabler/icons-react";
+import { Highlight, Image, Paper, rem, UnstyledButton } from '@mantine/core';
+import { notifications } from '@mantine/notifications';
+import { IconDownload, IconX } from '@tabler/icons-react';
 
-import classes from "./StudentCard.module.css";
+import classes from './StudentCard.module.css';
 
 interface StudentCardProps {
   student: StudentWithPhoto;
   textToHighlight: string;
 }
 
-const StudentCard: React.FC<StudentCardProps> = ({
-  student,
-  textToHighlight,
-}) => {
+const StudentCard: React.FC<StudentCardProps> = ({ student, textToHighlight }) => {
+  const t = useTranslations("StudentCard");
+
   return (
     <Paper radius="md" withBorder p="lg" className={classes.studentCard}>
       <UnstyledButton
@@ -37,8 +37,8 @@ const StudentCard: React.FC<StudentCardProps> = ({
           notifications.show({
             color: "red",
             icon: <IconX style={{ width: rem(18), height: rem(18) }} />,
-            title: "Photo Download Failed",
-            message: "The photo could not be downloaded. Please try again.",
+            title: t("notification.title"),
+            message: t("notification.message"),
             autoClose: 4000,
           })
         }
@@ -52,7 +52,7 @@ const StudentCard: React.FC<StudentCardProps> = ({
         style={{ display: "contents", width: "120px" }}
         href={
           student.photo === undefined
-            ? "https://fakeimg.pl/1050x1400?text=Not+found"
+            ? `https://fakeimg.pl/1050x1400?text=${t("photoNotFound")}`
             : student.photo
         }
         data-fancybox="gallery"
@@ -60,7 +60,7 @@ const StudentCard: React.FC<StudentCardProps> = ({
       >
         <Image
           src={student.photo}
-          fallbackSrc="https://fakeimg.pl/1050x1400?text=Not+found"
+          fallbackSrc={`https://fakeimg.pl/1050x1400?text=${t("photoNotFound")}`}
           w={120}
           h="auto"
           radius="md"

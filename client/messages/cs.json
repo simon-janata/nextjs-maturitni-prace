@@ -7,50 +7,98 @@
   },
 
   "MainPage": {
-    "tabTitle": "Fotky – Úvodní stránka",
+    "tabTitle": "PSLIB Fotky – Úvodní stránka",
     "title": "Vítejte v aplikaci pro správu studentských fotografií",
     "description": "Tato aplikace vám umožní spravovat studentské fotografie pro jednotlivé školní roky a třídy. Můžete nahrát soubor CSV s informacemi o studentech a následně nahrát fotografie studentů. Aplikace vám umožní jednoduše ořezat, pojmenovat a uložit fotografie do složky, kterou si sami zvolíte.",
     "buttonText": "Vyzkoušet zdarma"
   },
 
   "AboutPage": {
-    "tabTitle": "Fotky – O aplikaci"
+    "tabTitle": "PSLIB Fotky – O aplikaci",
+    "githubButton": "Zobrazit zdrojový kód"
   },
 
   "AddPage": {
-    "tabTitle": "Fotky – Přidat"
+    "tabTitle": "PSLIB Fotky – Přidat",
+    "schoolYearProgress": "Školní rok",
+    "clazzProgress": "Třída",
+    "studentsProgress": "Studenti",
+    "photosProgress": "Fotografie"
   },
 
   "SchoolYearsPage": {
-    "tabTitle": "Fotky – Školní roky",
+    "tabTitle": "PSLIB Fotky – Školní roky",
     "breadcrumbs": {
       "home": "Úvod",
       "schoolYears": "Školní roky"
     },
     "searchBar": {
       "placeholder": "Hledat podle školního roku..."
-    }
+    },
+    "title": "Nebyly nalezeny žádné školní roky"
   },
 
   "ClassesPage": {
-    "tabTitle": "Fotky – Třídy",
+    "tabTitle": "PSLIB Fotky – Třídy",
     "breadcrumbs": {
       "home": "Úvod",
       "schoolYears": "Školní roky"
     },
     "searchBar": {
       "placeholder": "Hledat podle názvu třídy..."
+    },
+    "nottification": {
+      "success": {
+        "title": "Školní rok smazán",
+        "message": "Školní rok {schoolYear} spolu se všemi třídami, žáky a jejich fotografiemi byl úspěšně smazán."
+      },
+      "error": {
+        "title": "Neúspěšné smazání školního roku",
+        "message": "Nepodařilo se odstranit školní rok {schoolYear} spolu se všemi jeho třídami, žáky a jejich fotografiemi. Zkuste to prosím znovu."
+      }
+    },
+    "title": "Nebyly nalezeny žádné třídy",
+    "modal": {
+      "title": "Potvrzení o smazání školního roku",
+      "text": "Jste si jisti, že chcete tento školní rok vymazat? Odstraněním tohoto školního roku se odstraní také všechny související třídy, studenti a jejich fotografie. Tuto akci nelze vrátit zpět. Potvrďte prosím své rozhodnutí.",
+      "leftButton": "Odstranit",
+      "rightButton": "Zrušit"
     }
   },
 
   "StudentsPage": {
-    "tabTitle": "Fotky – Třída",
+    "tabTitle": "PSLIB Fotky – Třída",
     "breadcrumbs": {
       "home": "Úvod",
       "schoolYears": "Školní roky"
     },
     "searchBar": {
       "placeholder": "Hledat podle jména studenta..."
+    },
+    "nottification": {
+      "zipDownloadFailed": {
+        "title": "Stažení souboru Zip se nezdařilo",
+        "message": "Soubor zip se nepodařilo stáhnout. Zkuste to prosím znovu."
+      },
+      "deleteSuccess": {
+        "title": "Třída odstraněna",
+        "message": "Třída {clazz} pro školní rok {schoolYear} a její fotografie byly úspěšně odstraněny."
+      },
+      "deleteError": {
+        "title": "Vymazání třídy se nezdařilo",
+        "message": "Nepodařilo se odstranit třídu {clazz} pro školní rok {schoolYear}. Zkuste to prosím znovu."
+      }
+    },
+    "dropdown": {
+      "downloadZip": "Stáhnout všechny fotografie (.zip)",
+      "deleteClass": "Odstranit tuto třídu"
+    },
+    "title": "Žádní studenti nebyli nalezeni",
+    "modal": {
+      "title": "Potvrzení o smazání třídy",
+      "text": "Opravdu chcete tuto třídu odstranit? Odstraněním této třídy se odstraní také všichni přidružení studenti a jejich fotografie. Tuto akci nelze vrátit zpět. Potvrďte prosím své rozhodnutí.",
+      "leftButton": "Odstranit",
+      "rightButton": "Zrušit"
     }
   },
 
@@ -61,6 +109,36 @@
     "buttonText": "Zpět na úvodní stránku"
   },
 
+  "Dropzone": {
+    "accept": "Sem vložte soubory",
+    "reject": {
+      "only": "jen",
+      "or": "nebo",
+      "size": "soubory menší než {maxSize} MB"
+    },
+    "label": {
+      "dragAndDrop": "Soubory můžete nahrát přetažením do pole. Validní jsou pouze",
+      "or": "nebo",
+      "size": "soubory, které jsou menší než {maxSize} MB"
+    },
+    "selectButton": "Vybrat soubory"
+  },
+
+  "Features": {
+    "first": {
+      "title": "Automatizované zpracování fotografií",
+      "description": "Automaticky ořezává a pojmenovává fotografie nových studentů, čímž učitelům ušetří manuální práci."
+    },
+    "second": {
+      "title": "Standardizované profilové obrázky",
+      "description": "Na každou fotografii aplikuje standardní sadu úprav, čímž zajišťuje, že všechny profilové obrázky mají konzistentní vzhled."
+    },
+    "third": {
+      "title": "Uživatelsky přívětivé rozhraní",
+      "description": "Poskytuje jednoduché, intuitivní rozhraní, které učitelům usnadňuje nahrávání fotografií, prohlížení zpracovaných výsledků a provádění nezbytných úprav."
+    }
+  },
+
   "MainBanner": {
     "title": {
       "firstPart": "Zefektivněte správu",
@@ -69,7 +147,7 @@
     },
     "description": "Zjednodušte si proces ořezávání, pojmenovávání a úprav nových studentských fotografií pomocí naší webové aplikace. Je navržena tak, aby zvýšila efektivitu, sjednotila vzhled profilových fotografií a usnadnila administrativní postupy.",
     "leftButton": "Více informací",
-    "rightButton": "Vyzkoušet zdarma"
+    "rightButton": "Vyzkoušet"
   },
 
   "Navbar": {
@@ -81,21 +159,80 @@
   },
 
   "Stepper": {
+    "form": {
+      "schoolYear": {
+        "errorMessage": "Školní rok musí být vyplněn a nemůže být v budoucnosti."
+      },
+      "clazzName": {
+        "errorMessage": "Název třídy musí být vyplněn."
+      }
+    },
     "firstStep": {
       "label": "První krok",
-      "description": "Výběr školního roku"
+      "description": "Výběr školního roku",
+      "input": {
+        "label": "Vyberte školní rok"
+      }
     },
     "secondStep": {
       "label": "Druhý krok",
-      "description": "Výběr třídy"
+      "description": "Výběr třídy",
+      "input": {
+        "label": "Zadejte název třídy",
+        "placeholder": "Zadejte název třídy"
+      },
+      "colorInput": {
+        "label": "Vyberte barvu složky"
+      }
     },
     "thirdStep": {
       "label": "Třetí krok",
-      "description": "Nahrání souboru CSV"
+      "description": "Nahrání souboru CSV",
+      "dropzone": {
+        "idle": "Nahrání souboru CSV se jmény studentů"
+      }
     },
     "fourthStep": {
       "label": "Čtvrtý krok",
-      "description": "Nahrání fotografií"
+      "description": "Nahrání fotografií",
+      "dropzone": {
+        "idle": "Nahrání fotografií studentů"
+      }
+    },
+    "completed": {
+      "title": "Souhrn"
+    },
+    "navigation": {
+      "back": "Zpět",
+      "next": "Další krok",
+      "submit": "Potvrdit"
+    },
+    "modal": {
+      "valid": {
+        "title": "Potvrzení nahrávání",
+        "text": "Všechna data byla ověřena a jsou připravena k odeslání. Jste si jisti, že chcete pokračovat?",
+        "leftButton": "Zrušit",
+        "rightButton": "Nahrát"
+      },
+      "error": {
+        "title": "Chyba ověření dat",
+        "text": "Údaje nejsou platné. Může to být způsobeno tím, že počet jmen neodpovídá počtu fotografií, nebo tím, že na některých fotografiích nebyla nalezena žádná tvář. Zkontrolujte prosím svá data a zkuste to znovu.",
+        "tryAgainButton": "Zkusit znovu"
+      }
     }
+  },
+
+  "StudentCard": {
+    "notification": {
+      "title": "Stažení fotografie se nezdařilo",
+      "message": "Fotografii nebylo možné stáhnout. Zkuste to prosím znovu."
+    },
+    "photoNotFound": "Nenalezeno"
+  },
+  
+  "SummaryTable": {
+    "secondColumn": "Jméno studenta",
+    "thirdColumn": "Název nahrané fotografie",
+    "fourthColumn": "Platnost fotografie (jedna tvář)"
   }
 }

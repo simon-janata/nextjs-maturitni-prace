@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useRef } from "react";
 import { v4 as uuid } from "uuid";
 
@@ -31,6 +32,7 @@ interface DropzoneProps {
 }
 
 const Dropzone: React.FC<DropzoneProps> = ({ acceptedMimeTypes, maxSize, multiple, idle, typesString, handleCSVUpload, handlePhotosUpload }) => {
+  const t = useTranslations("Dropzone");
   const theme = useMantineTheme();
   const openRef = useRef<() => void>(null);
 
@@ -79,34 +81,34 @@ const Dropzone: React.FC<DropzoneProps> = ({ acceptedMimeTypes, maxSize, multipl
           </Group>
 
           <Text ta="center" fw={700} fz="lg" mt="xl">
-            <DropzoneMantine.Accept>Drop files here</DropzoneMantine.Accept>
+            <DropzoneMantine.Accept>{t("accept")}</DropzoneMantine.Accept>
             <DropzoneMantine.Reject>
-              only{" "}
+              {t("reject.only")}{" "}
               {typesString.map((type, i) => (
                 <span key={uuid()}>
                   {i > 0 && i < typesString.length - 1 && ", "}
                   {i === typesString.length - 1 &&
                     typesString.length > 1 &&
-                    " or "}
+                    ` ${t("reject.or")} `}
                   <>{type}</>
                 </span>
               ))}{" "}
-              file less than {maxSize}mb
+              {t("reject.size", { maxSize: maxSize })}
             </DropzoneMantine.Reject>
             <DropzoneMantine.Idle>{idle}</DropzoneMantine.Idle>
           </Text>
           <Text ta="center" fz="sm" mt="xs" c="dimmed">
-            Drag&apos;n&apos;drop files here to upload. We can accept only{" "}
+            {t("label.dragAndDrop")}{" "}
             {typesString.map((type, i) => (
               <span key={uuid()}>
                 {i > 0 && i < typesString.length - 1 && ", "}
                 {i === typesString.length - 1 &&
                   typesString.length > 1 &&
-                  " or "}
+                  ` ${t("label.or")} `}
                 <>{type}</>
               </span>
             ))}{" "}
-            files that are less than {maxSize}mb in size.
+            {t("label.size", { maxSize: maxSize })}
           </Text>
         </div>
       </DropzoneMantine>
@@ -117,7 +119,7 @@ const Dropzone: React.FC<DropzoneProps> = ({ acceptedMimeTypes, maxSize, multipl
         radius="xl"
         onClick={() => openRef.current?.()}
       >
-        Select files
+        {t("selectButton")}
       </Button>
     </Center>
   );

@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 
 import { Avatar, Table, UnstyledButton } from "@mantine/core";
@@ -18,6 +19,8 @@ interface SummaryTableProps {
 }
 
 const SummaryTable: React.FC<SummaryTableProps> = ({ studentsWithPhotos, handleDeleteStudent }) => {
+  const t = useTranslations("SummaryTable");
+
   const rows = studentsWithPhotos.map((row, index) => {
     return (
       <Table.Tr key={index}>
@@ -64,9 +67,9 @@ const SummaryTable: React.FC<SummaryTableProps> = ({ studentsWithPhotos, handleD
           <Table.Thead>
             <Table.Tr>
               <Table.Th></Table.Th>
-              <Table.Th>Student Name</Table.Th>
-              <Table.Th>Uploaded Photo Name</Table.Th>
-              <Table.Th ta="center">Photo Validity (One Face)</Table.Th>
+              <Table.Th>{t("secondColumn")}</Table.Th>
+              <Table.Th>{t("thirdColumn")}</Table.Th>
+              <Table.Th ta="center">{t("fourthColumn")}</Table.Th>
               <Table.Th ta="center"></Table.Th>
             </Table.Tr>
           </Table.Thead>

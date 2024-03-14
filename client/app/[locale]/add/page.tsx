@@ -414,10 +414,10 @@ export default function AddPage() {
                 justify={{ base: "center", md: "space-between" }}
                 align={{ base: "center", md: "center" }}
               >
-                <RingProgress value={schoolYearProgress} label="School year" />
-                <RingProgress value={clazzProgress} label="Class" />
-                <RingProgress value={studentsProgress} label="Students" />
-                <RingProgress value={photosProgress} label="Photos" />
+                <RingProgress value={schoolYearProgress} label={t("schoolYearProgress")} />
+                <RingProgress value={clazzProgress} label={t("clazzProgress")} />
+                <RingProgress value={studentsProgress} label={t("studentsProgress")} />
+                <RingProgress value={photosProgress} label={t("photosProgress")} />
               </Flex>
             </Flex>
           </div>

@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 import { Container, rem, SimpleGrid, Text } from "@mantine/core";
 import {
   IconCameraCog,
@@ -37,28 +39,27 @@ const Feature = ({ icon: Icon, title, description, className, ...others }: Featu
   );
 };
 
-const mockdata = [
-  {
-    icon: IconCameraCog,
-    title: "Automated Photo Processing",
-    description:
-      "Automatically crops and names photographs of new students, saving teachers from having to do this manually.",
-  },
-  {
-    icon: IconCrop,
-    title: "Standardized Profile Pictures",
-    description:
-      "Applies a standard set of edits to each photo, ensuring that all profile pictures have a consistent appearance.",
-  },
-  {
-    icon: IconHeartHandshake,
-    title: "User-Friendly Interface",
-    description:
-      "Provides a simple, intuitive interface that makes it easy for teachers to upload photos, view the processed results, and make any necessary adjustments.",
-  },
-];
-
 const Features = () => {
+  const t = useTranslations("Features");
+
+  const mockdata = [
+    {
+      icon: IconCameraCog,
+      title: t("first.title"),
+      description: t("first.description"),
+    },
+    {
+      icon: IconCrop,
+      title: t("second.title"),
+      description: t("second.description"),
+    },
+    {
+      icon: IconHeartHandshake,
+      title: t("third.title"),
+      description: t("third.description"),
+    },
+  ];
+
   const items = mockdata.map((item) => <Feature {...item} key={item.title} />);
 
   return (

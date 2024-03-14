@@ -163,8 +163,8 @@ export default function ClazzPage({ params }: { params: { schoolYear: number; cl
       notifications.show({
         color: "red",
         icon: <IconX style={{ width: rem(18), height: rem(18) }} />,
-        title: "Zip Download Failed",
-        message: "The zip file could not be downloaded. Please try again.",
+        title: t("nottification.zipDownloadFailed.title"),
+        message: t("nottification.zipDownloadFailed.message"),
         autoClose: 4000,
       });
     }
@@ -191,10 +191,8 @@ export default function ClazzPage({ params }: { params: { schoolYear: number; cl
       notifications.show({
         color: "teal",
         icon: <IconCheck style={{ width: rem(18), height: rem(18) }} />,
-        title: "Class Deleted",
-        message: `The class ${params.clazz.toUpperCase()} for the school year ${
-          params.schoolYear
-        } and its photos have been successfully deleted.`,
+        title: t("nottification.deleteSuccess.title"),
+        message: t("nottification.deleteSuccess.message", { clazz: params.clazz.toUpperCase(), schoolYear: params.schoolYear }),
         autoClose: 4000,
       });
     } catch (err) {
@@ -202,10 +200,8 @@ export default function ClazzPage({ params }: { params: { schoolYear: number; cl
       notifications.show({
         color: "red",
         icon: <IconX style={{ width: rem(18), height: rem(18) }} />,
-        title: "Class Deletion Failed",
-        message: `Failed to delete the class ${params.clazz.toUpperCase()} for the school year ${
-          params.schoolYear
-        }. Please try again.`,
+        title: t("nottification.deleteError.title"),
+        message: t("nottification.deleteError.message", { clazz: params.clazz.toUpperCase(), schoolYear: params.schoolYear }),
         autoClose: 4000,
       });
     }
@@ -229,7 +225,7 @@ export default function ClazzPage({ params }: { params: { schoolYear: number; cl
               }
               onClick={handleDownloadAllPhotos}
             >
-              Download all photos (.zip)
+              {t("dropdown.downloadZip")}
             </Menu.Item>
             <Menu.Item
               color="red"
@@ -238,7 +234,7 @@ export default function ClazzPage({ params }: { params: { schoolYear: number; cl
               }
               onClick={open}
             >
-              Delete this class
+              {t("dropdown.deleteClass")}
             </Menu.Item>
           </Menu.Dropdown>
         </Menu>
@@ -278,20 +274,18 @@ export default function ClazzPage({ params }: { params: { schoolYear: number; cl
       <Modal
         opened={opened}
         onClose={close}
-        title="Delete Class Confirmation"
+        title={t("modal.title")}
         centered
         radius="md"
         zIndex={1000}
       >
-        Are you sure you want to delete this class? Deleting this class will
-        also delete all associated students and their photos. This action cannot
-        be undone. Please confirm your decision.
+        {t("modal.text")}
         <Group justify="center" mt="xl">
           <Button color="red" onClick={handleDeleteClass}>
-            Delete
+            {t("modal.leftButton")}
           </Button>
           <Button variant="default" onClick={close}>
-            Cancel
+            {t("modal.rightButton")}
           </Button>
         </Group>
       </Modal>
