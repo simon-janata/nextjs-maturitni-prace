@@ -44,7 +44,7 @@
     "searchBar": {
       "placeholder": "Suche nach Klassenname..."
     },
-    "nottification": {
+    "notification": {
       "success": {
         "title": "Schuljahr gelöscht",
         "message": "Das Schuljahr {schoolYear}, zusammen mit allen seinen Klassen, Schülern und ihren Fotos, wurde erfolgreich gelöscht."
@@ -72,7 +72,7 @@
     "searchBar": {
       "placeholder": "Suche nach Schülernamen..."
     },
-    "nottification": {
+    "notification": {
       "zipDownloadFailed": {
         "title": "Zip-Download fehlgeschlagen",
         "message": "Die Zip-Datei konnte nicht heruntergeladen werden. Bitte versuchen Sie es erneut."
@@ -88,7 +88,7 @@
     },
     "dropdown": {
       "downloadZip": "Alle Fotos herunterladen (.zip)",
-      "deleteClass": "Diese Klasse löschen"
+      "deleteClazz": "Diese Klasse löschen"
     },
     "title": "Keine Schüler gefunden",
     "modal": {

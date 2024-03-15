@@ -170,7 +170,7 @@ export default function ClazzPage({ params }: { params: { schoolYear: number; cl
     }
   };
 
-  const handleDeleteClass = async () => {
+  const handleDeleteClazz = async () => {
     try {
       await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/cs/api/photos`, {
         params: {
@@ -191,8 +191,8 @@ export default function ClazzPage({ params }: { params: { schoolYear: number; cl
       notifications.show({
         color: "teal",
         icon: <IconCheck style={{ width: rem(18), height: rem(18) }} />,
-        title: t("nottification.deleteSuccess.title"),
-        message: t("nottification.deleteSuccess.message", { clazz: params.clazz.toUpperCase(), schoolYear: params.schoolYear }),
+        title: t("notification.deleteSuccess.title"),
+        message: t("notification.deleteSuccess.message", { clazz: params.clazz.toUpperCase(), schoolYear: params.schoolYear }),
         autoClose: 4000,
       });
     } catch (err) {
@@ -200,8 +200,8 @@ export default function ClazzPage({ params }: { params: { schoolYear: number; cl
       notifications.show({
         color: "red",
         icon: <IconX style={{ width: rem(18), height: rem(18) }} />,
-        title: t("nottification.deleteError.title"),
-        message: t("nottification.deleteError.message", { clazz: params.clazz.toUpperCase(), schoolYear: params.schoolYear }),
+        title: t("notification.deleteError.title"),
+        message: t("notification.deleteError.message", { clazz: params.clazz.toUpperCase(), schoolYear: params.schoolYear }),
         autoClose: 4000,
       });
     }
@@ -234,7 +234,7 @@ export default function ClazzPage({ params }: { params: { schoolYear: number; cl
               }
               onClick={open}
             >
-              {t("dropdown.deleteClass")}
+              {t("dropdown.deleteClazz")}
             </Menu.Item>
           </Menu.Dropdown>
         </Menu>
@@ -281,7 +281,7 @@ export default function ClazzPage({ params }: { params: { schoolYear: number; cl
       >
         {t("modal.text")}
         <Group justify="center" mt="xl">
-          <Button color="red" onClick={handleDeleteClass}>
+          <Button color="red" onClick={handleDeleteClazz}>
             {t("modal.leftButton")}
           </Button>
           <Button variant="default" onClick={close}>

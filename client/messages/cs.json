@@ -47,7 +47,7 @@
     "searchBar": {
       "placeholder": "Hledat podle názvu třídy..."
     },
-    "nottification": {
+    "notification": {
       "success": {
         "title": "Školní rok smazán",
         "message": "Školní rok {schoolYear} spolu se všemi třídami, žáky a jejich fotografiemi byl úspěšně smazán."
@@ -75,7 +75,7 @@
     "searchBar": {
       "placeholder": "Hledat podle jména studenta..."
     },
-    "nottification": {
+    "notification": {
       "zipDownloadFailed": {
         "title": "Stažení souboru Zip se nezdařilo",
         "message": "Soubor zip se nepodařilo stáhnout. Zkuste to prosím znovu."
@@ -91,7 +91,7 @@
     },
     "dropdown": {
       "downloadZip": "Stáhnout všechny fotografie (.zip)",
-      "deleteClass": "Odstranit tuto třídu"
+      "deleteClazz": "Odstranit tuto třídu"
     },
     "title": "Žádní studenti nebyli nalezeni",
     "modal": {

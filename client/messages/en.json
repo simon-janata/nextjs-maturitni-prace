@@ -44,7 +44,7 @@
     "searchBar": {
       "placeholder": "Search by class name..."
     },
-    "nottification": {
+    "notification": {
       "success": {
         "title": "School Year Deleted",
         "message": "The school year {schoolYear}, along with all its classes, students, and their photos, has been successfully deleted."
@@ -72,7 +72,7 @@
     "searchBar": {
       "placeholder": "Search by student name..."
     },
-    "nottification": {
+    "notification": {
       "zipDownloadFailed": {
         "title": "Zip Download Failed",
         "message": "The zip file could not be downloaded. Please try again."
@@ -88,7 +88,7 @@
     },
     "dropdown": {
       "downloadZip": "Download all photos (.zip)",
-      "deleteClass": "Delete this class"
+      "deleteClazz": "Delete this class"
     },
     "title": "No students found",
     "modal": {

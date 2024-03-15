@@ -201,7 +201,7 @@ export default function AddPage() {
             <Link
               href={imageUrl}
               data-fancybox="gallery"
-              data-caption={`${student}`}
+              data-caption={`${photoIn.name}`}
               key={uuid()}
             >
               <Image radius="md" src={imageUrl} />

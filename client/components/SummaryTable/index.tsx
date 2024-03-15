@@ -28,7 +28,7 @@ const SummaryTable: React.FC<SummaryTableProps> = ({ studentsWithPhotos, handleD
           <Link
             href={row.preview.props.href || ""}
             data-fancybox="gallery"
-            data-caption={`${row.name}`}
+            data-caption={`${row.photo.name}`}
           >
             <Avatar size={60} src={row.preview.props.href || ""} />
           </Link>
