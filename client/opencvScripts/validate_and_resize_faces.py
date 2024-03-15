@@ -8,7 +8,7 @@ image_bytes = sys.stdin.buffer.read()
 
 image_array = np.frombuffer(image_bytes, dtype=np.uint8)
 
-face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
 
 original_image = cv2.imdecode(image_array, cv2.IMREAD_COLOR)
 

@@ -18,8 +18,8 @@ else:
 
     path_to_current_folder = os.path.dirname(os.path.realpath(__file__))
 
-    face_cascade = cv2.CascadeClassifier(os.path.join(path_to_current_folder, 'haarcascade_frontalface_default.xml'))
-    eye_cascade = cv2.CascadeClassifier(os.path.join(path_to_current_folder, 'haarcascade_eye.xml'))
+    face_cascade = cv2.CascadeClassifier(os.path.join(path_to_current_folder, "haarcascade_frontalface_default.xml"))
+    eye_cascade = cv2.CascadeClassifier(os.path.join(path_to_current_folder, "haarcascade_eye.xml"))
 
     faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=7, minSize=(400, 400))
 

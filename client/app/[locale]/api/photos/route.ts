@@ -1,7 +1,7 @@
-import { spawnSync } from 'child_process';
-import { existsSync, mkdirSync, readFileSync, rmSync } from 'fs';
-import { writeFile } from 'fs/promises';
-import { join } from 'path';
+import { spawnSync } from "child_process";
+import { existsSync, mkdirSync, readFileSync, rmSync } from "fs";
+import { writeFile } from "fs/promises";
+import { join } from "path";
 
 export async function GET(req: Request, res: Response) {
   try {

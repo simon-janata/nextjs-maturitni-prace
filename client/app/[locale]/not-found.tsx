@@ -1,9 +1,9 @@
 "use client";
 
-import { useLocale, useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from "next-intl";
 
-import NotFound from '@/components/NotFound';
-import { useDocumentTitle } from '@mantine/hooks';
+import NotFound from "@/components/NotFound";
+import { useDocumentTitle } from "@mantine/hooks";
 
 export default function NotFoundPage() {
   const t = useTranslations("NotFoundPage");

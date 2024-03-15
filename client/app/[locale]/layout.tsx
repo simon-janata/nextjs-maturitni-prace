@@ -1,25 +1,25 @@
 "use client";
 
-import '@mantine/core/styles.css';
-import '@mantine/dates/styles.css';
-import '@mantine/dropzone/styles.css';
-import '@mantine/notifications/styles.css';
-import './globals.css';
+import "@mantine/core/styles.css";
+import "@mantine/dates/styles.css";
+import "@mantine/dropzone/styles.css";
+import "@mantine/notifications/styles.css";
+import "./globals.css";
 
-import axios from 'axios';
-import { NextIntlClientProvider, useLocale } from 'next-intl';
-import React, { useEffect } from 'react';
+import axios from "axios";
+import { NextIntlClientProvider, useLocale } from "next-intl";
+import React, { useEffect } from "react";
 
-import Footer from '@/components/Footer';
-import Navbar from '@/components/Navbar';
-import ScrollToTopButton from '@/components/ScrollToTopButton';
-import csTranslations from '@/messages/cs.json';
-import deTranslations from '@/messages/de.json';
-import enTranslations from '@/messages/en.json';
-import { ColorSchemeScript, Container, MantineProvider } from '@mantine/core';
-import { Notifications } from '@mantine/notifications';
+import Footer from "@/components/Footer";
+import Navbar from "@/components/Navbar";
+import ScrollToTopButton from "@/components/ScrollToTopButton";
+import csTranslations from "@/messages/cs.json";
+import deTranslations from "@/messages/de.json";
+import enTranslations from "@/messages/en.json";
+import { ColorSchemeScript, Container, MantineProvider } from "@mantine/core";
+import { Notifications } from "@mantine/notifications";
 
-import { theme } from '../../theme';
+import { theme } from "../../theme";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const locale = useLocale() as "cs" | "en" | "de";

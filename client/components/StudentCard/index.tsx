@@ -1,14 +1,14 @@
 "use client";
 
-import { useTranslations } from 'next-intl';
-import Link from 'next/link';
-import Base64Downloader from 'react-base64-downloader';
+import { useTranslations } from "next-intl";
+import Link from "next/link";
+import Base64Downloader from "react-base64-downloader";
 
-import { Highlight, Image, Paper, rem, UnstyledButton } from '@mantine/core';
-import { notifications } from '@mantine/notifications';
-import { IconDownload, IconX } from '@tabler/icons-react';
+import { Highlight, Image, Paper, rem, UnstyledButton } from "@mantine/core";
+import { notifications } from "@mantine/notifications";
+import { IconDownload, IconX } from "@tabler/icons-react";
 
-import classes from './StudentCard.module.css';
+import classes from "./StudentCard.module.css";
 
 interface StudentCardProps {
   student: StudentWithPhoto;

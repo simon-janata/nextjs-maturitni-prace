@@ -1,5 +1,5 @@
-import axios from 'axios';
-import { CronJob } from 'cron';
+import axios from "axios";
+import { CronJob } from "cron";
 
 export async function GET(req: Request, res: Response) {
   try {
