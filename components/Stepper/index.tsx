@@ -82,7 +82,7 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
   const theme = useMantineTheme();
   const isMobile = useMediaQuery("(max-width: 52em)");
   const mimeTypesCSV = [MIME_TYPES.csv];
-  const mimeTypesPhotos = [MIME_TYPES.png, MIME_TYPES.jpeg, MIME_TYPES.webp];
+  const mimeTypesPhotos = [MIME_TYPES.jpeg];
 
   const nextStepButtonRef: React.RefObject<HTMLButtonElement> = useRef(null);
 
@@ -278,7 +278,7 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
             maxSize={300}
             multiple={true}
             idle={t("fourthStep.dropzone.idle")}
-            typesString={[".png", ".jpeg", ".webp"]}
+            typesString={[".jpeg"]}
             handlePhotosUpload={handlePhotosUpload}
           />
           {arePhotosValidating === true ? (

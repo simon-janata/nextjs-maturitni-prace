@@ -19,6 +19,7 @@ import { useDocumentTitle } from "@mantine/hooks";
 
 export default function AddPage() {
   const t = useTranslations("AddPage");
+  const p = useTranslations("Pathnames");
   useDocumentTitle(`${t("tabTitle")}`);
   const router = useRouter();
   const locale = useLocale();
@@ -371,7 +372,7 @@ export default function AddPage() {
             console.error(error);
           });
       }
-      setTimeout(() => router.push(`/${locale}`), 2000);
+      setTimeout(() => router.push(`/${locale}/${p("schoolYears")}/${clazzData.schoolYear?.getFullYear()}/${p("clazzes")}/${clazzData.clazzName.toLowerCase()}`), 2000);
     } catch (error) {
       console.error(error);
     }
