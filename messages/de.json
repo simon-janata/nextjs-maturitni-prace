@@ -7,16 +7,16 @@
   },
 
   "MainPage": {
-    "tabTitle": "PSLIB Fotos – Startseite"
+    "tabTitle": "Průmyslovka Liberec | Fotoportal | Startseite"
   },
 
   "AboutPage": {
-    "tabTitle": "PSLIB Fotos – Über",
+    "tabTitle": "Průmyslovka Liberec | Fotoportal | Über",
     "githubButton": "Quellcode anzeigen"
   },
 
   "AddPage": {
-    "tabTitle": "PSLIB Fotos – Hinzufügen",
+    "tabTitle": "Průmyslovka Liberec | Fotoportal | Hinzufügen",
     "schoolYearProgress": "Schuljahr",
     "clazzProgress": "Klasse",
     "studentsProgress": "Schüler",
@@ -24,7 +24,7 @@
   },
 
   "SchoolYearsPage": {
-    "tabTitle": "PSLIB Fotos – Schuljahre",
+    "tabTitle": "Průmyslovka Liberec | Fotoportal | Schuljahre",
     "breadcrumbs": {
       "home": "Startseite",
       "schoolYears": "Schuljahre"
@@ -36,7 +36,7 @@
   },
 
   "ClassesPage": {
-    "tabTitle": "PSLIB Fotos – Klassen",
+    "tabTitle": "Průmyslovka Liberec | Fotoportal | Klassen",
     "breadcrumbs": {
       "home": "Startseite",
       "schoolYears": "Schuljahre"
@@ -64,7 +64,7 @@
   },
 
   "StudentsPage": {
-    "tabTitle": "PSLIB Fotos – Klasse",
+    "tabTitle": "Průmyslovka Liberec | Fotoportal | Klasse",
     "breadcrumbs": {
       "home": "Startseite",
       "schoolYears": "Schuljahre"
@@ -100,7 +100,7 @@
   },
 
   "NotFoundPage": {
-    "tabTitle": "404 – Seite nicht gefunden",
+    "tabTitle": "Průmyslovka Liberec | Fotoportal | 404 – Seite nicht gefunden",
     "title": "Hier gibt es nichts zu sehen",
     "text": "Die Seite, die Sie zu öffnen versuchen, existiert nicht. Sie haben möglicherweise die Adresse falsch eingegeben, oder die Seite wurde an eine andere URL verschoben. Wenn Sie denken, dass dies ein Fehler ist, kontaktieren Sie bitte den Support.",
     "buttonText": "Bring mich zurück zur Startseite"

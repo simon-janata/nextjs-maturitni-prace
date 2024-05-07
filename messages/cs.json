@@ -7,19 +7,19 @@
   },
 
   "MainPage": {
-    "tabTitle": "PSLIB Fotky – Úvodní stránka",
+    "tabTitle": "Průmyslovka Liberec | Fotoportál | Úvod",
     "title": "Vítejte v aplikaci pro správu studentských fotografií",
     "description": "Tato aplikace vám umožní spravovat studentské fotografie pro jednotlivé školní roky a třídy. Můžete nahrát soubor CSV s informacemi o studentech a následně nahrát fotografie studentů. Aplikace vám umožní jednoduše ořezat, pojmenovat a uložit fotografie do složky, kterou si sami zvolíte.",
     "buttonText": "Vyzkoušet zdarma"
   },
 
   "AboutPage": {
-    "tabTitle": "PSLIB Fotky – O aplikaci",
+    "tabTitle": "Průmyslovka Liberec | Fotoportál | O aplikaci",
     "githubButton": "Zobrazit zdrojový kód"
   },
 
   "AddPage": {
-    "tabTitle": "PSLIB Fotky – Přidat",
+    "tabTitle": "Průmyslovka Liberec | Fotoportál | Přidat",
     "schoolYearProgress": "Školní rok",
     "clazzProgress": "Třída",
     "studentsProgress": "Studenti",
@@ -27,7 +27,7 @@
   },
 
   "SchoolYearsPage": {
-    "tabTitle": "PSLIB Fotky – Školní roky",
+    "tabTitle": "Průmyslovka Liberec | Fotoportál | Školní roky",
     "breadcrumbs": {
       "home": "Úvod",
       "schoolYears": "Školní roky"
@@ -39,7 +39,7 @@
   },
 
   "ClassesPage": {
-    "tabTitle": "PSLIB Fotky – Třídy",
+    "tabTitle": "Průmyslovka Liberec | Fotoportál | Třídy",
     "breadcrumbs": {
       "home": "Úvod",
       "schoolYears": "Školní roky"
@@ -67,7 +67,7 @@
   },
 
   "StudentsPage": {
-    "tabTitle": "PSLIB Fotky – Třída",
+    "tabTitle": "Průmyslovka Liberec | Třída",
     "breadcrumbs": {
       "home": "Úvod",
       "schoolYears": "Školní roky"
@@ -103,7 +103,7 @@
   },
 
   "NotFoundPage": {
-    "tabTitle": "404 – Stránka nebyla nalezena",
+    "tabTitle": "Průmyslovka Liberec | Fotoportál | 404 – Stránka nebyla nalezena",
     "title": "Stránka nebyla nalezena",
     "text": "Stránka, kterou se snažíte otevřít, neexistuje. Možná jste špatně zadali adresu nebo byla stránka přesunuta na jinou adresu URL. Pokud se domníváte, že se jedná o chybu, kontaktujte podporu.",
     "buttonText": "Zpět na úvodní stránku"
