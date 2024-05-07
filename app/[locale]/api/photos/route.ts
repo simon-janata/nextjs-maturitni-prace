@@ -59,7 +59,7 @@ export async function GET(req: Request, res: Response) {
 export async function POST(req: Request, res: Response) {
   try {
     const opencvDirPath = join(process.cwd(), "opencvScripts");
-    const opencvScriptPath = join(opencvDirPath, "image_crop.py");
+    const opencvScriptPath = join(opencvDirPath, "crop.py");
 
     if (!existsSync(opencvScriptPath)) {
       return new Response(
@@ -77,6 +77,15 @@ export async function POST(req: Request, res: Response) {
 
     const data = await req.formData();
     const photo: File | null = data.get("photo") as unknown as File;
+
+    const minFaceHeight: string | null = data.get("minFaceHeight") as string | null;
+    const maxFaceHeight: string | null = data.get("maxFaceHeight") as string | null;
+    const minFaceWidth: string | null = data.get("minFaceWidth") as string | null;
+    const maxFaceWidth: string | null = data.get("maxFaceWidth") as string | null;
+    const minEyeHeight: string | null = data.get("minEyeHeight") as string | null;
+    const maxEyeHeight: string | null = data.get("maxEyeHeight") as string | null;
+    const minEyeWidth: string | null = data.get("minEyeWidth") as string | null;
+    const maxEyeWidth: string | null = data.get("maxEyeWidth") as string | null;
 
     if (!photo) {
       return new Response(
@@ -97,6 +106,17 @@ export async function POST(req: Request, res: Response) {
 
     const pythonProcess = spawnSync("python", [opencvScriptPath], {
       input: buffer,
+      env: {
+        ...process.env,
+        MIN_FACE_HEIGHT: minFaceHeight || "",
+        MAX_FACE_HEIGHT: maxFaceHeight || "",
+        MIN_FACE_WIDTH: minFaceWidth || "",
+        MAX_FACE_WIDTH: maxFaceWidth || "",
+        MIN_EYE_HEIGHT: minEyeHeight || "",
+        MAX_EYE_HEIGHT: maxEyeHeight || "",
+        MIN_EYE_WIDTH: minEyeWidth || "",
+        MAX_EYE_WIDTH: maxEyeWidth || "",
+      },
     });
 
     const croppedImageBuffer = pythonProcess.stdout as Buffer;

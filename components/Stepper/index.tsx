@@ -8,6 +8,7 @@ import {
   Button,
   Center,
   ColorInput,
+  RangeSlider,
   Grid,
   Group,
   Loader,
@@ -29,6 +30,7 @@ import {
   IconFileTypeCsv,
   IconFolder,
   IconPhoto,
+  IconAdjustments,
 } from "@tabler/icons-react";
 
 import Dropzone from "../Dropzone";
@@ -61,13 +63,23 @@ type StateAndHandlers = {
   nextStep: () => void;
   prevStep: () => void;
   clazzData: ClazzData;
+  faceHeightRange: [number, number];
+  faceWidthRange: [number, number];
+  eyeHeightRange: [number, number];
+  eyeWidthRange: [number, number];
+  setFaceHeightRange: (range: [number, number]) => void;
+  setFaceWidthRange: (range: [number, number]) => void;
+  setEyeHeightRange: (range: [number, number]) => void;
+  setEyeWidthRange: (range: [number, number]) => void;
   clazzesInSelectedSchoolYear: string[];
+  arePhotosResizing: boolean;
   arePhotosValidating: boolean;
   handlePickYearChange: (date: Date | null) => void;
   handleClazzNameChange: (n: string) => void;
   handleFolderColorChange: (color: string) => void;
   handleCSVUpload: (files: File) => void;
-  handlePhotosUpload: (files: FileWithPath[]) => void;
+  handleResizePhotos: (files: FileWithPath[]) => void;
+  handleValidatePhotos: () => void;
   handleDeleteStudent: (index: number) => void;
   handleClazzDataSubmission: () => void;
 };
@@ -95,16 +107,28 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
     nextStep,
     prevStep,
     clazzData,
+    faceHeightRange,
+    faceWidthRange,
+    eyeHeightRange,
+    eyeWidthRange,
+    setFaceHeightRange,
+    setFaceWidthRange,
+    setEyeHeightRange,
+    setEyeWidthRange,
     clazzesInSelectedSchoolYear,
+    arePhotosResizing,
     arePhotosValidating,
     handlePickYearChange,
     handleClazzNameChange,
     handleFolderColorChange,
     handleCSVUpload,
-    handlePhotosUpload,
+    handleResizePhotos,
+    handleValidatePhotos,
     handleDeleteStudent,
     handleClazzDataSubmission,
   } = stateAndHandlers;
+
+  const marks = [{ value: 25 }, { value: 50 }, { value: 75 }];
 
   const form = useForm({
     initialValues: {
@@ -124,26 +148,22 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
 
   useEffect(() => {
     if (active === 0) {
-      const isFormValid: boolean = clazzData.schoolYear
-        ? clazzData.schoolYear.getFullYear() <= new Date().getFullYear()
+      const isFormValid: boolean =
+        clazzData.schoolYear &&
+        clazzData.schoolYear.getFullYear() <= new Date().getFullYear() &&
+        clazzData.clazzName.trim() !== "" &&
+        clazzData.folderColor !== ""
           ? true
-          : false
-        : false;
+          : false;
       if (nextStepButtonRef.current) {
         nextStepButtonRef.current.disabled = !isFormValid;
       }
     } else if (active === 1) {
-      const isFormValid: boolean =
-        clazzData.clazzName.trim() !== "" && clazzData.folderColor !== "";
-      if (nextStepButtonRef.current) {
-        nextStepButtonRef.current.disabled = !isFormValid;
-      }
-    } else if (active === 2) {
       const isFormValid: boolean = clazzData.students.length > 0;
       if (nextStepButtonRef.current) {
         nextStepButtonRef.current.disabled = !isFormValid;
       }
-    } else if (active === 3) {
+    } else if (active === 2) {
       const isFormValid: boolean = clazzData.photos.length > 0;
       if (nextStepButtonRef.current) {
         nextStepButtonRef.current.disabled = !isFormValid;
@@ -187,10 +207,11 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
       >
         <StepperMantine.Step
           icon={<IconFolder style={{ width: rem(18), height: rem(18) }} />}
-          label={t("firstStep.label")}
-          description={t("firstStep.description")}
+          label={t("secondStep.label")}
+          description={t("secondStep.description")}
         >
           <YearPickerInput
+            mb={rem(16)}
             label={t("firstStep.input.label")}
             value={clazzData.schoolYear}
             onChange={(e) => {
@@ -200,13 +221,7 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
             error={form.errors.schoolYear}
             required
           />
-        </StepperMantine.Step>
 
-        <StepperMantine.Step
-          icon={<IconFolder style={{ width: rem(18), height: rem(18) }} />}
-          label={t("secondStep.label")}
-          description={t("secondStep.description")}
-        >
           <TextInput
             mb={rem(16)}
             label={t("secondStep.input.label")}
@@ -254,6 +269,7 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
             idle={t("thirdStep.dropzone.idle")}
             typesString={[".csv"]}
             handleCSVUpload={handleCSVUpload}
+            nextStepButtonRef={nextStepButtonRef}
           />
           {clazzData.students.length > 0 && (
             <Stack mt={rem(48)}>
@@ -279,34 +295,103 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
             multiple={true}
             idle={t("fourthStep.dropzone.idle")}
             typesString={[".jpeg"]}
-            handlePhotosUpload={handlePhotosUpload}
+            handleResizePhotos={handleResizePhotos}
+            nextStepButtonRef={nextStepButtonRef}
           />
-          {arePhotosValidating === true ? (
-            <Center>
-              <Loader color={theme.colors.pslib[6]} type="dots" size="md" />
-            </Center>
-          ) : (
-            clazzData.photos.length > 0 && (
-              <Fancybox
-                options={{
-                  Carousel: {
-                    infinite: false,
-                  },
-                }}
-              >
-                <Grid mt={rem(48)}>
-                  {clazzData.studentsWithPhotos.map((s) => (
-                    <Grid.Col
-                      span={{ base: 6, xs: 3, sm: 2.4, md: 2, lg: 1.5 }}
-                      key={uuid()}
-                    >
-                      {s.preview}
-                    </Grid.Col>
-                  ))}
-                </Grid>
-              </Fancybox>
-            )
+          {arePhotosResizing !== true && clazzData.photos.length > 0 && (
+            <Fancybox
+              options={{
+                Carousel: {
+                  infinite: false,
+                },
+              }}
+            >
+              <Grid mt={rem(48)}>
+                {clazzData.studentsWithPhotos.map((s) => (
+                  <Grid.Col
+                    span={{ base: 6, xs: 3, sm: 2.4, md: 2, lg: 1.5 }}
+                    key={uuid()}
+                  >
+                    {s.preview}
+                  </Grid.Col>
+                ))}
+              </Grid>
+            </Fancybox>
           )}
+        </StepperMantine.Step>
+
+        <StepperMantine.Step
+          icon={<IconAdjustments style={{ width: rem(18), height: rem(18) }} />}
+          label={t("firstStep.label")}
+          description={t("firstStep.description")}
+        >
+          <Text
+            size="sm"
+            mt="xl"
+            mb={6}
+            ta="right"
+          >{`Rozmezí výšky detekce obličeje (${faceHeightRange[0]} % - ${faceHeightRange[1]} %)`}</Text>
+          <RangeSlider
+            minRange={5}
+            min={0}
+            max={100}
+            step={1}
+            defaultValue={faceHeightRange}
+            marks={marks}
+            label={null}
+            onChange={(e) => setFaceHeightRange(e)}
+          />
+
+          <Text
+            size="sm"
+            mt="xl"
+            mb={6}
+            ta="right"
+          >{`Rozmezí šířky detekce obličeje (${faceWidthRange[0]} % - ${faceWidthRange[1]} %)`}</Text>
+          <RangeSlider
+            minRange={5}
+            min={0}
+            max={100}
+            step={1}
+            defaultValue={faceWidthRange}
+            marks={marks}
+            label={null}
+            onChange={(e) => setFaceWidthRange(e)}
+          />
+
+          <Text
+            size="sm"
+            mt="xl"
+            mb={6}
+            ta="right"
+          >{`Rozmezí výšky detekce očí (${eyeHeightRange[0]} % - ${eyeHeightRange[1]} %)`}</Text>
+          <RangeSlider
+            minRange={2}
+            min={0}
+            max={100}
+            step={1}
+            defaultValue={eyeHeightRange}
+            marks={marks}
+            label={null}
+            onChange={(e) => setEyeHeightRange(e)}
+          />
+
+          <Text
+            size="sm"
+            mt="xl"
+            mb={6}
+            ta="right"
+          >{`Rozmezí šířky detekce očí (${eyeWidthRange[0]} % - ${eyeWidthRange[1]} %)`}</Text>
+          <RangeSlider
+            minRange={2}
+            min={0}
+            max={100}
+            step={1}
+            defaultValue={eyeWidthRange}
+            marks={marks}
+            label={null}
+            onChange={(e) => setEyeWidthRange(e)}
+          />
         </StepperMantine.Step>
         <StepperMantine.Completed>
           <Title order={1} ta="center">
@@ -331,12 +416,48 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
         </Button>
         {active === 4 ? (
           <Button onClick={openModal}>{t("navigation.submit")}</Button>
+        ) : active === 3 ? (
+          <Button onClick={handleValidatePhotos}>
+            {t("navigation.validate")}
+          </Button>
         ) : (
           <Button ref={nextStepButtonRef} onClick={nextStep}>
             {t("navigation.next")}
           </Button>
         )}
       </Group>
+
+      <Modal
+        zIndex={1000}
+        opened={arePhotosResizing}
+        onClose={() => {}}
+        withCloseButton={false}
+        closeOnClickOutside={false}
+        closeOnEscape={false}
+      >
+        <Center>
+          <Loader color={theme.colors.pslib[6]} size="md" mb="sm" />
+        </Center>
+        <Text ta="center" className={classes.loading}>
+          Resizing photos, please wait
+        </Text>
+      </Modal>
+
+      <Modal
+        zIndex={1000}
+        opened={arePhotosValidating}
+        onClose={() => {}}
+        withCloseButton={false}
+        closeOnClickOutside={false}
+        closeOnEscape={false}
+      >
+        <Center>
+          <Loader color={theme.colors.pslib[6]} size="md" mb="sm" />
+        </Center>
+        <Text ta="center" className={classes.loading}>
+          Validating photos, please wait
+        </Text>
+      </Modal>
 
       <Modal
         opened={opened}
@@ -357,7 +478,9 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
               <Button variant="default" onClick={close}>
                 {t("modal.valid.leftButton")}
               </Button>
-              <Button onClick={handleClazzDataSubmission}>{t("modal.valid.rightButton")}</Button>
+              <Button onClick={handleClazzDataSubmission}>
+                {t("modal.valid.rightButton")}
+              </Button>
             </Group>
           </>
         ) : (

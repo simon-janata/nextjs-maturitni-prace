@@ -6,6 +6,15 @@ import cv2
 
 image_bytes = sys.stdin.buffer.read()
 
+min_face_height = int(os.environ["MIN_FACE_HEIGHT"]) if os.environ["MIN_FACE_HEIGHT"] else None
+max_face_height = int(os.environ["MAX_FACE_HEIGHT"]) if os.environ["MAX_FACE_HEIGHT"] else None
+min_face_width = int(os.environ["MIN_FACE_WIDTH"]) if os.environ["MIN_FACE_WIDTH"] else None
+max_face_width = int(os.environ["MAX_FACE_WIDTH"]) if os.environ["MAX_FACE_WIDTH"] else None
+min_eye_height = int(os.environ["MIN_EYE_HEIGHT"]) if os.environ["MIN_EYE_HEIGHT"] else None
+max_eye_height = int(os.environ["MAX_EYE_HEIGHT"]) if os.environ["MAX_EYE_HEIGHT"] else None
+min_eye_width = int(os.environ["MIN_EYE_WIDTH"]) if os.environ["MIN_EYE_WIDTH"] else None
+max_eye_width = int(os.environ["MAX_EYE_WIDTH"]) if os.environ["MAX_EYE_WIDTH"] else None
+
 image_array = np.frombuffer(image_bytes, dtype=np.uint8)
 
 img = cv2.imdecode(image_array, cv2.IMREAD_COLOR)
@@ -21,7 +30,7 @@ else:
     face_cascade = cv2.CascadeClassifier(os.path.join(path_to_current_folder, "haarcascade_frontalface_default.xml"))
     eye_cascade = cv2.CascadeClassifier(os.path.join(path_to_current_folder, "haarcascade_eye.xml"))
 
-    faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=7, minSize=(400, 400))
+    faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=7, minSize=(int(img.shape[1] / 100 * min_face_width), int(img.shape[0] / 100 * min_face_height)), maxSize=(int(img.shape[1] / 100 * max_face_width), int(img.shape[0] / 100 * max_face_height)))
 
     distances_to_eyes_top = []
 
@@ -30,7 +39,7 @@ else:
         roi_gray = gray[y:y + h, x:x + w]
         roi_color = img[y:y + h, x:x + w]
         face_center_x = x + w // 2
-        eyes = eye_cascade.detectMultiScale(roi_gray, minNeighbors=7, minSize=(55, 55))
+        eyes = eye_cascade.detectMultiScale(roi_gray, minNeighbors=7, minSize=(int(img.shape[1] / 100 * min_eye_width), int(img.shape[0] / 100 * min_eye_height)), maxSize=(int(img.shape[1] / 100 * max_eye_width), int(img.shape[0] / 100 * max_eye_height)))
         for (ex, ey, ew, eh) in eyes:
             distance_to_eyes_top = y + ey + (eh // 2)
             distances_to_eyes_top.append(distance_to_eyes_top)
@@ -48,8 +57,16 @@ else:
 
     start_x = int(face_center_x - (crop_width / 2))
 
+    # # Display the labeled image
+    # cv2.imshow("Face Detection and Labeling", img)
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()
+
     if start_x < 0:
         start_x = 0
+
+    if start_x + crop_width > img.shape[1]:
+        start_x = img.shape[1] - crop_width
 
     if len(faces) > 0:
         (x, y, w, h) = faces[0]

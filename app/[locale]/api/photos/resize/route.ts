@@ -7,7 +7,7 @@ export async function POST(req: Request, res: Response) {
     const opencvDirPath = join(process.cwd(), "opencvScripts");
     const opencvScriptPath = join(
       opencvDirPath,
-      "validate_and_resize_faces.py"
+      "resize.py"
     );
 
     if (!existsSync(opencvScriptPath)) {
@@ -49,19 +49,18 @@ export async function POST(req: Request, res: Response) {
     });
 
     const outputString = pythonProcess.stdout.toString("utf8").trim();
+
     const jsonStart = outputString.indexOf("{");
     const jsonEnd = outputString.lastIndexOf("}") + 1;
     const jsonString = outputString.substring(jsonStart, jsonEnd);
     const output = JSON.parse(jsonString);
 
     const resizedImageBase64 = output.image;
-    const isSingleFace = output.is_single_face;
 
     return new Response(
       JSON.stringify({
         message: "Succcessfully validated and resized image",
         resizedImage: resizedImageBase64,
-        isSingleFace: isSingleFace,
       }),
       {
         status: 200,

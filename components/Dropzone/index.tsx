@@ -28,10 +28,11 @@ interface DropzoneProps {
   idle: string;
   typesString: string[];
   handleCSVUpload?: (file: File) => void;
-  handlePhotosUpload?: (files: FileWithPath[]) => void;
+  handleResizePhotos?: (files: FileWithPath[]) => void;
+  nextStepButtonRef: React.RefObject<HTMLButtonElement>;
 }
 
-const Dropzone: React.FC<DropzoneProps> = ({ acceptedMimeTypes, maxSize, multiple, idle, typesString, handleCSVUpload, handlePhotosUpload }) => {
+const Dropzone: React.FC<DropzoneProps> = ({ acceptedMimeTypes, maxSize, multiple, idle, typesString, handleCSVUpload, handleResizePhotos, nextStepButtonRef }) => {
   const t = useTranslations("Dropzone");
   const theme = useMantineTheme();
   const openRef = useRef<() => void>(null);
@@ -41,11 +42,14 @@ const Dropzone: React.FC<DropzoneProps> = ({ acceptedMimeTypes, maxSize, multipl
       <DropzoneMantine
         openRef={openRef}
         onDrop={(e) => {
+          if (nextStepButtonRef.current) {
+            nextStepButtonRef.current.disabled = true;
+          }
           if (acceptedMimeTypes.includes(MIME_TYPES.csv)) {
             handleCSVUpload && handleCSVUpload(e[0]);
           } else {
             e.sort((a, b) => a.name.localeCompare(b.name));
-            handlePhotosUpload && handlePhotosUpload(e);
+            handleResizePhotos && handleResizePhotos(e);
           }
         }}
         className={classes.dropzone}

@@ -56,6 +56,12 @@ export default function AddPage() {
   const [clazzData, setClazzData] = useState<ClazzData>(initialClazzData);
   const [clazzesInSelectedSchoolYear, setClazzesInSelectedSchoolYear] = useState<string[]>([]);
 
+  const [faceHeightRange, setFaceHeightRange] = useState<[number, number]>([5, 10]);
+  const [faceWidthRange, setFaceWidthRange] = useState<[number, number]>([5, 10]);
+  const [eyeHeightRange, setEyeHeightRange] = useState<[number, number]>([5, 7]);
+  const [eyeWidthRange, setEyeWidthRange] = useState<[number, number]>([5, 7]);
+
+  const [arePhotosResizing, setArePhotosResizing] = useState<boolean>(false);
   const [arePhotosValidating, setArePhotosValidating] = useState<boolean>(false);
   const [uploading, setUploading] = useState<boolean>(false);
 
@@ -146,8 +152,8 @@ export default function AddPage() {
     });
   };
 
-  const handlePhotosUpload = async (files: FileWithPath[]) => {
-    setArePhotosValidating(true);
+  const handleResizePhotos = async (files: FileWithPath[]) => {
+    setArePhotosResizing(true);
 
     const formData = new FormData();
 
@@ -168,7 +174,7 @@ export default function AddPage() {
 
           await axios
             .post(
-              `${process.env.NEXT_PUBLIC_API_URL}/cs/api/photos/validate-and-resize`,
+              `${process.env.NEXT_PUBLIC_API_URL}/cs/api/photos/resize`,
               formData,
               {
                 headers: {
@@ -179,7 +185,6 @@ export default function AddPage() {
             .then((res) => {
               const base64Response = res.data.resizedImage;
               imageUrl = `data:image/jpeg;base64,${base64Response}`;
-              photoIsValid = res.data.isSingleFace;
 
               const byteCharacters = atob(base64Response);
               const byteNumbers = new Array(byteCharacters.length);
@@ -191,11 +196,11 @@ export default function AddPage() {
               photoOut = new File([blob], photoIn.name, { type: "image/jpeg" });
             })
             .catch((error) => {
-              console.log("Validation failed!");
-              console.error(error);
+              console.log("Failed to resize the photo.");
+              console.error("Error details:", error);
             })
             .finally(() => {
-              console.log("Validation finished!");
+              console.log("The photo resize operation has been completed.");
             });
 
           preview = (
@@ -221,17 +226,59 @@ export default function AddPage() {
         };
       }
     );
-
+    
     const updatedStudentsWithPhotos = await Promise.all(
       updatedStudentsWithPhotosPromises
     );
 
-    setClazzData({
-      ...clazzData,
-      photos: photos,
-      studentsWithPhotos: updatedStudentsWithPhotos,
+    setClazzData({ ...clazzData, photos: photos, studentsWithPhotos: updatedStudentsWithPhotos });
+
+    setArePhotosResizing(false);
+  };
+
+  const handleValidatePhotos = async () => {
+    setArePhotosValidating(true);
+
+    const formData = new FormData();
+
+    const validationPromises = clazzData.studentsWithPhotos.map((student) => {
+      formData.set("photo", student.photo);
+
+      formData.set("minFaceHeight", faceHeightRange[0].toString());
+      formData.set("maxFaceHeight", faceHeightRange[1].toString());
+      formData.set("minFaceWidth", faceWidthRange[0].toString());
+      formData.set("maxFaceWidth", faceWidthRange[1].toString());
+      formData.set("minEyeHeight", eyeHeightRange[0].toString());
+      formData.set("maxEyeHeight", eyeHeightRange[1].toString());
+      formData.set("minEyeWidth", eyeWidthRange[0].toString());
+      formData.set("maxEyeWidth", eyeWidthRange[1].toString());
+    
+      return axios
+        .post(`${process.env.NEXT_PUBLIC_API_URL}/cs/api/photos/validate`, formData, {
+          headers: {
+            "content-type": "multipart/form-data",
+          },
+        })
+        .then((res) => {
+          const isSingleFace = res.data.isSingleFace;
+          student.isPhotoValid = isSingleFace;
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+          console.log("Validation finished for a student!");
+        });
     });
+
+    Promise.all(validationPromises)
+  .then(() => {
     setArePhotosValidating(false);
+    nextStep();
+  })
+  .catch((error) => {
+    console.error("An error occurred during validation:", error);
+  });
   };
 
   const handleDeleteStudent = (index: number) => {
@@ -340,6 +387,16 @@ export default function AddPage() {
 
       for (let i = 0; i < clazzData.studentsWithPhotos.length; i++) {
         formData.set("photo", clazzData.studentsWithPhotos[i].photo);
+
+        formData.set("minFaceHeight", faceHeightRange[0].toString());
+        formData.set("maxFaceHeight", faceHeightRange[1].toString());
+        formData.set("minFaceWidth", faceWidthRange[0].toString());
+        formData.set("maxFaceWidth", faceWidthRange[1].toString());
+        formData.set("minEyeHeight", eyeHeightRange[0].toString());
+        formData.set("maxEyeHeight", eyeHeightRange[1].toString());
+        formData.set("minEyeWidth", eyeWidthRange[0].toString());
+        formData.set("maxEyeWidth", eyeWidthRange[1].toString());
+
         const studentNameParts = clazzData.students[i].split(" ");
 
         await axios
@@ -384,13 +441,23 @@ export default function AddPage() {
     nextStep: nextStep,
     prevStep: prevStep,
     clazzData: clazzData,
+    faceHeightRange: faceHeightRange,
+    faceWidthRange: faceWidthRange,
+    eyeHeightRange: eyeHeightRange,
+    eyeWidthRange: eyeWidthRange,
+    setFaceHeightRange: setFaceHeightRange,
+    setFaceWidthRange: setFaceWidthRange,
+    setEyeHeightRange: setEyeHeightRange,
+    setEyeWidthRange: setEyeWidthRange,
     clazzesInSelectedSchoolYear: clazzesInSelectedSchoolYear,
+    arePhotosResizing: arePhotosResizing,
     arePhotosValidating: arePhotosValidating,
     handlePickYearChange: handlePickYearChange,
     handleClazzNameChange: handleClazzNameChange,
     handleFolderColorChange: handleFolderColorChange,
     handleCSVUpload: handleCSVUpload,
-    handlePhotosUpload: handlePhotosUpload,
+    handleResizePhotos: handleResizePhotos,
+    handleValidatePhotos: handleValidatePhotos,
     handleDeleteStudent: handleDeleteStudent,
     handleClazzDataSubmission: handleClazzDataSubmission,
   };
@@ -424,7 +491,9 @@ export default function AddPage() {
           </div>
         </Container>
       ) : (
-        <Stepper stateAndHandlers={stateAndHandlers} />
+        <>
+          <Stepper stateAndHandlers={stateAndHandlers} />
+        </>
       )}
     </>
   );
