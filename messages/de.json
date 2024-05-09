@@ -88,6 +88,7 @@
     },
     "dropdown": {
       "downloadZip": "Alle Fotos herunterladen (.zip)",
+      "downloadTextFile": "Liste der Störenfriede herunterladen (.txt)",
       "deleteClazz": "Diese Klasse löschen"
     },
     "title": "Keine Schüler gefunden",
@@ -166,15 +167,11 @@
     },
     "firstStep": {
       "label": "Erster Schritt",
-      "description": "Wählen Sie ein Schuljahr",
-      "input": {
+      "description": "Grundkonfiguration",
+      "schoolYearInput": {
         "label": "Wählen Sie ein Schuljahr"
-      }
-    },
-    "secondStep": {
-      "label": "Zweiter Schritt",
-      "description": "Wählen Sie eine Klasse",
-      "input": {
+      },
+      "clazzNameInput": {
         "label": "Geben Sie einen Klassennamen ein",
         "placeholder": "Geben Sie einen Klassennamen ein"
       },
@@ -182,19 +179,27 @@
         "label": "Wählen Sie eine Ordnerfarbe"
       }
     },
-    "thirdStep": {
-      "label": "Dritter Schritt",
+    "secondStep": {
+      "label": "Zweiter Schritt",
       "description": "Laden Sie eine CSV-Datei hoch",
       "dropzone": {
         "idle": "CSV-Datei der Schüler hochladen"
       }
     },
-    "fourthStep": {
-      "label": "Vierter Schritt",
+    "thirdStep": {
+      "label": "Dritter Schritt",
       "description": "Fotos hochladen",
       "dropzone": {
         "idle": "Fotos der Schüler hochladen"
       }
+    },
+    "fourthStep": {
+      "label": "Vierter Schritt",
+      "description": "Anpassen",
+      "faceHeightRange": "Bereich der Gesichtserkennungshöhe",
+      "faceWidthRange": "Bereich der Gesichtserkennungsbreite",
+      "eyeHeightRange": "Bereich der Augenerkennungshöhe",
+      "eyeWidthRange": "Bereich der Augenerkennungsbreite"
     },
     "completed": {
       "title": "Zusammenfassung"
@@ -202,19 +207,24 @@
     "navigation": {
       "back": "Zurück",
       "next": "Nächster Schritt",
-      "submit": "Absenden"
+      "submit": "Absenden",
+      "validate": "Validieren"
     },
     "modal": {
-      "valid": {
-        "title": "Upload bestätigen",
-        "text": "Alle Daten wurden validiert und sind bereit zum Hochladen. Sind Sie sicher, dass Sie fortfahren möchten?",
-        "leftButton": "Abbrechen",
-        "rightButton": "Hochladen"
-      },
-      "error": {
-        "title": "Fehler bei der Datenvalidierung",
-        "text": "Die Daten sind nicht gültig. Dies könnte daran liegen, dass die Anzahl der Namen nicht mit der Anzahl der Fotos übereinstimmt, oder weil auf einigen Fotos kein Gesicht gefunden wurde. Bitte überprüfen Sie Ihre Daten und versuchen Sie es erneut.",
-        "tryAgainButton": "Erneut versuchen"
+      "rezizing": "Fotos werden skaliert, bitte warten",
+      "validating": "Fotos werden überprüft, bitte warten",
+      "submit": {
+        "valid": {
+          "title": "Upload bestätigen",
+          "text": "Alle Daten wurden validiert und sind bereit zum Hochladen. Sind Sie sicher, dass Sie fortfahren möchten?",
+          "leftButton": "Abbrechen",
+          "rightButton": "Hochladen"
+        },
+        "error": {
+          "title": "Fehler bei der Datenvalidierung",
+          "text": "Die Daten sind nicht gültig. Dies könnte daran liegen, dass die Anzahl der Namen nicht mit der Anzahl der Fotos übereinstimmt, oder weil auf einigen Fotos kein Gesicht gefunden wurde. Bitte überprüfen Sie Ihre Daten und versuchen Sie es erneut.",
+          "tryAgainButton": "Erneut versuchen"
+        }
       }
     }
   },

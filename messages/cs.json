@@ -91,6 +91,7 @@
     },
     "dropdown": {
       "downloadZip": "Stáhnout všechny fotografie (.zip)",
+      "downloadTextFile": "Stáhnout seznam záškodníků (.txt)",
       "deleteClazz": "Odstranit tuto třídu"
     },
     "title": "Žádní studenti nebyli nalezeni",
@@ -169,15 +170,11 @@
     },
     "firstStep": {
       "label": "První krok",
-      "description": "Výběr školního roku",
-      "input": {
+      "description": "Základní konfigurace",
+      "schoolYearInput": {
         "label": "Vyberte školní rok"
-      }
-    },
-    "secondStep": {
-      "label": "Druhý krok",
-      "description": "Výběr třídy",
-      "input": {
+      },
+      "clazzNameInput": {
         "label": "Zadejte název třídy",
         "placeholder": "Zadejte název třídy"
       },
@@ -185,19 +182,27 @@
         "label": "Vyberte barvu složky"
       }
     },
-    "thirdStep": {
-      "label": "Třetí krok",
+    "secondStep": {
+      "label": "Druhý krok",
       "description": "Nahrání souboru CSV",
       "dropzone": {
         "idle": "Nahrání souboru CSV se jmény studentů"
       }
     },
-    "fourthStep": {
-      "label": "Čtvrtý krok",
+    "thirdStep": {
+      "label": "Třetí krok",
       "description": "Nahrání fotografií",
       "dropzone": {
         "idle": "Nahrání fotografií studentů"
       }
+    },
+    "fourthStep": {
+      "label": "Čtvrtý krok",
+      "description": "Přizpůsobení",
+      "faceHeightRange": "Rozmezí výšky detekce obličeje",
+      "faceWidthRange": "Rozmezí šířky detekce obličeje",
+      "eyeHeightRange": "Rozmezí výšky detekce očí",
+      "eyeWidthRange": "Rozmezí šířky detekce očí"
     },
     "completed": {
       "title": "Souhrn"
@@ -205,19 +210,24 @@
     "navigation": {
       "back": "Zpět",
       "next": "Další krok",
-      "submit": "Potvrdit"
+      "submit": "Potvrdit",
+      "validate": "Validovat"
     },
     "modal": {
-      "valid": {
-        "title": "Potvrzení nahrávání",
-        "text": "Všechna data byla ověřena a jsou připravena k odeslání. Jste si jisti, že chcete pokračovat?",
-        "leftButton": "Zrušit",
-        "rightButton": "Nahrát"
-      },
-      "error": {
-        "title": "Chyba ověření dat",
-        "text": "Údaje nejsou platné. Může to být způsobeno tím, že počet jmen neodpovídá počtu fotografií, nebo tím, že na některých fotografiích nebyla nalezena žádná tvář. Zkontrolujte prosím svá data a zkuste to znovu.",
-        "tryAgainButton": "Zkusit znovu"
+      "rezizing": "Změna velikosti fotografií, vyčkejte prosím",
+      "validating": "Ověřování fotografií, vyčkejte prosím",
+      "submit": {
+        "valid": {
+          "title": "Potvrzení nahrávání",
+          "text": "Všechna data byla ověřena a jsou připravena k odeslání. Jste si jisti, že chcete pokračovat?",
+          "leftButton": "Zrušit",
+          "rightButton": "Nahrát"
+        },
+        "error": {
+          "title": "Chyba ověření dat",
+          "text": "Údaje nejsou platné. Může to být způsobeno tím, že počet jmen neodpovídá počtu fotografií, nebo tím, že na některých fotografiích nebyla nalezena žádná tvář. Zkontrolujte prosím svá data a zkuste to znovu.",
+          "tryAgainButton": "Zkusit znovu"
+        }
       }
     }
   },

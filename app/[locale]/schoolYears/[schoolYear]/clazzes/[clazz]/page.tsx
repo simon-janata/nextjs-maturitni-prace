@@ -254,7 +254,7 @@ export default function ClazzPage({ params }: { params: { schoolYear: number; cl
               }
               onClick={handleDownloadTextFile}
             >
-              Stáhnout seznam záškodníků (.txt)
+              {t("dropdown.downloadTextFile")}
             </Menu.Item>
             <Menu.Item
               color="red"

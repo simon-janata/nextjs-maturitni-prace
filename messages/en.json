@@ -88,6 +88,7 @@
     },
     "dropdown": {
       "downloadZip": "Download all photos (.zip)",
+      "downloadTextFile": "Download troublemakers list (.txt)",
       "deleteClazz": "Delete this class"
     },
     "title": "No students found",
@@ -166,15 +167,11 @@
     },
     "firstStep": {
       "label": "First step",
-      "description": "Select a school year",
-      "input": {
+      "description": "Basic configuration",
+      "schoolYearInput": {
         "label": "Pick a school year"
-      }
-    },
-    "secondStep": {
-      "label": "Second step",
-      "description": "Select a class",
-      "input": {
+      },
+      "clazzNameInput": {
         "label": "Enter a class name",
         "placeholder": "Enter a class name"
       },
@@ -182,19 +179,27 @@
         "label": "Pick a folder colour"
       }
     },
-    "thirdStep": {
-      "label": "Third step",
+    "secondStep": {
+      "label": "Second step",
       "description": "Upload an CSV file",
       "dropzone": {
         "idle": "Upload CSV file of students"
       }
     },
-    "fourthStep": {
-      "label": "Fourth step",
+    "thirdStep": {
+      "label": "Third step",
       "description": "Upload photos",
       "dropzone": {
         "idle": "Upload photos of students"
       }
+    },
+    "fourthStep": {
+      "label": "Fourth step",
+      "description": "Customisation",
+      "faceHeightRange": "Face detection height range",
+      "faceWidthRange": "Face detection width range",
+      "eyeHeightRange": "Eye detection height range",
+      "eyeWidthRange": "Eye detection width range"
     },
     "completed": {
       "title": "Summary"
@@ -202,19 +207,24 @@
     "navigation": {
       "back": "Back",
       "next": "Next Step",
-      "submit": "Submit"
+      "submit": "Submit",
+      "validate": "Validate"
     },
     "modal": {
-      "valid": {
-        "title": "Confirm Upload",
-        "text": "All data has been validated and is ready for upload. Are you sure you want to proceed?",
-        "leftButton": "Cancel",
-        "rightButton": "Upload"
-      },
-      "error": {
-        "title": "Data Validation Error",
-        "text": "The data is not valid. This could be due to the number of names not matching the number of photos, or because no face was found in some photos. Please check your data and try again.",
-        "tryAgainButton": "Try Again"
+      "rezizing": "Resizing photos, please wait",
+      "validating": "Validating photos, please wait",
+      "submit": {
+        "valid": {
+          "title": "Confirm Upload",
+          "text": "All data has been validated and is ready for upload. Are you sure you want to proceed?",
+          "leftButton": "Cancel",
+          "rightButton": "Upload"
+        },
+        "error": {
+          "title": "Data Validation Error",
+          "text": "The data is not valid. This could be due to the number of names not matching the number of photos, or because no face was found in some photos. Please check your data and try again.",
+          "tryAgainButton": "Try Again"
+        }
       }
     }
   },

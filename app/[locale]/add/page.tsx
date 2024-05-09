@@ -25,6 +25,7 @@ export default function AddPage() {
   const locale = useLocale();
 
   const [active, setActive] = useState<number>(0);
+  const [hasValidationBeenDone, setHasValidationBeenDone] = useState<boolean>(false);
   const nextStep = () =>
     setActive((current) => (current < 4 ? current + 1 : current));
   const prevStep = () =>
@@ -297,6 +298,7 @@ export default function AddPage() {
 
     Promise.all(validationPromises)
       .then(() => {
+        setHasValidationBeenDone(true);
         setArePhotosValidating(false);
         nextStep();
       })
@@ -505,6 +507,7 @@ export default function AddPage() {
 
   const stateAndHandlers = {
     active: active,
+    hasValidationBeenDone: hasValidationBeenDone,
     setActive: setActive,
     nextStep: nextStep,
     prevStep: prevStep,

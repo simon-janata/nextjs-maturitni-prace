@@ -59,6 +59,7 @@ enum ModalType {
 
 type StateAndHandlers = {
   active: number;
+  hasValidationBeenDone: boolean;
   setActive: React.Dispatch<React.SetStateAction<number>>;
   nextStep: () => void;
   prevStep: () => void;
@@ -103,6 +104,7 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
 
   const {
     active,
+    hasValidationBeenDone,
     setActive,
     nextStep,
     prevStep,
@@ -168,6 +170,11 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
       if (nextStepButtonRef.current) {
         nextStepButtonRef.current.disabled = !isFormValid;
       }
+    } else if (active === 3) {
+      const hasAlreadyBeenValidated: boolean = hasValidationBeenDone;
+      if (nextStepButtonRef.current) {
+        nextStepButtonRef.current.disabled = !hasAlreadyBeenValidated;
+      }
     }
   }, [active, clazzData]);
 
@@ -207,12 +214,12 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
       >
         <StepperMantine.Step
           icon={<IconFolder style={{ width: rem(18), height: rem(18) }} />}
-          label={t("secondStep.label")}
-          description={t("secondStep.description")}
+          label={t("firstStep.label")}
+          description={t("firstStep.description")}
         >
           <YearPickerInput
             mb={rem(16)}
-            label={t("firstStep.input.label")}
+            label={t("firstStep.schoolYearInput.label")}
             value={clazzData.schoolYear}
             onChange={(e) => {
               handlePickYearChange(e);
@@ -221,11 +228,10 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
             error={form.errors.schoolYear}
             required
           />
-
           <TextInput
             mb={rem(16)}
-            label={t("secondStep.input.label")}
-            placeholder={t("secondStep.input.placeholder")}
+            label={t("firstStep.clazzNameInput.label")}
+            placeholder={t("firstStep.clazzNameInput.placeholder")}
             value={clazzData.clazzName}
             onChange={(e) => {
               handleClazzNameChange(e.target.value);
@@ -236,7 +242,7 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
           />
           {!clazzesInSelectedSchoolYear.includes(clazzData.clazzName) && (
             <ColorInput
-              label={t("secondStep.colorInput.label")}
+              label={t("firstStep.colorInput.label")}
               format="hex"
               swatches={[
                 "#fcbc19",
@@ -259,14 +265,14 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
 
         <StepperMantine.Step
           icon={<IconFileTypeCsv style={{ width: rem(18), height: rem(18) }} />}
-          label={t("thirdStep.label")}
-          description={t("thirdStep.description")}
+          label={t("secondStep.label")}
+          description={t("secondStep.description")}
         >
           <Dropzone
             acceptedMimeTypes={mimeTypesCSV}
             maxSize={2}
             multiple={false}
-            idle={t("thirdStep.dropzone.idle")}
+            idle={t("secondStep.dropzone.idle")}
             typesString={[".csv"]}
             handleCSVUpload={handleCSVUpload}
             nextStepButtonRef={nextStepButtonRef}
@@ -286,14 +292,14 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
 
         <StepperMantine.Step
           icon={<IconPhoto style={{ width: rem(18), height: rem(18) }} />}
-          label={t("fourthStep.label")}
-          description={t("fourthStep.description")}
+          label={t("thirdStep.label")}
+          description={t("thirdStep.description")}
         >
           <Dropzone
             acceptedMimeTypes={mimeTypesPhotos}
             maxSize={300}
             multiple={true}
-            idle={t("fourthStep.dropzone.idle")}
+            idle={t("thirdStep.dropzone.idle")}
             typesString={[".jpeg"]}
             handleResizePhotos={handleResizePhotos}
             nextStepButtonRef={nextStepButtonRef}
@@ -322,15 +328,12 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
 
         <StepperMantine.Step
           icon={<IconAdjustments style={{ width: rem(18), height: rem(18) }} />}
-          label={t("firstStep.label")}
-          description={t("firstStep.description")}
+          label={t("fourthStep.label")}
+          description={t("fourthStep.description")}
         >
-          <Text
-            size="sm"
-            mt="xl"
-            mb={6}
-            ta="right"
-          >{`Rozmezí výšky detekce obličeje (${faceHeightRange[0]} % - ${faceHeightRange[1]} %)`}</Text>
+          <Text size="sm" mt="xl" mb={6} ta="right">{`${t(
+            "fourthStep.faceHeightRange"
+          )} (${faceHeightRange[0]} % - ${faceHeightRange[1]} %)`}</Text>
           <RangeSlider
             minRange={5}
             min={0}
@@ -342,12 +345,9 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
             onChange={(e) => setFaceHeightRange(e)}
           />
 
-          <Text
-            size="sm"
-            mt="xl"
-            mb={6}
-            ta="right"
-          >{`Rozmezí šířky detekce obličeje (${faceWidthRange[0]} % - ${faceWidthRange[1]} %)`}</Text>
+          <Text size="sm" mt="xl" mb={6} ta="right">{`${t(
+            "fourthStep.faceWidthRange"
+          )} (${faceWidthRange[0]} % - ${faceWidthRange[1]} %)`}</Text>
           <RangeSlider
             minRange={5}
             min={0}
@@ -359,12 +359,9 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
             onChange={(e) => setFaceWidthRange(e)}
           />
 
-          <Text
-            size="sm"
-            mt="xl"
-            mb={6}
-            ta="right"
-          >{`Rozmezí výšky detekce očí (${eyeHeightRange[0]} % - ${eyeHeightRange[1]} %)`}</Text>
+          <Text size="sm" mt="xl" mb={6} ta="right">{`${t(
+            "fourthStep.eyeHeightRange"
+          )} (${eyeHeightRange[0]} % - ${eyeHeightRange[1]} %)`}</Text>
           <RangeSlider
             minRange={2}
             min={0}
@@ -376,12 +373,9 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
             onChange={(e) => setEyeHeightRange(e)}
           />
 
-          <Text
-            size="sm"
-            mt="xl"
-            mb={6}
-            ta="right"
-          >{`Rozmezí šířky detekce očí (${eyeWidthRange[0]} % - ${eyeWidthRange[1]} %)`}</Text>
+          <Text size="sm" mt="xl" mb={6} ta="right">{`${t(
+            "fourthStep.eyeWidthRange"
+          )} (${eyeWidthRange[0]} % - ${eyeWidthRange[1]} %)`}</Text>
           <RangeSlider
             minRange={2}
             min={0}
@@ -414,12 +408,13 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
         <Button variant="default" onClick={prevStep}>
           {t("navigation.back")}
         </Button>
-        {active === 4 ? (
-          <Button onClick={openModal}>{t("navigation.submit")}</Button>
-        ) : active === 3 ? (
+        {active === 3 && (
           <Button onClick={handleValidatePhotos}>
             {t("navigation.validate")}
           </Button>
+        )}
+        {active === 4 ? (
+          <Button onClick={openModal}>{t("navigation.submit")}</Button>
         ) : (
           <Button ref={nextStepButtonRef} onClick={nextStep}>
             {t("navigation.next")}
@@ -439,7 +434,7 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
           <Loader color={theme.colors.pslib[6]} size="md" mb="sm" />
         </Center>
         <Text ta="center" className={classes.loading}>
-          Resizing photos, please wait
+          {t("modal.rezizing")}
         </Text>
       </Modal>
 
@@ -455,7 +450,7 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
           <Loader color={theme.colors.pslib[6]} size="md" mb="sm" />
         </Center>
         <Text ta="center" className={classes.loading}>
-          Validating photos, please wait
+          {t("modal.validating")}
         </Text>
       </Modal>
 
@@ -464,8 +459,8 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
         onClose={close}
         title={
           modalType === ModalType.ConfirmUpload
-            ? t("modal.valid.title")
-            : t("modal.error.title")
+            ? t("modal.submit.valid.title")
+            : t("modal.submit.error.title")
         }
         centered
         radius="md"
@@ -473,22 +468,22 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
       >
         {modalType === ModalType.ConfirmUpload ? (
           <>
-            {t("modal.valid.text")}
+            {t("modal.submit.valid.text")}
             <Group justify="center" mt="xl">
               <Button variant="default" onClick={close}>
-                {t("modal.valid.leftButton")}
+                {t("modal.submit.valid.leftButton")}
               </Button>
               <Button onClick={handleClazzDataSubmission}>
-                {t("modal.valid.rightButton")}
+                {t("modal.submit.valid.rightButton")}
               </Button>
             </Group>
           </>
         ) : (
           <>
-            {t("modal.error.text")}
+            {t("modal.submit.error.text")}
             <Group justify="center" mt="xl">
               <Button color="red" onClick={close}>
-                {t("modal.error.tryAgainButton")}
+                {t("modal.submit.error.tryAgainButton")}
               </Button>
             </Group>
           </>
