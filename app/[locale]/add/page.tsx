@@ -25,10 +25,14 @@ export default function AddPage() {
   const locale = useLocale();
 
   const [active, setActive] = useState<number>(0);
-  const nextStep = () => setActive((current) => (current < 4 ? current + 1 : current));
-  const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
+  const nextStep = () =>
+    setActive((current) => (current < 4 ? current + 1 : current));
+  const prevStep = () =>
+    setActive((current) => (current > 0 ? current - 1 : current));
 
-  const [existingSchoolYears, setExistingSchoolYears] = useState<Array<number>>([]);
+  const [existingSchoolYears, setExistingSchoolYears] = useState<Array<number>>(
+    []
+  );
 
   type ClazzData = {
     schoolYear: Date | null;
@@ -54,17 +58,29 @@ export default function AddPage() {
   };
 
   const [clazzData, setClazzData] = useState<ClazzData>(initialClazzData);
-  const [clazzesInSelectedSchoolYear, setClazzesInSelectedSchoolYear] = useState<string[]>([]);
+  const [clazzesInSelectedSchoolYear, setClazzesInSelectedSchoolYear] =
+    useState<string[]>([]);
 
-  const [faceHeightRange, setFaceHeightRange] = useState<[number, number]>([5, 10]);
-  const [faceWidthRange, setFaceWidthRange] = useState<[number, number]>([5, 10]);
-  const [eyeHeightRange, setEyeHeightRange] = useState<[number, number]>([5, 7]);
+  const [faceHeightRange, setFaceHeightRange] = useState<[number, number]>([
+    5, 10,
+  ]);
+  const [faceWidthRange, setFaceWidthRange] = useState<[number, number]>([
+    5, 10,
+  ]);
+  const [eyeHeightRange, setEyeHeightRange] = useState<[number, number]>([
+    5, 7,
+  ]);
   const [eyeWidthRange, setEyeWidthRange] = useState<[number, number]>([5, 7]);
 
   const [arePhotosResizing, setArePhotosResizing] = useState<boolean>(false);
-  const [arePhotosValidating, setArePhotosValidating] = useState<boolean>(false);
-  const [uploading, setUploading] = useState<boolean>(false);
+  const [arePhotosValidating, setArePhotosValidating] =
+    useState<boolean>(false);
 
+  const [invalidPhotoStudentRecords, setInvalidPhotoStudentRecords] = useState<
+    Array<{ studentName: string; photoName: string }>
+  >([]);
+
+  const [uploading, setUploading] = useState<boolean>(false);
   const [schoolYearProgress, setSchoolYearProgress] = useState<number>(0);
   const [clazzProgress, setClazzProgress] = useState<number>(0);
   const [studentsProgress, setStudentsProgress] = useState<number>(0);
@@ -226,12 +242,16 @@ export default function AddPage() {
         };
       }
     );
-    
+
     const updatedStudentsWithPhotos = await Promise.all(
       updatedStudentsWithPhotosPromises
     );
 
-    setClazzData({ ...clazzData, photos: photos, studentsWithPhotos: updatedStudentsWithPhotos });
+    setClazzData({
+      ...clazzData,
+      photos: photos,
+      studentsWithPhotos: updatedStudentsWithPhotos,
+    });
 
     setArePhotosResizing(false);
   };
@@ -252,13 +272,17 @@ export default function AddPage() {
       formData.set("maxEyeHeight", eyeHeightRange[1].toString());
       formData.set("minEyeWidth", eyeWidthRange[0].toString());
       formData.set("maxEyeWidth", eyeWidthRange[1].toString());
-    
+
       return axios
-        .post(`${process.env.NEXT_PUBLIC_API_URL}/cs/api/photos/validate`, formData, {
-          headers: {
-            "content-type": "multipart/form-data",
-          },
-        })
+        .post(
+          `${process.env.NEXT_PUBLIC_API_URL}/cs/api/photos/validate`,
+          formData,
+          {
+            headers: {
+              "content-type": "multipart/form-data",
+            },
+          }
+        )
         .then((res) => {
           const isSingleFace = res.data.isSingleFace;
           student.isPhotoValid = isSingleFace;
@@ -272,16 +296,27 @@ export default function AddPage() {
     });
 
     Promise.all(validationPromises)
-  .then(() => {
-    setArePhotosValidating(false);
-    nextStep();
-  })
-  .catch((error) => {
-    console.error("An error occurred during validation:", error);
-  });
+      .then(() => {
+        setArePhotosValidating(false);
+        nextStep();
+      })
+      .catch((error) => {
+        console.error("An error occurred during validation:", error);
+      });
   };
 
   const handleDeleteStudent = (index: number) => {
+    setInvalidPhotoStudentRecords([
+      ...invalidPhotoStudentRecords,
+      {
+        studentName: clazzData.students[index],
+        photoName: index <= (clazzData.photos.length - 1) ? clazzData.photos[index].name : "",
+        // photoName: clazzData.photos[index].name,
+      },
+    ]);
+
+    console.log(invalidPhotoStudentRecords);
+
     const updatedStudents = clazzData.students.filter((s, i) => i !== index);
     const updatedPhotos = clazzData.photos.filter((p, i) => i !== index);
     const updatedStudentsWithPhotos = clazzData.studentsWithPhotos.filter(
@@ -429,7 +464,40 @@ export default function AddPage() {
             console.error(error);
           });
       }
-      setTimeout(() => router.push(`/${locale}/${p("schoolYears")}/${clazzData.schoolYear?.getFullYear()}/${p("clazzes")}/${clazzData.clazzName.toLowerCase()}`), 2000);
+
+      // Save a text file with records of students who have invalid or uncropped photos
+      await axios
+        .post(
+          `${process.env.NEXT_PUBLIC_API_URL}/cs/api/invalidPhotoStudentRecords`,
+          {
+            invalidPhotoStudentRecords: invalidPhotoStudentRecords,
+          },
+          {
+            params: {
+              schoolYear: clazzData.schoolYear?.getFullYear(),
+              clazzName: clazzData.clazzName.toLowerCase(),
+            },
+          }
+        )
+        .then((res) => {
+          console.log("Text file created!");
+        })
+        .catch((err) => {
+          console.log("Text file creation failed!");
+          console.error(err);
+        });
+
+      setTimeout(
+        () =>
+          router.push(
+            `/${locale}/${p(
+              "schoolYears"
+            )}/${clazzData.schoolYear?.getFullYear()}/${p(
+              "clazzes"
+            )}/${clazzData.clazzName.toLowerCase()}`
+          ),
+        2000
+      );
     } catch (error) {
       console.error(error);
     }
@@ -482,10 +550,22 @@ export default function AddPage() {
                 justify={{ base: "center", md: "space-between" }}
                 align={{ base: "center", md: "center" }}
               >
-                <RingProgress value={schoolYearProgress} label={t("schoolYearProgress")} />
-                <RingProgress value={clazzProgress} label={t("clazzProgress")} />
-                <RingProgress value={studentsProgress} label={t("studentsProgress")} />
-                <RingProgress value={photosProgress} label={t("photosProgress")} />
+                <RingProgress
+                  value={schoolYearProgress}
+                  label={t("schoolYearProgress")}
+                />
+                <RingProgress
+                  value={clazzProgress}
+                  label={t("clazzProgress")}
+                />
+                <RingProgress
+                  value={studentsProgress}
+                  label={t("studentsProgress")}
+                />
+                <RingProgress
+                  value={photosProgress}
+                  label={t("photosProgress")}
+                />
               </Flex>
             </Flex>
           </div>

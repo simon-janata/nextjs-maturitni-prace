@@ -101,7 +101,7 @@ export default function ClassesPage({ params }: { params: { schoolYear: number }
         `${process.env.NEXT_PUBLIC_API_URL}/cs/api/schoolYears/${params.schoolYear}`
       );
 
-      router.push(`/${locale}/schoolYears`);
+      router.push(`/${locale}/${p("schoolYears")}`);
       notifications.show({
         color: "teal",
         icon: <IconCheck style={{ width: rem(18), height: rem(18) }} />,
@@ -110,7 +110,7 @@ export default function ClassesPage({ params }: { params: { schoolYear: number }
         autoClose: 4000,
       });
     } catch (err) {
-      router.push(`/${locale}/schoolYears`);
+      router.push(`/${locale}/${p("schoolYears")}`);
       notifications.show({
         color: "red",
         icon: <IconX style={{ width: rem(18), height: rem(18) }} />,

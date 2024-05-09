@@ -34,6 +34,7 @@ import {
   IconCheck,
   IconDotsVertical,
   IconFileZip,
+  IconFileText,
   IconTrash,
   IconX,
 } from "@tabler/icons-react";
@@ -170,6 +171,26 @@ export default function ClazzPage({ params }: { params: { schoolYear: number; cl
     }
   };
 
+  const handleDownloadTextFile = async () => {
+    try {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/cs/api/invalidPhotoStudentRecords`, {
+        params: {
+          schoolYear: params.schoolYear,
+          clazzName: params.clazz,
+        },
+        responseType: "blob",
+      });
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", `${params.schoolYear}_${params.clazz.toUpperCase()}_InvalidPhotoStudentRecords.txt`);
+      document.body.appendChild(link);
+      link.click();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const handleDeleteClazz = async () => {
     try {
       await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/cs/api/photos`, {
@@ -187,7 +208,7 @@ export default function ClazzPage({ params }: { params: { schoolYear: number; cl
         }
       );
 
-      router.push(`/${locale}/schoolYears/${params.schoolYear}`);
+      router.push(`/${locale}/${p("schoolYears")}/${params.schoolYear}`);
       notifications.show({
         color: "teal",
         icon: <IconCheck style={{ width: rem(18), height: rem(18) }} />,
@@ -196,7 +217,7 @@ export default function ClazzPage({ params }: { params: { schoolYear: number; cl
         autoClose: 4000,
       });
     } catch (err) {
-      router.push(`/${locale}/schoolYears/${params.schoolYear}`);
+      router.push(`/${locale}/${p("schoolYears")}/${params.schoolYear}`);
       notifications.show({
         color: "red",
         icon: <IconX style={{ width: rem(18), height: rem(18) }} />,
@@ -226,6 +247,14 @@ export default function ClazzPage({ params }: { params: { schoolYear: number; cl
               onClick={handleDownloadAllPhotos}
             >
               {t("dropdown.downloadZip")}
+            </Menu.Item>
+            <Menu.Item
+              leftSection={
+                <IconFileText style={{ width: rem(14), height: rem(14) }} />
+              }
+              onClick={handleDownloadTextFile}
+            >
+              Stáhnout seznam záškodníků (.txt)
             </Menu.Item>
             <Menu.Item
               color="red"
