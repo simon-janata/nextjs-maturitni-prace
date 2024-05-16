@@ -1,7 +1,7 @@
 type SchoolYear = {
   id: string;
   year: number;
-  clazzes: string;
+  clazzes: Clazz[];
 };
 
 type Clazz = {

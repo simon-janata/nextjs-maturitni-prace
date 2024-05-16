@@ -2,11 +2,11 @@
   position: relative;
   background-color: var(--mantine-color-body);
   color: var(--text-color);
+}
 
-  @mixin hover {
-    background-color: light-dark(
-      var(--mantine-color-gray-0),
-      var(--mantine-color-dark-6)
-    );
-  }
+.hovered {
+  background-color: light-dark(
+    var(--mantine-color-gray-0),
+    var(--mantine-color-dark-6)
+  );
 }

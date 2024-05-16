@@ -69,13 +69,18 @@ else:
         start_x = img.shape[1] - crop_width
 
     if len(faces) > 0:
-        (x, y, w, h) = faces[0]
-        cropped_image = img[top_y:top_y + crop_height, start_x:start_x + crop_width]
+        # (x, y, w, h) = faces[0]
+        if len(eyes) > 0:
+            cropped_image = img[top_y:top_y + crop_height, start_x:start_x + crop_width]
+            resized_image = cv2.resize(cropped_image, (1050, 1400))
+        else:
+            # cropped_image = img
+            resized_image = img
     else:
         print("No faces detected")
         sys.exit(1)
 
-    resized_image = cv2.resize(cropped_image, (1050, 1400))
+    # resized_image = cv2.resize(cropped_image, (1050, 1400))
 
     retval, buffer = cv2.imencode(".JPG", resized_image)
     cropped_image_bytes = buffer.tobytes()

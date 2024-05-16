@@ -126,7 +126,7 @@ export default function ClassesPage({ params }: { params: { schoolYear: number }
       <Flex direction="row" justify="space-between" align="center">
         <Breadcrumbs items={breadcrumbsItems} />
         <UnstyledButton w={24} h={24} onClick={open}>
-          <IconTrash />
+          <IconTrash stroke={1.4} />
         </UnstyledButton>
       </Flex>
 

@@ -216,7 +216,7 @@
       "submit": {
         "valid": {
           "title": "Confirm Upload",
-          "text": "All data has been validated and is ready for upload. Are you sure you want to proceed?",
+          "text": "All data has been validated and is ready for upload. A text file with a list of students with invalid or uncropped photos will be available for download on the specific class page after processing. Are you sure you want to proceed?",
           "leftButton": "Cancel",
           "rightButton": "Upload"
         },
@@ -238,8 +238,9 @@
   },
   
   "SummaryTable": {
-    "secondColumn": "Student Name",
-    "thirdColumn": "Uploaded Photo Name",
-    "fourthColumn": "Photo Validity (One Face)"
+    "secondColumn": "Student",
+    "thirdColumn": "Photograph",
+    "fourthColumn": "Number of faces",
+    "fifthColumn": "Validity of photograph"
   }
 }

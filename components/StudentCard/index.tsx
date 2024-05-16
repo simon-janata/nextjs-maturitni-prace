@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 import Base64Downloader from "react-base64-downloader";
@@ -17,9 +18,10 @@ interface StudentCardProps {
 
 const StudentCard: React.FC<StudentCardProps> = ({ student, textToHighlight }) => {
   const t = useTranslations("StudentCard");
+  const [isHovered, setIsHovered] = useState<boolean>(false);
 
   return (
-    <Paper radius="md" withBorder p="lg" className={classes.studentCard}>
+    <Paper radius="md" withBorder p="lg" className={`${classes.studentCard} ${isHovered ? classes.hovered : ""}`}>
       <UnstyledButton
         component={Base64Downloader}
         base64={student.photo}
@@ -49,7 +51,9 @@ const StudentCard: React.FC<StudentCardProps> = ({ student, textToHighlight }) =
         />
       </UnstyledButton>
       <Link
-        style={{ display: "contents", width: "120px" }}
+        style={{ display: "contents" }}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
         href={
           student.photo === undefined
             ? `https://fakeimg.pl/1050x1400?text=${t("photoNotFound")}`

@@ -143,6 +143,7 @@ export default function AddPage() {
   };
 
   const handleCSVUpload = (file: File) => {
+    setHasValidationBeenDone(false);
     Papa.parse(file, {
       complete: (results: Papa.ParseResult<string>) => {
         const studentsNames = results.data.map((row) => row[0]);
@@ -171,6 +172,7 @@ export default function AddPage() {
 
   const handleResizePhotos = async (files: FileWithPath[]) => {
     setArePhotosResizing(true);
+    setHasValidationBeenDone(false);
 
     const formData = new FormData();
 
@@ -263,37 +265,41 @@ export default function AddPage() {
     const formData = new FormData();
 
     const validationPromises = clazzData.studentsWithPhotos.map((student) => {
-      formData.set("photo", student.photo);
+      if (student.photo.size !== 0) {
+        formData.set("photo", student.photo);
 
-      formData.set("minFaceHeight", faceHeightRange[0].toString());
-      formData.set("maxFaceHeight", faceHeightRange[1].toString());
-      formData.set("minFaceWidth", faceWidthRange[0].toString());
-      formData.set("maxFaceWidth", faceWidthRange[1].toString());
-      formData.set("minEyeHeight", eyeHeightRange[0].toString());
-      formData.set("maxEyeHeight", eyeHeightRange[1].toString());
-      formData.set("minEyeWidth", eyeWidthRange[0].toString());
-      formData.set("maxEyeWidth", eyeWidthRange[1].toString());
+        formData.set("minFaceHeight", faceHeightRange[0].toString());
+        formData.set("maxFaceHeight", faceHeightRange[1].toString());
+        formData.set("minFaceWidth", faceWidthRange[0].toString());
+        formData.set("maxFaceWidth", faceWidthRange[1].toString());
+        formData.set("minEyeHeight", eyeHeightRange[0].toString());
+        formData.set("maxEyeHeight", eyeHeightRange[1].toString());
+        formData.set("minEyeWidth", eyeWidthRange[0].toString());
+        formData.set("maxEyeWidth", eyeWidthRange[1].toString());
 
-      return axios
-        .post(
-          `${process.env.NEXT_PUBLIC_API_URL}/cs/api/photos/validate`,
-          formData,
-          {
-            headers: {
-              "content-type": "multipart/form-data",
-            },
-          }
-        )
-        .then((res) => {
-          const isSingleFace = res.data.isSingleFace;
-          student.isPhotoValid = isSingleFace;
-        })
-        .catch((error) => {
-          console.error(error);
-        })
-        .finally(() => {
-          console.log("Validation finished for a student!");
-        });
+        return axios
+          .post(
+            `${process.env.NEXT_PUBLIC_API_URL}/cs/api/photos/validate`,
+            formData,
+            {
+              headers: {
+                "content-type": "multipart/form-data",
+              },
+            }
+          )
+          .then((res) => {
+            const isSingleFace = res.data.isSingleFace;
+            student.isPhotoValid = isSingleFace;
+          })
+          .catch((error) => {
+            console.error(error);
+          })
+          .finally(() => {
+            console.log("Validation finished for a student!");
+          });
+      } else {
+        student.isPhotoValid = false;
+      }
     });
 
     Promise.all(validationPromises)
@@ -512,6 +518,7 @@ export default function AddPage() {
     nextStep: nextStep,
     prevStep: prevStep,
     clazzData: clazzData,
+    setClazzData: setClazzData,
     faceHeightRange: faceHeightRange,
     faceWidthRange: faceWidthRange,
     eyeHeightRange: eyeHeightRange,

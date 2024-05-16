@@ -216,7 +216,7 @@
       "submit": {
         "valid": {
           "title": "Upload bestätigen",
-          "text": "Alle Daten wurden validiert und sind bereit zum Hochladen. Sind Sie sicher, dass Sie fortfahren möchten?",
+          "text": "Alle Daten wurden validiert und sind bereit zum Hochladen. Eine Textdatei mit einer Liste von Schülern mit ungültigen oder nicht zugeschnittenen Fotos wird nach der Verarbeitung auf der spezifischen Klassenseite zum Download zur Verfügung stehen. Sind Sie sicher, dass Sie fortfahren möchten?",
           "leftButton": "Abbrechen",
           "rightButton": "Hochladen"
         },
@@ -238,8 +238,9 @@
   },
   
   "SummaryTable": {
-    "secondColumn": "Name des Schülers",
-    "thirdColumn": "Hochgeladener Fototitel",
-    "fourthColumn": "Gültigkeit des Fotos (Ein Gesicht)"
+    "secondColumn": "Schüler",
+    "thirdColumn": "Fotografie",
+    "fourthColumn": "Anzahl der Gesichter",
+    "fifthColumn": "Gültigkeit der Fotografie"
   }
 }

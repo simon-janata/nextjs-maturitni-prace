@@ -35,6 +35,12 @@ else:
 
     is_single_face = len(faces) == 1
 
+    # if len(faces) != 1:
+    #     # Display the labeled image
+    #     cv2.imshow(f"Face Detection and Labeling {len(faces)}", original_image)
+    #     cv2.waitKey(0)
+    #     cv2.destroyAllWindows()
+
     output = json.dumps({
         "is_single_face": is_single_face
     })

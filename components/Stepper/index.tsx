@@ -64,6 +64,7 @@ type StateAndHandlers = {
   nextStep: () => void;
   prevStep: () => void;
   clazzData: ClazzData;
+  setClazzData: React.Dispatch<React.SetStateAction<ClazzData>>;
   faceHeightRange: [number, number];
   faceWidthRange: [number, number];
   eyeHeightRange: [number, number];
@@ -109,6 +110,7 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
     nextStep,
     prevStep,
     clazzData,
+    setClazzData,
     faceHeightRange,
     faceWidthRange,
     eyeHeightRange,
@@ -174,6 +176,10 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
       const hasAlreadyBeenValidated: boolean = hasValidationBeenDone;
       if (nextStepButtonRef.current) {
         nextStepButtonRef.current.disabled = !hasAlreadyBeenValidated;
+      }
+    } else if (active === 4) {
+      if (nextStepButtonRef.current) {
+        nextStepButtonRef.current.disabled = false;
       }
     }
   }, [active, clazzData]);
@@ -400,6 +406,7 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
           <SummaryTable
             studentsWithPhotos={clazzData.studentsWithPhotos}
             handleDeleteStudent={handleDeleteStudent}
+            setClazzData={setClazzData}
           />
         </StepperMantine.Completed>
       </StepperMantine>
@@ -414,7 +421,7 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
           </Button>
         )}
         {active === 4 ? (
-          <Button onClick={openModal}>{t("navigation.submit")}</Button>
+          <Button ref={nextStepButtonRef} onClick={openModal}>{t("navigation.submit")}</Button>
         ) : (
           <Button ref={nextStepButtonRef} onClick={nextStep}>
             {t("navigation.next")}

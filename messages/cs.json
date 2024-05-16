@@ -219,7 +219,7 @@
       "submit": {
         "valid": {
           "title": "Potvrzení nahrávání",
-          "text": "Všechna data byla ověřena a jsou připravena k odeslání. Jste si jisti, že chcete pokračovat?",
+          "text": "Všechna data byla ověřena a jsou připravena k odeslání. Textový soubor se seznamem studentů s neplatnými nebo neoříznutými fotografiemi bude po zpracování možné stáhnout na stránce konkrétní třídy. Jste si jisti, že chcete pokračovat?",
           "leftButton": "Zrušit",
           "rightButton": "Nahrát"
         },
@@ -241,8 +241,9 @@
   },
   
   "SummaryTable": {
-    "secondColumn": "Jméno studenta",
-    "thirdColumn": "Název nahrané fotografie",
-    "fourthColumn": "Platnost fotografie (jedna tvář)"
+    "secondColumn": "Student",
+    "thirdColumn": "Fotografie",
+    "fourthColumn": "Počet obličejů",
+    "fifthColumn": "Platnost fotografie"
   }
 }
