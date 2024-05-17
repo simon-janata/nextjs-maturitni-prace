@@ -3,9 +3,11 @@
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 
-import { Avatar, Table, UnstyledButton, Badge, rem, ActionIcon, TextInput } from "@mantine/core";
-import { IconCheck, IconTrash, IconX, IconAt, IconCircleX, IconCircleCheck } from "@tabler/icons-react";
+import { useClazzData } from "@/providers/ClazzDataContextProvider";
+import { ActionIcon, Avatar, Badge, rem, Table, TextInput } from "@mantine/core";
 import { FileWithPath } from "@mantine/dropzone";
+import { useForm } from "@mantine/form";
+import { IconCircleCheck, IconCircleX, IconTrash } from "@tabler/icons-react";
 
 import Fancybox from "../Fancybox";
 import classes from "./SummaryTable.module.css";
@@ -19,26 +21,31 @@ type ClazzData = {
   studentsWithPhotos: Array<{
     name: string;
     photo: File;
-    isPhotoValid: boolean;
+    amountOfFaces: number;
     preview: React.ReactElement;
   }>;
 };
 
-interface SummaryTableProps {
-  studentsWithPhotos: Array<{
-    name: string;
-    photo: File;
-    isPhotoValid: boolean;
-    preview: React.ReactElement;
-  }>;
-  handleDeleteStudent: (index: number) => void;
-  setClazzData: React.Dispatch<React.SetStateAction<ClazzData>>;
-}
-
-const SummaryTable: React.FC<SummaryTableProps> = ({ studentsWithPhotos, handleDeleteStudent, setClazzData }) => {
+const SummaryTable = () => {
   const t = useTranslations("SummaryTable");
 
+  const { clazzData, handleDeleteStudent, handleStudentNameChange } = useClazzData();
+  const { studentsWithPhotos } = clazzData;
+
   const rows = studentsWithPhotos.map((row, index) => {
+    const form = useForm({
+      initialValues: {
+        studentName: row.name,
+      },
+      validate: {
+        studentName: (value) => 
+          value.split(" ").length > 1 && value.split(" ").length < 4 && !value.split(" ").some(p => p === "")
+            ? null
+            : t("form.studentName.errorMessage"),
+      },
+      validateInputOnChange: true,
+    });
+
     return (
       <Table.Tr key={index}>
         <Table.Td>
@@ -52,7 +59,8 @@ const SummaryTable: React.FC<SummaryTableProps> = ({ studentsWithPhotos, handleD
         </Table.Td>
         <Table.Td>
           <TextInput
-            value={studentsWithPhotos[index].name}
+
+            value={row.name}
             onChange={(e) => {
               // setClazzData((prev) => ({
               //   ...prev,
@@ -60,25 +68,28 @@ const SummaryTable: React.FC<SummaryTableProps> = ({ studentsWithPhotos, handleD
               //     i === index ? { ...student, name: e.currentTarget.value } : student
               //   ),
               // }));
-              console.log(e.currentTarget.value);
+              handleStudentNameChange(index, e.currentTarget.value);
+              form.setFieldValue("studentName", e.currentTarget.value);
+              // console.log(e.currentTarget.value);
               // studentsWithPhotos[index].name = e.currentTarget.value
             }}
+            error={form.errors.studentName}
           >
 
           </TextInput>
-          {row.name}
+          {/* {row.name} */}
         </Table.Td>
         <Table.Td>{row.photo.name ? row.photo.name : "..."}</Table.Td>
-        <Table.Td ta="center">{Math.floor(Math.random() * 6)}</Table.Td>
+        {/* <Table.Td ta="center">{Math.floor(Math.random() * 6)}</Table.Td> */}
+        <Table.Td ta="center">{row.amountOfFaces}</Table.Td>
         <Table.Td ta="center">
-          {row.isPhotoValid ? (
+          {row.amountOfFaces === 1 ? (
             <Badge classNames={classes} leftSection={<IconCircleCheck style={{ width: rem(16), height: rem(16) }} />} color="green">Valid</Badge>
           ) : (
             <Badge classNames={classes} leftSection={<IconCircleX style={{ width: rem(16), height: rem(16) }} />} color="red">Invalid</Badge>
           )}
         </Table.Td>
         <Table.Td ta="center">
-          {/* <UnstyledButton> */}
           <ActionIcon variant="default" aria-label="Delete">
             <IconTrash
               stroke={1.5}
@@ -86,7 +97,6 @@ const SummaryTable: React.FC<SummaryTableProps> = ({ studentsWithPhotos, handleD
               onClick={() => handleDeleteStudent(index)}
             />
           </ActionIcon>
-          {/* </UnstyledButton> */}
         </Table.Td>
       </Table.Tr>
     );

@@ -10,6 +10,20 @@ export async function GET(req: Request, res: Response) {
     const clazzNameParam = searchParams.get("clazzName")?.toUpperCase() || "";
     const studentNameParam = searchParams.get("studentName") || "";
 
+    if (schoolYearParam === "" || clazzNameParam === "" || studentNameParam === "") {
+      return new Response(
+        JSON.stringify({
+          message: "schoolYear, clazzName, and studentName must be provided",
+        }),
+        {
+          status: 400,
+          headers: {
+            "content-type": "application/json;charset=UTF-8",
+          },
+        }
+      );
+    }
+
     const imagePath = join(
       process.cwd(),
       "photos",
@@ -126,6 +140,20 @@ export async function POST(req: Request, res: Response) {
     const clazzNameParam = searchParams.get("clazzName")?.toUpperCase() || "";
     const studentName = searchParams.get("studentName") || "";
 
+    if (schoolYearParam === "" || clazzNameParam === "" || studentName === "") {
+      return new Response(
+        JSON.stringify({
+          message: "schoolYear, clazzName, and studentName must be provided",
+        }),
+        {
+          status: 400,
+          headers: {
+            "content-type": "application/json;charset=UTF-8",
+          },
+        }
+      );
+    }
+
     const dirPath = join(
       process.cwd(),
       "photos",
@@ -171,6 +199,20 @@ export async function DELETE(req: Request, res: Response) {
     const { searchParams } = new URL(req.url);
     const schoolYearParam = searchParams.get("schoolYear") || "";
     const clazzNameParam = searchParams.get("clazzName")?.toUpperCase() || "";
+
+    if (schoolYearParam === "" || clazzNameParam === "") {
+      return new Response(
+        JSON.stringify({
+          message: "schoolYear and clazzName must be provided",
+        }),
+        {
+          status: 400,
+          headers: {
+            "content-type": "application/json;charset=UTF-8",
+          },
+        }
+      );
+    }
 
     const directoryPath = join(
       process.cwd(),

@@ -74,14 +74,12 @@ export async function POST(req: Request, res: Response) {
     const jsonString = outputString.substring(jsonStart, jsonEnd);
     const output = JSON.parse(jsonString);
 
-    const isSingleFace = output.is_single_face;
-
-    console.log(`isSingleFace: ${isSingleFace}`);
+    const amountOfFaces = output.amount_of_faces;
 
     return new Response(
       JSON.stringify({
         message: "Succcessfully validated and resized image",
-        isSingleFace: isSingleFace,
+        amountOfFaces: amountOfFaces,
       }),
       {
         status: 200,

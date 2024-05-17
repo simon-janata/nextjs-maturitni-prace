@@ -208,7 +208,19 @@ export default function ClazzPage({ params }: { params: { schoolYear: number; cl
         }
       );
 
-      router.push(`/${locale}/${p("schoolYears")}/${params.schoolYear}`);
+      await axios
+        .get(`${process.env.NEXT_PUBLIC_API_URL}/cs/api/schoolYears/${params.schoolYear}`)
+        .then(async (res) => {
+          if (res.data) {
+            if (res.data.clazzes.length === 0) {
+              await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/cs/api/schoolYears/${params.schoolYear}`);
+              router.push(`/${locale}/${p("schoolYears")}`);
+            } else {
+              router.push(`/${locale}/${p("schoolYears")}/${params.schoolYear}`);
+            }
+          }
+        });
+
       notifications.show({
         color: "teal",
         icon: <IconCheck style={{ width: rem(18), height: rem(18) }} />,

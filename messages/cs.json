@@ -211,7 +211,7 @@
       "back": "Zpět",
       "next": "Další krok",
       "submit": "Potvrdit",
-      "validate": "Validovat"
+      "detect": "Detekovat"
     },
     "modal": {
       "rezizing": "Změna velikosti fotografií, vyčkejte prosím",
@@ -244,6 +244,11 @@
     "secondColumn": "Student",
     "thirdColumn": "Fotografie",
     "fourthColumn": "Počet obličejů",
-    "fifthColumn": "Platnost fotografie"
+    "fifthColumn": "Platnost fotografie",
+    "form": {
+      "studentName": {
+        "errorMessage": "Jméno studenta není validní."
+      }
+    }
   }
 }

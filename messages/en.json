@@ -208,7 +208,7 @@
       "back": "Back",
       "next": "Next Step",
       "submit": "Submit",
-      "validate": "Validate"
+      "detect": "Detect"
     },
     "modal": {
       "rezizing": "Resizing photos, please wait",
@@ -241,6 +241,11 @@
     "secondColumn": "Student",
     "thirdColumn": "Photograph",
     "fourthColumn": "Number of faces",
-    "fifthColumn": "Validity of photograph"
+    "fifthColumn": "Validity of photograph",
+    "form": {
+      "studentName": {
+        "errorMessage": "Student name is not valid."
+      }
+    }
   }
 }

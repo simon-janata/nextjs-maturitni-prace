@@ -33,7 +33,7 @@ else:
 
     faces = face_cascade.detectMultiScale(gray_image, scaleFactor=1.1, minNeighbors=7, minSize=(int(original_image.shape[1] / 100 * min_face_width), int(original_image.shape[0] / 100 * min_face_height)), maxSize=(int(original_image.shape[1] / 100 * max_face_width), int(original_image.shape[0] / 100 * max_face_height)))
 
-    is_single_face = len(faces) == 1
+    # is_single_face = len(faces) == 1
 
     # if len(faces) != 1:
     #     # Display the labeled image
@@ -42,7 +42,7 @@ else:
     #     cv2.destroyAllWindows()
 
     output = json.dumps({
-        "is_single_face": is_single_face
+        "amount_of_faces": len(faces),
     })
 
     sys.stdout.buffer.write(output.encode("utf-8"))

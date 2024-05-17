@@ -1,36 +1,20 @@
 "use client";
 
 import { useLocale, useTranslations } from "next-intl";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { v4 as uuid } from "uuid";
 
+import { useClazzData } from "@/providers/ClazzDataContextProvider";
 import {
-  Button,
-  Center,
-  ColorInput,
-  RangeSlider,
-  Grid,
-  Group,
-  Loader,
-  Modal,
-  rem,
-  Stack,
-  Stepper as StepperMantine,
-  Text,
-  TextInput,
-  Title,
-  useMantineTheme,
+  Button, Center, ColorInput, Grid, Group, Loader, Modal, RangeSlider, rem, Stack,
+  Stepper as StepperMantine, Text, TextInput, Title, useMantineTheme
 } from "@mantine/core";
 import { YearPickerInput } from "@mantine/dates";
-import { FileWithPath, MIME_TYPES } from "@mantine/dropzone";
+import { MIME_TYPES } from "@mantine/dropzone";
 import { useForm } from "@mantine/form";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import {
-  IconCircleCheck,
-  IconFileTypeCsv,
-  IconFolder,
-  IconPhoto,
-  IconAdjustments,
+  IconAdjustments, IconCircleCheck, IconFileTypeCsv, IconFolder, IconPhoto
 } from "@tabler/icons-react";
 
 import Dropzone from "../Dropzone";
@@ -38,59 +22,45 @@ import Fancybox from "../Fancybox";
 import SummaryTable from "../SummaryTable";
 import classes from "./Stepper.module.css";
 
-type ClazzData = {
-  schoolYear: Date | null;
-  clazzName: string;
-  folderColor: string;
-  students: Array<string>;
-  photos: Array<File>;
-  studentsWithPhotos: Array<{
-    name: string;
-    photo: FileWithPath;
-    isPhotoValid: boolean;
-    preview: React.ReactElement;
-  }>;
-};
-
 enum ModalType {
   ConfirmUpload,
   Error,
 }
 
-type StateAndHandlers = {
-  active: number;
-  hasValidationBeenDone: boolean;
-  setActive: React.Dispatch<React.SetStateAction<number>>;
-  nextStep: () => void;
-  prevStep: () => void;
-  clazzData: ClazzData;
-  setClazzData: React.Dispatch<React.SetStateAction<ClazzData>>;
-  faceHeightRange: [number, number];
-  faceWidthRange: [number, number];
-  eyeHeightRange: [number, number];
-  eyeWidthRange: [number, number];
-  setFaceHeightRange: (range: [number, number]) => void;
-  setFaceWidthRange: (range: [number, number]) => void;
-  setEyeHeightRange: (range: [number, number]) => void;
-  setEyeWidthRange: (range: [number, number]) => void;
-  clazzesInSelectedSchoolYear: string[];
-  arePhotosResizing: boolean;
-  arePhotosValidating: boolean;
-  handlePickYearChange: (date: Date | null) => void;
-  handleClazzNameChange: (n: string) => void;
-  handleFolderColorChange: (color: string) => void;
-  handleCSVUpload: (files: File) => void;
-  handleResizePhotos: (files: FileWithPath[]) => void;
-  handleValidatePhotos: () => void;
-  handleDeleteStudent: (index: number) => void;
-  handleClazzDataSubmission: () => void;
-};
+// type StateAndHandlers = {
+//   active: number;
+//   hasValidationBeenDone: boolean;
+//   setActive: React.Dispatch<React.SetStateAction<number>>;
+//   nextStep: () => void;
+//   prevStep: () => void;
+//   clazzData: ClazzData;
+//   setClazzData: React.Dispatch<React.SetStateAction<ClazzData>>;
+//   faceHeightRange: [number, number];
+//   faceWidthRange: [number, number];
+//   eyeHeightRange: [number, number];
+//   eyeWidthRange: [number, number];
+//   setFaceHeightRange: (range: [number, number]) => void;
+//   setFaceWidthRange: (range: [number, number]) => void;
+//   setEyeHeightRange: (range: [number, number]) => void;
+//   setEyeWidthRange: (range: [number, number]) => void;
+//   clazzesInSelectedSchoolYear: string[];
+//   arePhotosResizing: boolean;
+//   arePhotosValidating: boolean;
+//   handlePickYearChange: (date: Date | null) => void;
+//   handleClazzNameChange: (n: string) => void;
+//   handleFolderColorChange: (color: string) => void;
+//   handleCSVUpload: (files: File) => void;
+//   handleResizePhotos: (files: FileWithPath[]) => void;
+//   handleValidatePhotos: () => void;
+//   handleDeleteStudent: (index: number) => void;
+//   handleClazzDataSubmission: () => void;
+// };
 
-type StepperProps = {
-  stateAndHandlers: StateAndHandlers;
-};
+// type StepperProps = {
+//   stateAndHandlers: StateAndHandlers;
+// };
 
-const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
+const Stepper = () => {
   const locale = useLocale();
   const t = useTranslations("Stepper");
   const theme = useMantineTheme();
@@ -98,39 +68,37 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
   const mimeTypesCSV = [MIME_TYPES.csv];
   const mimeTypesPhotos = [MIME_TYPES.jpeg];
 
-  const nextStepButtonRef: React.RefObject<HTMLButtonElement> = useRef(null);
+  // const [isDisabled, setIsDisabled] = useState<boolean>(true);
 
   const [modalType, setModalType] = useState<ModalType | null>(null);
   const [opened, { open, close }] = useDisclosure(false);
 
   const {
     active,
-    hasValidationBeenDone,
     setActive,
+    isNextStepButtonDisabled,
+    setIsNextStepButtonDisabled,
     nextStep,
     prevStep,
+    hasValidationBeenDone,
     clazzData,
-    setClazzData,
-    faceHeightRange,
-    faceWidthRange,
-    eyeHeightRange,
-    eyeWidthRange,
-    setFaceHeightRange,
-    setFaceWidthRange,
-    setEyeHeightRange,
-    setEyeWidthRange,
     clazzesInSelectedSchoolYear,
+    faceHeightRange,
+    setFaceHeightRange,
+    faceWidthRange,
+    setFaceWidthRange,
+    eyeHeightRange,
+    setEyeHeightRange,
+    eyeWidthRange,
+    setEyeWidthRange,
     arePhotosResizing,
     arePhotosValidating,
     handlePickYearChange,
     handleClazzNameChange,
     handleFolderColorChange,
-    handleCSVUpload,
-    handleResizePhotos,
     handleValidatePhotos,
-    handleDeleteStudent,
     handleClazzDataSubmission,
-  } = stateAndHandlers;
+  } = useClazzData();
 
   const marks = [{ value: 25 }, { value: 50 }, { value: 75 }];
 
@@ -151,6 +119,7 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
   });
 
   useEffect(() => {
+    // setIsDisabled(true);
     if (active === 0) {
       const isFormValid: boolean =
         clazzData.schoolYear &&
@@ -159,28 +128,18 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
         clazzData.folderColor !== ""
           ? true
           : false;
-      if (nextStepButtonRef.current) {
-        nextStepButtonRef.current.disabled = !isFormValid;
-      }
+      setIsNextStepButtonDisabled(!isFormValid);
     } else if (active === 1) {
       const isFormValid: boolean = clazzData.students.length > 0;
-      if (nextStepButtonRef.current) {
-        nextStepButtonRef.current.disabled = !isFormValid;
-      }
+      setIsNextStepButtonDisabled(!isFormValid);
     } else if (active === 2) {
       const isFormValid: boolean = clazzData.photos.length > 0;
-      if (nextStepButtonRef.current) {
-        nextStepButtonRef.current.disabled = !isFormValid;
-      }
+      setIsNextStepButtonDisabled(!isFormValid);
     } else if (active === 3) {
       const hasAlreadyBeenValidated: boolean = hasValidationBeenDone;
-      if (nextStepButtonRef.current) {
-        nextStepButtonRef.current.disabled = !hasAlreadyBeenValidated;
-      }
+      setIsNextStepButtonDisabled(!hasAlreadyBeenValidated);
     } else if (active === 4) {
-      if (nextStepButtonRef.current) {
-        nextStepButtonRef.current.disabled = false;
-      }
+      setIsNextStepButtonDisabled(false);
     }
   }, [active, clazzData]);
 
@@ -188,10 +147,11 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
     if (
       clazzData.students.length !== 0 &&
       clazzData.photos.length !== 0 &&
-      clazzData.students.length === clazzData.photos.length
+      clazzData.students.length === clazzData.photos.length &&
+      clazzData.studentsWithPhotos.some(student => !(student.name === ""))
     ) {
       const hasInvalidPhoto = clazzData.studentsWithPhotos.some(
-        (element) => !element.isPhotoValid
+        (element) => !(element.amountOfFaces === 1)
       );
       if (hasInvalidPhoto) {
         setModalType(ModalType.Error);
@@ -280,15 +240,13 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
             multiple={false}
             idle={t("secondStep.dropzone.idle")}
             typesString={[".csv"]}
-            handleCSVUpload={handleCSVUpload}
-            nextStepButtonRef={nextStepButtonRef}
           />
-          {clazzData.students.length > 0 && (
+          {clazzData.studentsWithPhotos.length > 0 && (
             <Stack mt={rem(48)}>
-              {clazzData.students.map((student) => {
+              {clazzData.studentsWithPhotos.map((student) => {
                 return (
                   <Center>
-                    <Text>{student}</Text>
+                    <Text>{student.name}</Text>
                   </Center>
                 );
               })}
@@ -307,8 +265,6 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
             multiple={true}
             idle={t("thirdStep.dropzone.idle")}
             typesString={[".jpeg"]}
-            handleResizePhotos={handleResizePhotos}
-            nextStepButtonRef={nextStepButtonRef}
           />
           {arePhotosResizing !== true && clazzData.photos.length > 0 && (
             <Fancybox
@@ -403,11 +359,7 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
           >{`${clazzData.schoolYear?.getFullYear()} – ${
             clazzData.clazzName
           }`}</Text>
-          <SummaryTable
-            studentsWithPhotos={clazzData.studentsWithPhotos}
-            handleDeleteStudent={handleDeleteStudent}
-            setClazzData={setClazzData}
-          />
+          <SummaryTable />
         </StepperMantine.Completed>
       </StepperMantine>
 
@@ -417,13 +369,13 @@ const Stepper: React.FC<StepperProps> = ({ stateAndHandlers }) => {
         </Button>
         {active === 3 && (
           <Button onClick={handleValidatePhotos}>
-            {t("navigation.validate")}
+            {t("navigation.detect")}
           </Button>
         )}
         {active === 4 ? (
-          <Button ref={nextStepButtonRef} onClick={openModal}>{t("navigation.submit")}</Button>
+          <Button disabled={isNextStepButtonDisabled} onClick={openModal}>{t("navigation.submit")}</Button>
         ) : (
-          <Button ref={nextStepButtonRef} onClick={nextStep}>
+          <Button disabled={isNextStepButtonDisabled} onClick={nextStep}>
             {t("navigation.next")}
           </Button>
         )}

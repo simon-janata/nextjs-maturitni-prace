@@ -4,19 +4,9 @@ import { useTranslations } from "next-intl";
 import { useRef } from "react";
 import { v4 as uuid } from "uuid";
 
-import {
-  Button,
-  Center,
-  Group,
-  rem,
-  Text,
-  useMantineTheme,
-} from "@mantine/core";
-import {
-  Dropzone as DropzoneMantine,
-  FileWithPath,
-  MIME_TYPES,
-} from "@mantine/dropzone";
+import { useClazzData } from "@/providers/ClazzDataContextProvider";
+import { Button, Center, Group, rem, Text, useMantineTheme } from "@mantine/core";
+import { Dropzone as DropzoneMantine, MIME_TYPES } from "@mantine/dropzone";
 import { IconCloudUpload, IconDownload, IconX } from "@tabler/icons-react";
 
 import classes from "./Dropzone.module.css";
@@ -27,24 +17,21 @@ interface DropzoneProps {
   multiple: boolean;
   idle: string;
   typesString: string[];
-  handleCSVUpload?: (file: File) => void;
-  handleResizePhotos?: (files: FileWithPath[]) => void;
-  nextStepButtonRef: React.RefObject<HTMLButtonElement>;
 }
 
-const Dropzone: React.FC<DropzoneProps> = ({ acceptedMimeTypes, maxSize, multiple, idle, typesString, handleCSVUpload, handleResizePhotos, nextStepButtonRef }) => {
+const Dropzone: React.FC<DropzoneProps> = ({ acceptedMimeTypes, maxSize, multiple, idle, typesString }) => {
   const t = useTranslations("Dropzone");
   const theme = useMantineTheme();
   const openRef = useRef<() => void>(null);
+
+  const { setIsNextStepButtonDisabled, handleCSVUpload, handleResizePhotos } = useClazzData();
 
   return (
     <Center className={classes.wrapper}>
       <DropzoneMantine
         openRef={openRef}
         onDrop={(e) => {
-          if (nextStepButtonRef.current) {
-            nextStepButtonRef.current.disabled = true;
-          }
+          setIsNextStepButtonDisabled(true);
           if (acceptedMimeTypes.includes(MIME_TYPES.csv)) {
             handleCSVUpload && handleCSVUpload(e[0]);
           } else {

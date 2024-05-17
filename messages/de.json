@@ -208,7 +208,7 @@
       "back": "Zurück",
       "next": "Nächster Schritt",
       "submit": "Absenden",
-      "validate": "Validieren"
+      "detect": "Erkennen"
     },
     "modal": {
       "rezizing": "Fotos werden skaliert, bitte warten",
@@ -241,6 +241,11 @@
     "secondColumn": "Schüler",
     "thirdColumn": "Fotografie",
     "fourthColumn": "Anzahl der Gesichter",
-    "fifthColumn": "Gültigkeit der Fotografie"
+    "fifthColumn": "Gültigkeit der Fotografie",
+    "form": {
+      "studentName": {
+        "errorMessage": "Der Name des Schülers ist nicht gültig."
+      }
+    }
   }
 }
