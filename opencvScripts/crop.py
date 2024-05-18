@@ -3,6 +3,8 @@ import os
 import sys
 import numpy as np
 import cv2
+import json
+import base64
 
 image_bytes = sys.stdin.buffer.read()
 
@@ -69,23 +71,27 @@ else:
         start_x = img.shape[1] - crop_width
 
     if len(faces) > 0:
-        # (x, y, w, h) = faces[0]
         if len(eyes) > 0:
             cropped_image = img[top_y:top_y + crop_height, start_x:start_x + crop_width]
             resized_image = cv2.resize(cropped_image, (1050, 1400))
+            success = True
         else:
-            # cropped_image = img
             resized_image = img
+            success = False
     else:
         print("No faces detected")
         sys.exit(1)
 
-    # resized_image = cv2.resize(cropped_image, (1050, 1400))
-
     retval, buffer = cv2.imencode(".JPG", resized_image)
-    cropped_image_bytes = buffer.tobytes()
 
-    sys.stdout.buffer.write(cropped_image_bytes)
+    cropped_image_base64 = base64.b64encode(buffer).decode()
+
+    output = json.dumps({
+        "photo": cropped_image_base64,
+        "success": success
+    })
+
+    sys.stdout.buffer.write(output.encode("utf-8"))
 
     print("Cropped image data sent successfully")
     

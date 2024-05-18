@@ -133,7 +133,17 @@ export async function POST(req: Request, res: Response) {
       },
     });
 
-    const croppedImageBuffer = pythonProcess.stdout as Buffer;
+    const outputString = pythonProcess.stdout.toString("utf8").trim();
+    const jsonStart = outputString.indexOf("{");
+    const jsonEnd = outputString.lastIndexOf("}") + 1;
+    const jsonString = outputString.substring(jsonStart, jsonEnd);
+    const output = JSON.parse(jsonString);
+
+    const croppedImageBase64 = output.photo;
+    const croppedImageBuffer = Buffer.from(croppedImageBase64, "base64");
+    const success = output.success;
+
+    console.log(`The photo was successfully cropped: ${success}`);
 
     const { searchParams } = new URL(req.url);
     const schoolYearParam = searchParams.get("schoolYear") || "";
@@ -171,6 +181,7 @@ export async function POST(req: Request, res: Response) {
     return new Response(
       JSON.stringify({
         message: `Succcessfully uploaded file to ${path}`,
+        success: success,
       }),
       {
         status: 200,

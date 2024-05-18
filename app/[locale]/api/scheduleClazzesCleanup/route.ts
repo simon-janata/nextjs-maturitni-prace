@@ -7,12 +7,16 @@ export async function GET(req: Request, res: Response) {
       "0 0 0 * * *",
       async function () {
         try {
-          const clazzes = await axios.get(
+          const response = await axios.get(
             `${process.env.NEXT_PUBLIC_API_URL}/cs/api/clazzes`
           );
 
-          if (clazzes.data && clazzes.data.length > 0) {
-            for (const clazz of clazzes.data) {
+          const clazzes = response.data;
+
+          if (clazzes && clazzes.length > 0) {
+            for (const clazz of clazzes) {
+              const schoolYear = clazz.schoolYear.year;
+
               const createdAtDate = new Date(clazz.createdAt);
               createdAtDate.setHours(0, 0, 0, 0);
 
@@ -27,7 +31,7 @@ export async function GET(req: Request, res: Response) {
                   `${process.env.NEXT_PUBLIC_API_URL}/cs/api/photos`,
                   {
                     params: {
-                      schoolYear: clazz.schoolYear.year,
+                      schoolYear: schoolYear,
                       clazzName: clazz.name.tolowerCase(),
                     },
                   }
@@ -37,6 +41,20 @@ export async function GET(req: Request, res: Response) {
                     process.env.NEXT_PUBLIC_API_URL
                   }/cs/api/clazzes/${clazz.name.tolowerCase()}`
                 );
+
+                await axios
+                  .get(
+                    `${process.env.NEXT_PUBLIC_API_URL}/cs/api/schoolYears/${schoolYear}`
+                  )
+                  .then(async (res) => {
+                    if (res.data) {
+                      if (res.data.clazzes.length === 0) {
+                        await axios.delete(
+                          `${process.env.NEXT_PUBLIC_API_URL}/cs/api/schoolYears/${schoolYear}`
+                        );
+                      }
+                    }
+                  });
               }
             }
           }
