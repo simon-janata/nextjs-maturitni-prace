@@ -4,7 +4,7 @@ import { useLocale, useTranslations } from "next-intl";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Papa from "papaparse";
-import React, { ReactNode, createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import { v4 as uuid } from "uuid";
 
 import { Image } from "@mantine/core";
@@ -70,9 +70,15 @@ type ClazzDataContextType = {
 };
 
 // Create the context with a default value
-export const ClazzDataContext = createContext<ClazzDataContextType | null>(null);
+export const ClazzDataContext = createContext<ClazzDataContextType | null>(
+  null
+);
 
-export const ClazzDataContextProvider = ({ children }: { children: ReactNode }) => {
+export const ClazzDataContextProvider = ({
+  children,
+}: {
+  children: ReactNode;
+}) => {
   const p = useTranslations("Pathnames");
   const router = useRouter();
   const locale = useLocale();
@@ -111,7 +117,10 @@ export const ClazzDataContextProvider = ({ children }: { children: ReactNode }) 
   const [hasValidationBeenDone, setHasValidationBeenDone] =
     useState<boolean>(false);
 
-  let invalidPhotoStudentRecords: Array<{ studentName: string; photoName: string }> = [];
+  let invalidPhotoStudentRecords: Array<{
+    studentName: string;
+    photoName: string;
+  }> = [];
 
   const [uploading, setUploading] = useState<boolean>(false);
   const [schoolYearProgress, setSchoolYearProgress] = useState<number>(0);
@@ -355,8 +364,6 @@ export const ClazzDataContextProvider = ({ children }: { children: ReactNode }) 
           : "",
     });
 
-    console.log(invalidPhotoStudentRecords);
-
     const updatedStudents = clazzData.students.filter((s, i) => i !== index);
     const updatedPhotos = clazzData.photos.filter((p, i) => i !== index);
     const updatedStudentsWithPhotos = clazzData.studentsWithPhotos.filter(
@@ -372,7 +379,9 @@ export const ClazzDataContextProvider = ({ children }: { children: ReactNode }) 
   };
 
   const handleStudentNameChange = (index: number, name: string) => {
-    const updatedStudents = clazzData.students.map((student, i) => (i === index ? name : student));
+    const updatedStudents = clazzData.students.map((student, i) =>
+      i === index ? name : student
+    );
     const updatedStudentsWithPhotos = clazzData.studentsWithPhotos.map(
       (student, i) => (i === index ? { ...student, name: name } : student)
     );
@@ -431,8 +440,9 @@ export const ClazzDataContextProvider = ({ children }: { children: ReactNode }) 
       setTimeout(() => setClazzProgress(100), 500);
 
       // POST new students
-      clazzData.studentsWithPhotos.map(async (student, i) => {
-        const studentNameParts = student.name.split(" ");
+      for (let i = 0; i < clazzData.studentsWithPhotos.length; i++) {
+        const studentNameParts =
+          clazzData.studentsWithPhotos[i].name.split(" ");
 
         await axios
           .post(
@@ -467,12 +477,12 @@ export const ClazzDataContextProvider = ({ children }: { children: ReactNode }) 
             console.log("Submission failed!");
             console.error(error);
           });
-      });
+      }
 
       // POST new photos
-      clazzData.studentsWithPhotos.map(async (student, i) => {
+      for (let i = 0; i < clazzData.studentsWithPhotos.length; i++) {
         const formData = new FormData();
-        formData.set("photo", student.photo);
+        formData.set("photo", clazzData.studentsWithPhotos[i].photo);
 
         formData.set("minFaceHeight", faceHeightRange[0].toString());
         formData.set("maxFaceHeight", faceHeightRange[1].toString());
@@ -483,7 +493,8 @@ export const ClazzDataContextProvider = ({ children }: { children: ReactNode }) 
         formData.set("minEyeWidth", eyeWidthRange[0].toString());
         formData.set("maxEyeWidth", eyeWidthRange[1].toString());
 
-        const studentNameParts = student.name.split(" ");
+        const studentNameParts =
+          clazzData.studentsWithPhotos[i].name.split(" ");
 
         await axios
           .post(`${process.env.NEXT_PUBLIC_API_URL}/cs/api/photos`, formData, {
@@ -506,8 +517,8 @@ export const ClazzDataContextProvider = ({ children }: { children: ReactNode }) 
             const success = res.data.success;
             if (success === false) {
               invalidPhotoStudentRecords.push({
-                studentName: student.name,
-                photoName: student.photo.name,
+                studentName: clazzData.studentsWithPhotos[i].name,
+                photoName: clazzData.studentsWithPhotos[i].photo.name,
               });
             }
 
@@ -522,7 +533,7 @@ export const ClazzDataContextProvider = ({ children }: { children: ReactNode }) 
             console.log("Upload failed!");
             console.error(error);
           });
-      });
+      }
 
       // Save a text file with records of students who have invalid or uncropped photos
       await axios

@@ -245,10 +245,7 @@
     "thirdColumn": "Fotografie",
     "fourthColumn": "Počet obličejů",
     "fifthColumn": "Platnost fotografie",
-    "form": {
-      "studentName": {
-        "errorMessage": "Jméno studenta není validní."
-      }
-    }
+    "validBadge": "Platná",
+    "invalidBadge": "Neplatná"
   }
 }

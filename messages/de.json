@@ -242,10 +242,7 @@
     "thirdColumn": "Fotografie",
     "fourthColumn": "Anzahl der Gesichter",
     "fifthColumn": "Gültigkeit der Fotografie",
-    "form": {
-      "studentName": {
-        "errorMessage": "Der Name des Schülers ist nicht gültig."
-      }
-    }
+    "validBadge": "Gültig",
+    "invalidBadge": "Ungültig"
   }
 }

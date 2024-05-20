@@ -10,7 +10,11 @@ export async function GET(req: Request, res: Response) {
     const clazzNameParam = searchParams.get("clazzName")?.toUpperCase() || "";
     const studentNameParam = searchParams.get("studentName") || "";
 
-    if (schoolYearParam === "" || clazzNameParam === "" || studentNameParam === "") {
+    if (
+      schoolYearParam === "" ||
+      clazzNameParam === "" ||
+      studentNameParam === ""
+    ) {
       return new Response(
         JSON.stringify({
           message: "schoolYear, clazzName, and studentName must be provided",
@@ -92,12 +96,24 @@ export async function POST(req: Request, res: Response) {
     const data = await req.formData();
     const photo: File | null = data.get("photo") as unknown as File;
 
-    const minFaceHeight: string | null = data.get("minFaceHeight") as string | null;
-    const maxFaceHeight: string | null = data.get("maxFaceHeight") as string | null;
-    const minFaceWidth: string | null = data.get("minFaceWidth") as string | null;
-    const maxFaceWidth: string | null = data.get("maxFaceWidth") as string | null;
-    const minEyeHeight: string | null = data.get("minEyeHeight") as string | null;
-    const maxEyeHeight: string | null = data.get("maxEyeHeight") as string | null;
+    const minFaceHeight: string | null = data.get("minFaceHeight") as
+      | string
+      | null;
+    const maxFaceHeight: string | null = data.get("maxFaceHeight") as
+      | string
+      | null;
+    const minFaceWidth: string | null = data.get("minFaceWidth") as
+      | string
+      | null;
+    const maxFaceWidth: string | null = data.get("maxFaceWidth") as
+      | string
+      | null;
+    const minEyeHeight: string | null = data.get("minEyeHeight") as
+      | string
+      | null;
+    const maxEyeHeight: string | null = data.get("maxEyeHeight") as
+      | string
+      | null;
     const minEyeWidth: string | null = data.get("minEyeWidth") as string | null;
     const maxEyeWidth: string | null = data.get("maxEyeWidth") as string | null;
 
@@ -211,7 +227,7 @@ export async function DELETE(req: Request, res: Response) {
     const schoolYearParam = searchParams.get("schoolYear") || "";
     const clazzNameParam = searchParams.get("clazzName")?.toUpperCase() || "";
 
-    if (schoolYearParam === "" || clazzNameParam === "") {
+    if (schoolYearParam === "") {
       return new Response(
         JSON.stringify({
           message: "schoolYear and clazzName must be provided",

@@ -242,10 +242,7 @@
     "thirdColumn": "Photograph",
     "fourthColumn": "Number of faces",
     "fifthColumn": "Validity of photograph",
-    "form": {
-      "studentName": {
-        "errorMessage": "Student name is not valid."
-      }
-    }
+    "validBadge": "Valid",
+    "invalidBadge": "Invalid"
   }
 }

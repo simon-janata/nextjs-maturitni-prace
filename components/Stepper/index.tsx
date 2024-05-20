@@ -1,6 +1,6 @@
 "use client";
 
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { v4 as uuid } from "uuid";
 
@@ -27,48 +27,12 @@ enum ModalType {
   Error,
 }
 
-// type StateAndHandlers = {
-//   active: number;
-//   hasValidationBeenDone: boolean;
-//   setActive: React.Dispatch<React.SetStateAction<number>>;
-//   nextStep: () => void;
-//   prevStep: () => void;
-//   clazzData: ClazzData;
-//   setClazzData: React.Dispatch<React.SetStateAction<ClazzData>>;
-//   faceHeightRange: [number, number];
-//   faceWidthRange: [number, number];
-//   eyeHeightRange: [number, number];
-//   eyeWidthRange: [number, number];
-//   setFaceHeightRange: (range: [number, number]) => void;
-//   setFaceWidthRange: (range: [number, number]) => void;
-//   setEyeHeightRange: (range: [number, number]) => void;
-//   setEyeWidthRange: (range: [number, number]) => void;
-//   clazzesInSelectedSchoolYear: string[];
-//   arePhotosResizing: boolean;
-//   arePhotosValidating: boolean;
-//   handlePickYearChange: (date: Date | null) => void;
-//   handleClazzNameChange: (n: string) => void;
-//   handleFolderColorChange: (color: string) => void;
-//   handleCSVUpload: (files: File) => void;
-//   handleResizePhotos: (files: FileWithPath[]) => void;
-//   handleValidatePhotos: () => void;
-//   handleDeleteStudent: (index: number) => void;
-//   handleClazzDataSubmission: () => void;
-// };
-
-// type StepperProps = {
-//   stateAndHandlers: StateAndHandlers;
-// };
-
 const Stepper = () => {
-  const locale = useLocale();
   const t = useTranslations("Stepper");
   const theme = useMantineTheme();
   const isMobile = useMediaQuery("(max-width: 52em)");
   const mimeTypesCSV = [MIME_TYPES.csv];
   const mimeTypesPhotos = [MIME_TYPES.jpeg];
-
-  // const [isDisabled, setIsDisabled] = useState<boolean>(true);
 
   const [modalType, setModalType] = useState<ModalType | null>(null);
   const [opened, { open, close }] = useDisclosure(false);
@@ -119,7 +83,6 @@ const Stepper = () => {
   });
 
   useEffect(() => {
-    // setIsDisabled(true);
     if (active === 0) {
       const isFormValid: boolean =
         clazzData.schoolYear &&
@@ -148,21 +111,19 @@ const Stepper = () => {
       clazzData.students.length !== 0 &&
       clazzData.photos.length !== 0 &&
       clazzData.students.length === clazzData.photos.length &&
-      clazzData.studentsWithPhotos.some(student => !(student.name === ""))
+      clazzData.studentsWithPhotos.every(
+        (s) =>
+          s.name.split(" ").length > 1 &&
+          s.name.split(" ").length < 4 &&
+          !s.name.split(" ").some((p) => p === "")
+      ) &&
+      clazzData.studentsWithPhotos.some((s) => s.amountOfFaces === 1)
     ) {
-      const hasInvalidPhoto = clazzData.studentsWithPhotos.some(
-        (element) => !(element.amountOfFaces === 1)
-      );
-      if (hasInvalidPhoto) {
-        setModalType(ModalType.Error);
-      } else {
-        setModalType(ModalType.ConfirmUpload);
-      }
-      open();
+      setModalType(ModalType.ConfirmUpload);
     } else {
       setModalType(ModalType.Error);
-      open();
     }
+    open();
   };
 
   return (
@@ -243,13 +204,15 @@ const Stepper = () => {
           />
           {clazzData.studentsWithPhotos.length > 0 && (
             <Stack mt={rem(48)}>
-              {clazzData.studentsWithPhotos.map((student) => {
-                return (
-                  <Center>
+              {clazzData.studentsWithPhotos.map((student) => (
+                <Center>
+                  {student.name !== "" ? (
                     <Text>{student.name}</Text>
-                  </Center>
-                );
-              })}
+                  ) : (
+                    <Text>...</Text>
+                  )}
+                </Center>
+              ))}
             </Stack>
           )}
         </StepperMantine.Step>
@@ -373,7 +336,9 @@ const Stepper = () => {
           </Button>
         )}
         {active === 4 ? (
-          <Button disabled={isNextStepButtonDisabled} onClick={openModal}>{t("navigation.submit")}</Button>
+          <Button disabled={isNextStepButtonDisabled} onClick={openModal}>
+            {t("navigation.submit")}
+          </Button>
         ) : (
           <Button disabled={isNextStepButtonDisabled} onClick={nextStep}>
             {t("navigation.next")}
