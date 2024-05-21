@@ -16,6 +16,7 @@ min_eye_height = int(os.environ["MIN_EYE_HEIGHT"]) if os.environ["MIN_EYE_HEIGHT
 max_eye_height = int(os.environ["MAX_EYE_HEIGHT"]) if os.environ["MAX_EYE_HEIGHT"] else None
 min_eye_width = int(os.environ["MIN_EYE_WIDTH"]) if os.environ["MIN_EYE_WIDTH"] else None
 max_eye_width = int(os.environ["MAX_EYE_WIDTH"]) if os.environ["MAX_EYE_WIDTH"] else None
+crop_top_position = float(os.environ["CROP_TOP_POSITION"]) if os.environ["CROP_TOP_POSITION"] else None
 
 image_array = np.frombuffer(image_bytes, dtype=np.uint8)
 
@@ -49,20 +50,16 @@ else:
 
     average_distance = sum(distances_to_eyes_top) / len(distances_to_eyes_top) if distances_to_eyes_top else 0
 
-    difference = distance_to_face_bottom - average_distance
-
-    top_y = int((distance_to_face_bottom - 2.25 * difference) / 2)
-    top_y = max(0, min(img.shape[0], top_y))
+    top_y = int(img.shape[0] * (crop_top_position / 100))
 
     crop_height = int(3 * (average_distance - top_y))
+
+    if top_y + crop_height > img.shape[0]:
+        crop_height = img.shape[0] - top_y
+
     crop_width = int(crop_height * (3 / 4))
 
     start_x = int(face_center_x - (crop_width / 2))
-
-    # # Display the labeled image
-    # cv2.imshow("Face Detection and Labeling", img)
-    # cv2.waitKey(0)
-    # cv2.destroyAllWindows()
 
     if start_x < 0:
         start_x = 0

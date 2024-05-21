@@ -3,7 +3,6 @@ import cv2
 import sys
 import numpy as np
 import json
-import base64
 
 image_bytes = sys.stdin.buffer.read()
 
@@ -11,10 +10,6 @@ min_face_height = int(os.environ["MIN_FACE_HEIGHT"]) if os.environ["MIN_FACE_HEI
 max_face_height = int(os.environ["MAX_FACE_HEIGHT"]) if os.environ["MAX_FACE_HEIGHT"] else None
 min_face_width = int(os.environ["MIN_FACE_WIDTH"]) if os.environ["MIN_FACE_WIDTH"] else None
 max_face_width = int(os.environ["MAX_FACE_WIDTH"]) if os.environ["MAX_FACE_WIDTH"] else None
-min_eye_height = int(os.environ["MIN_EYE_HEIGHT"]) if os.environ["MIN_EYE_HEIGHT"] else None
-max_eye_height = int(os.environ["MAX_EYE_HEIGHT"]) if os.environ["MAX_EYE_HEIGHT"] else None
-min_eye_width = int(os.environ["MIN_EYE_WIDTH"]) if os.environ["MIN_EYE_WIDTH"] else None
-max_eye_width = int(os.environ["MAX_EYE_WIDTH"]) if os.environ["MAX_EYE_WIDTH"] else None
 
 image_array = np.frombuffer(image_bytes, dtype=np.uint8)
 
@@ -32,14 +27,6 @@ else:
     gray_image = cv2.cvtColor(original_image, cv2.COLOR_BGR2GRAY)
 
     faces = face_cascade.detectMultiScale(gray_image, scaleFactor=1.1, minNeighbors=7, minSize=(int(original_image.shape[1] / 100 * min_face_width), int(original_image.shape[0] / 100 * min_face_height)), maxSize=(int(original_image.shape[1] / 100 * max_face_width), int(original_image.shape[0] / 100 * max_face_height)))
-
-    # is_single_face = len(faces) == 1
-
-    # if len(faces) != 1:
-    #     # Display the labeled image
-    #     cv2.imshow(f"Face Detection and Labeling {len(faces)}", original_image)
-    #     cv2.waitKey(0)
-    #     cv2.destroyAllWindows()
 
     output = json.dumps({
         "amount_of_faces": len(faces),

@@ -31,10 +31,6 @@ export async function POST(req: Request, res: Response) {
     const maxFaceHeight: string | null = data.get("maxFaceHeight") as string | null;
     const minFaceWidth: string | null = data.get("minFaceWidth") as string | null;
     const maxFaceWidth: string | null = data.get("maxFaceWidth") as string | null;
-    const minEyeHeight: string | null = data.get("minEyeHeight") as string | null;
-    const maxEyeHeight: string | null = data.get("maxEyeHeight") as string | null;
-    const minEyeWidth: string | null = data.get("minEyeWidth") as string | null;
-    const maxEyeWidth: string | null = data.get("maxEyeWidth") as string | null;
 
     if (!photo) {
       return new Response(
@@ -61,10 +57,6 @@ export async function POST(req: Request, res: Response) {
         MAX_FACE_HEIGHT: maxFaceHeight || "",
         MIN_FACE_WIDTH: minFaceWidth || "",
         MAX_FACE_WIDTH: maxFaceWidth || "",
-        MIN_EYE_HEIGHT: minEyeHeight || "",
-        MAX_EYE_HEIGHT: maxEyeHeight || "",
-        MIN_EYE_WIDTH: minEyeWidth || "",
-        MAX_EYE_WIDTH: maxEyeWidth || "",
       },
     });
 

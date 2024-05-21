@@ -6,15 +6,33 @@ import { v4 as uuid } from "uuid";
 
 import { useClazzData } from "@/providers/ClazzDataContextProvider";
 import {
-  Button, Center, ColorInput, Grid, Group, Loader, Modal, RangeSlider, rem, Stack,
-  Stepper as StepperMantine, Text, TextInput, Title, useMantineTheme
+  Button,
+  Center,
+  ColorInput,
+  Grid,
+  Group,
+  Loader,
+  Modal,
+  RangeSlider,
+  rem,
+  Slider,
+  Stack,
+  Stepper as StepperMantine,
+  Text,
+  TextInput,
+  Title,
+  useMantineTheme,
 } from "@mantine/core";
 import { YearPickerInput } from "@mantine/dates";
 import { MIME_TYPES } from "@mantine/dropzone";
 import { useForm } from "@mantine/form";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import {
-  IconAdjustments, IconCircleCheck, IconFileTypeCsv, IconFolder, IconPhoto
+  IconAdjustments,
+  IconCircleCheck,
+  IconFileTypeCsv,
+  IconFolder,
+  IconPhoto,
 } from "@tabler/icons-react";
 
 import Dropzone from "../Dropzone";
@@ -55,6 +73,8 @@ const Stepper = () => {
     setEyeHeightRange,
     eyeWidthRange,
     setEyeWidthRange,
+    cropTopPosition,
+    setCropTopPosition,
     arePhotosResizing,
     arePhotosValidating,
     handlePickYearChange,
@@ -270,7 +290,7 @@ const Stepper = () => {
             onChange={(e) => setFaceHeightRange(e)}
           />
 
-          <Text size="sm" mt="xl" mb={6} ta="right">{`${t(
+          <Text size="sm" mt="lg" mb={6} ta="right">{`${t(
             "fourthStep.faceWidthRange"
           )} (${faceWidthRange[0]} % - ${faceWidthRange[1]} %)`}</Text>
           <RangeSlider
@@ -284,7 +304,7 @@ const Stepper = () => {
             onChange={(e) => setFaceWidthRange(e)}
           />
 
-          <Text size="sm" mt="xl" mb={6} ta="right">{`${t(
+          <Text size="sm" mt="lg" mb={6} ta="right">{`${t(
             "fourthStep.eyeHeightRange"
           )} (${eyeHeightRange[0]} % - ${eyeHeightRange[1]} %)`}</Text>
           <RangeSlider
@@ -298,7 +318,7 @@ const Stepper = () => {
             onChange={(e) => setEyeHeightRange(e)}
           />
 
-          <Text size="sm" mt="xl" mb={6} ta="right">{`${t(
+          <Text size="sm" mt="lg" mb={6} ta="right">{`${t(
             "fourthStep.eyeWidthRange"
           )} (${eyeWidthRange[0]} % - ${eyeWidthRange[1]} %)`}</Text>
           <RangeSlider
@@ -310,6 +330,19 @@ const Stepper = () => {
             marks={marks}
             label={null}
             onChange={(e) => setEyeWidthRange(e)}
+          />
+
+          <Text size="sm" mt="xl" mb={6} ta="right">{`${t(
+            "fourthStep.cropTopPosition"
+          )} (${cropTopPosition} %)`}</Text>
+          <Slider
+            min={0.1}
+            max={50}
+            step={0.05}
+            defaultValue={cropTopPosition}
+            marks={[{ value: 10 }, { value: 20 }, { value: 30 }, { value: 40 }]}
+            label={null}
+            onChange={(e) => setCropTopPosition(e)}
           />
         </StepperMantine.Step>
         <StepperMantine.Completed>

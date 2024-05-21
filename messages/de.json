@@ -199,7 +199,8 @@
       "faceHeightRange": "Bereich der Gesichtserkennungshöhe",
       "faceWidthRange": "Bereich der Gesichtserkennungsbreite",
       "eyeHeightRange": "Bereich der Augenerkennungshöhe",
-      "eyeWidthRange": "Bereich der Augenerkennungsbreite"
+      "eyeWidthRange": "Bereich der Augenerkennungsbreite",
+      "cropTopPosition": "Obere Position des Zuschneidens"
     },
     "completed": {
       "title": "Zusammenfassung"

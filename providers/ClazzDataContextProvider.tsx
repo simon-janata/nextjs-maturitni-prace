@@ -50,6 +50,8 @@ type ClazzDataContextType = {
   setEyeHeightRange: React.Dispatch<React.SetStateAction<[number, number]>>;
   eyeWidthRange: [number, number];
   setEyeWidthRange: React.Dispatch<React.SetStateAction<[number, number]>>;
+  cropTopPosition: number;
+  setCropTopPosition: React.Dispatch<React.SetStateAction<number>>;
   arePhotosResizing: boolean;
   arePhotosValidating: boolean;
   hasValidationBeenDone: boolean;
@@ -110,6 +112,7 @@ export const ClazzDataContextProvider = ({
     2, 10,
   ]);
   const [eyeWidthRange, setEyeWidthRange] = useState<[number, number]>([2, 10]);
+  const [cropTopPosition, setCropTopPosition] = useState<number>(5);
 
   const [arePhotosResizing, setArePhotosResizing] = useState<boolean>(false);
   const [arePhotosValidating, setArePhotosValidating] =
@@ -314,10 +317,6 @@ export const ClazzDataContextProvider = ({
         formData.set("maxFaceHeight", faceHeightRange[1].toString());
         formData.set("minFaceWidth", faceWidthRange[0].toString());
         formData.set("maxFaceWidth", faceWidthRange[1].toString());
-        formData.set("minEyeHeight", eyeHeightRange[0].toString());
-        formData.set("maxEyeHeight", eyeHeightRange[1].toString());
-        formData.set("minEyeWidth", eyeWidthRange[0].toString());
-        formData.set("maxEyeWidth", eyeWidthRange[1].toString());
 
         return axios
           .post(
@@ -492,6 +491,7 @@ export const ClazzDataContextProvider = ({
         formData.set("maxEyeHeight", eyeHeightRange[1].toString());
         formData.set("minEyeWidth", eyeWidthRange[0].toString());
         formData.set("maxEyeWidth", eyeWidthRange[1].toString());
+        formData.set("cropTopPosition", cropTopPosition.toString());
 
         const studentNameParts =
           clazzData.studentsWithPhotos[i].name.split(" ");
@@ -592,6 +592,8 @@ export const ClazzDataContextProvider = ({
         setEyeHeightRange,
         eyeWidthRange,
         setEyeWidthRange,
+        cropTopPosition,
+        setCropTopPosition,
         arePhotosResizing,
         arePhotosValidating,
         hasValidationBeenDone,

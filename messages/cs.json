@@ -202,7 +202,8 @@
       "faceHeightRange": "Rozmezí výšky detekce obličeje",
       "faceWidthRange": "Rozmezí šířky detekce obličeje",
       "eyeHeightRange": "Rozmezí výšky detekce očí",
-      "eyeWidthRange": "Rozmezí šířky detekce očí"
+      "eyeWidthRange": "Rozmezí šířky detekce očí",
+      "cropTopPosition": "Pozice ořezu shora"
     },
     "completed": {
       "title": "Souhrn"

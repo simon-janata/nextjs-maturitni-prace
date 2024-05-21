@@ -96,26 +96,15 @@ export async function POST(req: Request, res: Response) {
     const data = await req.formData();
     const photo: File | null = data.get("photo") as unknown as File;
 
-    const minFaceHeight: string | null = data.get("minFaceHeight") as
-      | string
-      | null;
-    const maxFaceHeight: string | null = data.get("maxFaceHeight") as
-      | string
-      | null;
-    const minFaceWidth: string | null = data.get("minFaceWidth") as
-      | string
-      | null;
-    const maxFaceWidth: string | null = data.get("maxFaceWidth") as
-      | string
-      | null;
-    const minEyeHeight: string | null = data.get("minEyeHeight") as
-      | string
-      | null;
-    const maxEyeHeight: string | null = data.get("maxEyeHeight") as
-      | string
-      | null;
+    const minFaceHeight: string | null = data.get("minFaceHeight") as string | null;
+    const maxFaceHeight: string | null = data.get("maxFaceHeight") as string | null;
+    const minFaceWidth: string | null = data.get("minFaceWidth") as string | null;
+    const maxFaceWidth: string | null = data.get("maxFaceWidth") as string | null;
+    const minEyeHeight: string | null = data.get("minEyeHeight") as string | null;
+    const maxEyeHeight: string | null = data.get("maxEyeHeight") as string | null;
     const minEyeWidth: string | null = data.get("minEyeWidth") as string | null;
     const maxEyeWidth: string | null = data.get("maxEyeWidth") as string | null;
+    const cropTopPosition: string | null = data.get("cropTopPosition") as string | null;
 
     if (!photo) {
       return new Response(
@@ -146,6 +135,7 @@ export async function POST(req: Request, res: Response) {
         MAX_EYE_HEIGHT: maxEyeHeight || "",
         MIN_EYE_WIDTH: minEyeWidth || "",
         MAX_EYE_WIDTH: maxEyeWidth || "",
+        CROP_TOP_POSITION: cropTopPosition || "",
       },
     });
 

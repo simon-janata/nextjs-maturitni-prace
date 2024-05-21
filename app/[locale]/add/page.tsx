@@ -1,14 +1,14 @@
 "use client";
 
-import { useTranslations } from 'next-intl';
+import { useTranslations } from "next-intl";
 
-import Dots from '@/components/MainBanner/Dots';
-import classes from '@/components/MainBanner/MainBanner.module.css';
-import RingProgress from '@/components/RingProgress';
-import Stepper from '@/components/Stepper';
-import { ClazzDataContextProvider, useClazzData } from '@/providers/ClazzDataContextProvider';
-import { Container, Flex } from '@mantine/core';
-import { useDocumentTitle } from '@mantine/hooks';
+import Dots from "@/components/MainBanner/Dots";
+import classes from "@/components/MainBanner/MainBanner.module.css";
+import RingProgress from "@/components/RingProgress";
+import Stepper from "@/components/Stepper";
+import { ClazzDataContextProvider, useClazzData } from "@/providers/ClazzDataContextProvider";
+import { Container, Flex } from "@mantine/core";
+import { useDocumentTitle } from "@mantine/hooks";
 
 const AddPageHelper = () => {
   const t = useTranslations("AddPage");

@@ -199,7 +199,8 @@
       "faceHeightRange": "Face detection height range",
       "faceWidthRange": "Face detection width range",
       "eyeHeightRange": "Eye detection height range",
-      "eyeWidthRange": "Eye detection width range"
+      "eyeWidthRange": "Eye detection width range",
+      "cropTopPosition": "Crop top position"
     },
     "completed": {
       "title": "Summary"
