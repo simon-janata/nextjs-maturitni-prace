@@ -4,7 +4,7 @@ import { useLocale, useTranslations } from "next-intl";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Papa from "papaparse";
-import React, { createContext, ReactNode, useContext, useEffect, useState } from "react";
+import React, { createContext, ReactNode, useContext, useEffect, useRef, useState } from "react";
 import { v4 as uuid } from "uuid";
 
 import { Image } from "@mantine/core";
@@ -120,10 +120,9 @@ export const ClazzDataContextProvider = ({
   const [hasValidationBeenDone, setHasValidationBeenDone] =
     useState<boolean>(false);
 
-  let invalidPhotoStudentRecords: Array<{
-    studentName: string;
-    photoName: string;
-  }> = [];
+  const invalidPhotoStudentRecordsRef = useRef<
+    Array<{ studentName: string; photoName: string }>
+  >([]);
 
   const [uploading, setUploading] = useState<boolean>(false);
   const [schoolYearProgress, setSchoolYearProgress] = useState<number>(0);
@@ -355,8 +354,9 @@ export const ClazzDataContextProvider = ({
   };
 
   const handleDeleteStudent = (index: number) => {
-    invalidPhotoStudentRecords.push({
-      studentName: clazzData.students[index],
+    invalidPhotoStudentRecordsRef.current.push({
+      studentName:
+        index <= clazzData.students.length - 1 ? clazzData.students[index] : "",
       photoName:
         index <= clazzData.photos.length - 1
           ? clazzData.photos[index].name
@@ -516,7 +516,7 @@ export const ClazzDataContextProvider = ({
           .then((res) => {
             const success = res.data.success;
             if (success === false) {
-              invalidPhotoStudentRecords.push({
+              invalidPhotoStudentRecordsRef.current.push({
                 studentName: clazzData.studentsWithPhotos[i].name,
                 photoName: clazzData.studentsWithPhotos[i].photo.name,
               });
@@ -540,7 +540,8 @@ export const ClazzDataContextProvider = ({
         .post(
           `${process.env.NEXT_PUBLIC_API_URL}/cs/api/invalidPhotoStudentRecords`,
           {
-            invalidPhotoStudentRecords: invalidPhotoStudentRecords,
+            invalidPhotoStudentRecordsRef:
+              invalidPhotoStudentRecordsRef.current,
           },
           {
             params: {

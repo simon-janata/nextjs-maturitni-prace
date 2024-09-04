@@ -72,7 +72,7 @@ export async function POST(req: Request, res: Response) {
   try {
     const body = await req.json();
 
-    if (!body.invalidPhotoStudentRecords) {
+    if (!body.invalidPhotoStudentRecordsRef) {
       return new Response(
         JSON.stringify({
           message: "invalidPhotoStudentRecords must be provided",
@@ -86,7 +86,7 @@ export async function POST(req: Request, res: Response) {
       );
     }
 
-    const invalidPhotoStudentRecords = body.invalidPhotoStudentRecords;
+    const invalidPhotoStudentRecordsRef = body.invalidPhotoStudentRecordsRef;
 
     const { searchParams } = new URL(req.url);
     const schoolYearParam = searchParams.get("schoolYear") || "";
@@ -117,7 +117,7 @@ export async function POST(req: Request, res: Response) {
       mkdirSync(dirPath, { recursive: true });
     }
 
-    const invalidPhotoStudentRecordsString = JSON.stringify(invalidPhotoStudentRecords, null, 2);
+    const invalidPhotoStudentRecordsString = JSON.stringify(invalidPhotoStudentRecordsRef, null, 2);
 
     const textFilePath = join(
       dirPath,
