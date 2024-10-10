@@ -6,6 +6,20 @@ import cv2
 import json
 import base64
 
+def adjust_to_aspect_ratio(height, width, aspect_height=4, aspect_width=3):
+    target_ratio = aspect_height / aspect_width
+    
+    current_ratio = height / width
+    
+    if current_ratio > target_ratio:
+        new_height = int(width * target_ratio)
+        new_width = width
+    else:
+        new_height = height
+        new_width = int(height / target_ratio)
+    
+    return new_height, new_width
+
 image_bytes = sys.stdin.buffer.read()
 
 min_face_height = int(os.environ["MIN_FACE_HEIGHT"]) if os.environ["MIN_FACE_HEIGHT"] else None
@@ -61,15 +75,30 @@ else:
 
     start_x = int(face_center_x - (crop_width / 2))
 
+    bottom_y = top_y + crop_height
+    end_x = start_x + crop_width
+
+    if end_x > img.shape[1]:
+        end_x = img.shape[1]
+        start_x = img.shape[1] - crop_width
+
     if start_x < 0:
+        if (end_x + abs(start_x)) < img.shape[1]:
+            end_x += abs(start_x)
+        else:
+            end_x = img.shape[1]
+            crop_width = img.shape[1]
         start_x = 0
 
-    if start_x + crop_width > img.shape[1]:
-        start_x = img.shape[1] - crop_width
+    if ((bottom_y - top_y) / (end_x - start_x)) != (4 / 3):
+        old_height, old_width = crop_height, crop_width
+        new_crop_height, new_crop_width = adjust_to_aspect_ratio(crop_height, crop_width)
+        bottom_y = top_y + new_crop_height
+        end_x = start_x + new_crop_width
 
     if len(faces) > 0:
         if len(eyes) > 0:
-            cropped_image = img[top_y:top_y + crop_height, start_x:start_x + crop_width]
+            cropped_image = img[top_y:bottom_y, start_x:end_x]
             resized_image = cv2.resize(cropped_image, (1050, 1400))
             success = True
         else:
